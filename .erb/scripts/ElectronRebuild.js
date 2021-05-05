@@ -1,7 +1,7 @@
 import path from 'path';
 import { execSync } from 'child_process';
 import fs from 'fs';
-import { dependencies } from '../../../../C64-Minter2/src/package.json';
+import { dependencies } from '../../src/package.json';
 
 const nodeModulesPath = path.join(__dirname, '../../src/node_modules');
 

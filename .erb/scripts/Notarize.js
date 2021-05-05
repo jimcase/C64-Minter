@@ -1,5 +1,5 @@
 const { notarize } = require('electron-notarize');
-const { build } = require('../../../../C64-Minter2/package.json');
+const { build } = require('../../package.json');
 
 exports.default = async function notarizeMacos(context) {
   const { electronPlatformName, appOutDir } = context;
