@@ -1,0 +1,95 @@
+/*
+ * @NOTE: Prepend a `~` to css file paths that are in your node_modules
+ *        See https://github.com/webpack-contrib/sass-loader#imports
+ */
+
+@font-face {
+  font-family: commodoreFont;
+  src: url('../assets/fonts/commodore_64/Commodore-Angled-v1.2.ttf');
+}
+
+body {
+  background: linear-gradient(
+    200.96deg,
+    #fedc2a -29.09%,
+    #dd5789 51.77%,
+    #7a2c9e 129.35%
+  );
+  font-family: sans-serif;
+  overflow-y: hidden;
+}
+
+/*
+  Sidebar
+*/
+#leftSidebar {
+  overflow-y: hidden !important;
+  box-shadow: 4px 1px 4px -2px black;
+}
+#leftSidebar::-webkit-scrollbar {
+  width: 0 !important;
+}
+
+#navBar {
+  padding: 5px;
+}
+#navBrand {
+  text-align: center;
+  font-size: 35px;
+  padding: 10px;
+  font-family: commodoreFont;
+  /*font-family: commodoreFont;*/
+}
+#navBar ul {
+  list-style: none;
+  padding: 0.5em 0;
+  margin: 0;
+}
+#navBar ul li {
+  margin-bottom: 20px;
+  font-size: 0.95em;
+  cursor: pointer;
+  text-align: center;
+}
+#navBar ul li .sidebarIcons {
+  font-size: 50px;
+}
+#navBar ul li .sidebarIcons:hover {
+  opacity: 0.8;
+}
+
+#navButton {
+  display: inline-block;
+}
+/*
+  Sidebar ends
+*/
+
+/*
+  Content
+*/
+
+#content {
+  padding-left: 30px;
+}
+
+/*
+  Content ends
+*/
+
+/*
+  Minter
+*/
+#metadataTxsPreview {
+  max-height: 300px;
+  overflow-y: auto;
+}
+#metadataTxsPreview::-webkit-scrollbar {
+  width: 0 !important;
+}
+.jsonContentMeta {
+  background-color: beige;
+}
+/*
+  Minter ends
+*/
