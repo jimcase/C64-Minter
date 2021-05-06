@@ -1,6 +1,6 @@
 import React from 'react';
 // eslint-disable-next-line import/no-webpack-loader-syntax
-// import '!style-loader!css-loader!bootstrap/dist/css/bootstrap.css'; // TODO enable *.css from webpack conf
+import '!style-loader!css-loader!bootstrap/dist/css/bootstrap.css'; // TODO enable *.css from webpack conf
 // import '../assets/css/bootstrap.min.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 // import icon from '../assets/icon.svg';
