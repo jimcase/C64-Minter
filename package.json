@@ -1,7 +1,7 @@
 {
-  "name": "electron-react-boilerplate",
-  "productName": "ElectronReact",
-  "description": "Electron application boilerplate based on React, React Router, Webpack, React Fast Refresh for rapid application development",
+  "name": "c64-minter",
+  "productName": "C64-Minter",
+  "description": "",
   "scripts": {
     "build": "concurrently \"yarn build:main\" \"yarn build:renderer\" \"yarn build:server\"",
     "build:main": "cross-env NODE_ENV=production webpack --config ./.erb/configs/webpack.config.main.prod.babel.js",
@@ -88,34 +88,34 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "owner": "jimcase",
+      "repo": "C64-Minter"
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
+    "url": "git+https://github.com/jimcase/C64-Minter.git"
   },
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://electron-react-boilerplate.js.org"
+    "name": "Jaime Caso",
+    "email": "ec64minter@gmail.com",
+    "url": "https://github.com/jimcase"
   },
   "contributors": [
     {
-      "name": "Amila Welihinda",
-      "email": "amilajack@gmail.com",
-      "url": "https://github.com/amilajack"
+      "name": "rcmorano",
+      "email": "",
+      "url": "https://github.com/rcmorano"
     },
     {
-      "name": "John Tran",
-      "email": "jptran318@gmail.com",
-      "url": "https://github.com/jooohhn"
+      "name": "v-almonacid\n",
+      "email": "",
+      "url": "https://github.com/v-almonacid"
     }
   ],
-  "license": "MIT",
+  "license": "Apache2",
   "bugs": {
-    "url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues"
+    "url": "https://github.com/jimcase/C64-Minter/issues"
   },
   "keywords": [
     "electron",
@@ -128,7 +128,7 @@
     "hot",
     "reload"
   ],
-  "homepage": "https://github.com/electron-react-boilerplate/electron-react-boilerplate#readme",
+  "homepage": "https://github.com/jimcase/C64-Minter#readme",
   "jest": {
     "testURL": "http://localhost/",
     "moduleNameMapper": {
@@ -280,7 +280,7 @@
     "yarn": ">=1.21.3"
   },
   "collective": {
-    "url": "https://opencollective.com/electron-react-boilerplate-594"
+    "url": ""
   },
   "browserslist": [],
   "prettier": {
