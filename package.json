@@ -32,8 +32,8 @@
     ]
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "C64-Minter",
+    "appId": "org.erb.C64-Minter",
     "files": [
       "dist/",
       "node_modules/",
