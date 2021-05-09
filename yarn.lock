@@ -1604,12 +1604,12 @@
     "@babel/runtime" "^7.12.5"
     "@testing-library/dom" "^7.28.1"
 
-"@tippyjs/react@4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@tippyjs/react/-/react-4.2.0.tgz#a1cb369d0051099e8a7e4ceb59f809abd9955283"
-  integrity sha512-T6UcHtwtGkvgsBQ4bNp8BtXGxa2ujfOkWUogYkRtN4UVJ2QRgDdFoJeaPxdndnVYFEa2uTVxSFxs8QkSkZ2Gdw==
+"@tippyjs/react@4.2.1":
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@tippyjs/react/-/react-4.2.1.tgz#c26aebdcaa84528618e0b360a69eee7d75fba209"
+  integrity sha512-AewTIG9jojsNwMtiQNj2TshKGg4dQvOlxzw1Kkd4eu6oiOfuy5jwpXokyjf7bybgHi9W4Z7zWwj4ZXJVm6sGZw==
   dependencies:
-    tippy.js "^6.2.0"
+    tippy.js "^6.3.0"
 
 "@types/aria-query@^4.2.0":
   version "4.2.1"
@@ -4001,13 +4001,6 @@ create-react-context@0.2.2:
     fbjs "^0.8.0"
     gud "^1.0.0"
 
-create-react-ref@0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/create-react-ref/-/create-react-ref-0.1.0.tgz#0aa42aae4e66d8b164207ac8c468c35ce7bbd8eb"
-  integrity sha512-w/DDeTaFSaDVtlfLs4q9FVFcFq1jPZ62dBUAV24OKXrobtDlnXeJ5EsnK+z98Kmh9Zyxv24Edc26z8f7APVUYg==
-  dependencies:
-    fbjs "^0.8.16"
-
 cross-env@^7.0.2:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-7.0.3.tgz#865264b29677dc015ba8418918965dd232fc54cf"
@@ -5693,7 +5686,7 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "2.1.1"
 
-fbjs@^0.8.0, fbjs@^0.8.16:
+fbjs@^0.8.0:
   version "0.8.17"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
   integrity sha1-xNWY6taUkRJlPWWIsBpc3Nn5D90=
@@ -10257,14 +10250,13 @@ react-modal@3.1.12:
     prop-types "^15.5.10"
     warning "^3.0.0"
 
-react-polymorph@0.9.8-rc.9:
-  version "0.9.8-rc.9"
-  resolved "https://registry.yarnpkg.com/react-polymorph/-/react-polymorph-0.9.8-rc.9.tgz#d9568febe3318b0654b512036bd008cd4c9d3f4c"
-  integrity sha512-q2HaR7hOg5fYGVyqbQYMLY6c8nriRFNFgzE+bg23kWrYMwTjgAlkCYkaB7TEE8L/AJNW4ngG6Tso8k5kEYZJog==
+react-polymorph@1.0.0-rc.2:
+  version "1.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/react-polymorph/-/react-polymorph-1.0.0-rc.2.tgz#1d2fefb41c70dd4169a28519685ee9097f7dcf54"
+  integrity sha512-HH6DONMCXAgF08O62LrDaU9iYnt2wXjBI2QSVBnkH6c4iMAQFYL8jS3NZHLYdxsu33ChCzhlxjLJe1mEcJrRYw==
   dependencies:
-    "@tippyjs/react" "4.2.0"
+    "@tippyjs/react" "4.2.1"
     create-react-context "0.2.2"
-    create-react-ref "0.1.0"
     fast-password-entropy "1.1.1"
     filter-react-dom-props "0.0.2"
     popper.js "1.16.1"
@@ -11947,7 +11939,7 @@ tiny-warning@^1.0.0, tiny-warning@^1.0.3:
   resolved "https://registry.yarnpkg.com/tiny-warning/-/tiny-warning-1.0.3.tgz#94a30db453df4c643d0fd566060d60a875d84754"
   integrity sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==
 
-tippy.js@^6.2.0:
+tippy.js@^6.3.0:
   version "6.3.1"
   resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-6.3.1.tgz#3788a007be7015eee0fd589a66b98fb3f8f10181"
   integrity sha512-JnFncCq+rF1dTURupoJ4yPie5Cof978inW6/4S6kmWV7LL9YOSEVMifED3KdrVPEG+Z/TFH2CDNJcQEfaeuQww==

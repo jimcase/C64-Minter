@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { ThemeProvider } from 'react-polymorph/lib/components/ThemeProvider';
-import { SimpleSkins } from 'react-polymorph/lib/skins/simple';
-import { SimpleDefaults } from 'react-polymorph/lib/themes/simple';
 import CardanoModule from './lib/CardanoModule';
 import { generateWalletRootKey } from './lib/wallet';
 
@@ -13,8 +10,6 @@ const recoveryPhrase = [
 
 const styles = {
   container: {
-    display: 'flex',
-    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -48,11 +43,6 @@ const WalletInfo = () => {
     <div style={styles.container}>
       <h3>Wallet Info</h3>
       <p style={styles.key}>Master key: {masterKeyHex}</p>
-
-      {/* Automatically pass a theme prop to all components in this subtree. */}
-      <ThemeProvider skins={SimpleSkins} variables={SimpleDefaults}>
-        <p>Hola</p>
-      </ThemeProvider>
     </div>
   );
 };

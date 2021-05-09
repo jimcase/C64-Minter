@@ -78,6 +78,44 @@ body {
 */
 
 /*
+  Wallet ends
+*/
+div.scrollmenu {
+  background-color: #333;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+.walletItem {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+  width: 150px;
+}
+
+div.scrollmenu .walletItem:hover {
+  background-color: #777;
+}
+div.scrollmenu .selectedWallet {
+  background-color: steelblue;
+}
+
+#addWalletButton {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+  width: 150px;
+  font-size: 40px;
+}
+/*
+  Wallet ends
+*/
+
+/*
   Minter
 */
 #metadataTxsPreview {
