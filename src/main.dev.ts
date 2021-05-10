@@ -11,10 +11,23 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import storage from 'electron-json-storage';
 import MenuBuilder from './menu';
+
+const {
+  HANDLE_FETCH_DATA,
+  FETCH_DATA_FROM_STORAGE,
+  SAVE_DATA_IN_STORAGE,
+  REMOVE_DATA_FROM_STORAGE,
+  HANDLE_REMOVE_DATA,
+  HANDLE_SAVE_DATA,
+} = require('./utils/constants');
+
+// A reference to the itemsToTrack array, full of JS/JSON objects. All mutations to the array are performed in the main.js app, but each mutation will trigger a rewrite to the user's storage for data persistence
+let itemsToTrack = [];
 
 export default class AppUpdater {
   constructor() {
@@ -129,4 +142,87 @@ app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) createWindow();
+});
+
+ipcMain.on(FETCH_DATA_FROM_STORAGE, (_event, message) => {
+  console.log('Main received: FETCH_DATA_FROM_STORAGE with message:', message);
+  // Get the user's itemsToTrack from storage
+  // For our purposes, message = itemsToTrack array
+  storage.get(message, (error, data) => {
+    // if the itemsToTrack key does not yet exist in storage, data returns an empty object, so we will declare itemsToTrack to be an empty array
+    // eslint-disable-next-line @typescript-eslint/no-shadow
+    const itemsToTrack = JSON.stringify(data) === '{}' ? [] : data;
+    if (error) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      mainWindow.send(HANDLE_FETCH_DATA, {
+        success: false,
+        message: 'itemsToTrack not returned',
+      });
+    } else {
+      // Send message back to window
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      mainWindow.send(HANDLE_FETCH_DATA, {
+        success: true,
+        message: itemsToTrack, // do something with the data
+      });
+    }
+  });
+});
+
+// Receive a SAVE_DATA_IN_STORAGE call from renderer
+ipcMain.on(SAVE_DATA_IN_STORAGE, (_event, message) => {
+  console.log('Main received: SAVE_DATA_IN_STORAGE');
+  // update the itemsToTrack array.
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  itemsToTrack.push(message);
+  // Save itemsToTrack to storage
+  storage.set('itemsToTrack', itemsToTrack, (error) => {
+    if (error) {
+      console.log('We errored! What was data?');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      mainWindow.send(HANDLE_SAVE_DATA, {
+        success: false,
+        message: 'itemsToTrack not saved',
+      });
+    } else {
+      // Send message back to window as 2nd arg "data"
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      mainWindow.send(HANDLE_SAVE_DATA, {
+        success: true,
+        message,
+      });
+    }
+  });
+});
+
+// Receive a REMOVE_DATA_FROM_STORAGE call from renderer
+ipcMain.on(REMOVE_DATA_FROM_STORAGE, (_event, message) => {
+  console.log('Main Received: REMOVE_DATA_FROM_STORAGE');
+  // Update the items to Track array.
+  itemsToTrack = itemsToTrack.filter((item) => item !== message);
+  // Save itemsToTrack to storage
+  storage.set('itemsToTrack', itemsToTrack, (error) => {
+    if (error) {
+      console.log('We errored! What was data?');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      mainWindow.send(HANDLE_REMOVE_DATA, {
+        success: false,
+        message: 'itemsToTrack not saved',
+      });
+    } else {
+      // Send new updated array to window as 2nd arg "data"
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      mainWindow.send(HANDLE_REMOVE_DATA, {
+        success: true,
+        message: itemsToTrack,
+      });
+    }
+  });
 });
