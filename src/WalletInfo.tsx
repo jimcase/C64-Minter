@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CardanoModule from './lib/CardanoModule';
 import { generateWalletRootKey } from './lib/wallet';
+import { api } from './api';
 
 const recoveryPhrase = [
   'pelican void shop left ice',
@@ -21,6 +22,7 @@ const styles = {
 
 const WalletInfo = () => {
   const [masterKeyHex, setMasterKeyHex] = useState<string>('');
+  const [successText, setSuccessText] = useState(null);
 
   const init = async () => {
     // TODO: need to figure out what's the best way to load module at app
@@ -37,12 +39,18 @@ const WalletInfo = () => {
 
   useEffect(() => {
     init();
+    api
+      .get('/test')
+      .then(({ data }) => setSuccessText(data))
+      .catch((err) => console.error(err));
   }, []);
 
   return (
     <div style={styles.container}>
       <h3>Wallet Info</h3>
       <p style={styles.key}>Master key: {masterKeyHex}</p>
+      <h4>Server side</h4>
+      <p>{successText}</p>
     </div>
   );
 };
