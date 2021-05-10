@@ -69,6 +69,7 @@ async function encryptString(content: string, password: string) {
     armor: true, // ASCII armor (for not Uint8Array output)
   });
   console.log(encrypted); // utf8
+  return encrypted;
 }
 
 async function decryptString(encryptedContent: string, password: string) {
@@ -82,6 +83,7 @@ async function decryptString(encryptedContent: string, password: string) {
     format: 'utf8', // output as string
   });
   console.log(decrypted);
+  return decrypted;
 }
 
 /*

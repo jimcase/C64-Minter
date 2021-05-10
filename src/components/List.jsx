@@ -3,9 +3,17 @@ import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 // eslint-disable-next-line import/extensions
 import { removeDataFromStorage2 } from '../renderer.ts';
-
+import { decryptString } from '../utils/crypto-utils';
 // eslint-disable-next-line react/prop-types
 const List = ({ itemsToTrack }) => {
+  const handleDecrypt = (e) => {
+    decryptString(e, 'micontraseña')
+      .then((en) => {
+        console.log(`decrypted msg: ${en}`);
+        return en;
+      })
+      .catch((error) => console.log(error));
+  };
   return (
     <Table striped bordered hover>
       <thead>
@@ -30,6 +38,9 @@ const List = ({ itemsToTrack }) => {
                   Remove
                 </Button>
               </td>
+              <tr>
+                <div>{handleDecrypt(item)}</div>
+              </tr>
             </tr>
           );
         })}

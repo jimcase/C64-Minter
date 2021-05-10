@@ -5,6 +5,7 @@ import { generateWalletRootKey } from './lib/wallet';
 import { api } from './api';
 import List from './components/List';
 import { loadSavedData, saveDataInStorage } from './renderer';
+import { encryptString } from './utils/crypto-utils';
 
 const { ipcRenderer } = require('electron');
 const {
@@ -70,7 +71,9 @@ const WalletInfo = () => {
 
   // Send the input to main
   const addItem = (input) => {
-    saveDataInStorage(input);
+    encryptString(input, 'micontraseña')
+      .then((en) => saveDataInStorage(en))
+      .catch((error) => console.log(error));
     setVal('');
   };
 
