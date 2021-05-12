@@ -24,6 +24,12 @@ const MnemonicInput: React.FC<MnemonicInputProps> = ({ parentCallback }) => {
     'eyebrow',
   ]);
 
+  const disebldIputTags = false;
+
+  let placeholder = '';
+  if (!disebldIputTags) {
+    placeholder = `enter mnemonic (${selected.length})`;
+  }
   return (
     <div>
       <h1>Add words {selected.length}</h1>
@@ -36,9 +42,10 @@ const MnemonicInput: React.FC<MnemonicInputProps> = ({ parentCallback }) => {
         }}
         onExisting={() => setSelected(selected)}
         name="fruits"
-        placeHolder={`enter mnemonic (${selected.length})`}
+        placeHolder={placeholder}
+        disabled={disebldIputTags}
       />
-      <em>press enter to add new tag</em>
+      {!disebldIputTags ? <em>press enter to add new tag</em> : null}
     </div>
   );
 };

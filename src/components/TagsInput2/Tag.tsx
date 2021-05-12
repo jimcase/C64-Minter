@@ -5,6 +5,7 @@ import cc from './classnames';
 interface TagProps {
   text: string;
   remove: any;
+  blocked?: boolean;
 }
 
 const tagStyles = css({
@@ -29,7 +30,7 @@ const tagStyles = css({
   },
 });
 
-export default function Tag({ text, remove }: TagProps) {
+export default function Tag({ text, remove, blocked }: TagProps) {
   const handleOnRemove = (e) => {
     e.stopPropagation();
     remove(text);
@@ -38,13 +39,19 @@ export default function Tag({ text, remove }: TagProps) {
   return (
     <span className={cc('rti--tag', tagStyles)}>
       <span>{text}</span>
-      <button
-        type="button"
-        onClick={handleOnRemove}
-        aria-label={`remove ${text}`}
-      >
-        &#10005;
-      </button>
+      {!blocked ? (
+        <button
+          type="button"
+          onClick={handleOnRemove}
+          aria-label={`remove ${text}`}
+        >
+          &#10005;
+        </button>
+      ) : null}
     </span>
   );
 }
+
+Tag.defaultProps = {
+  blocked: false,
+};

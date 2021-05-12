@@ -8,6 +8,7 @@ export interface TagsInputProps {
   name?: string;
   placeHolder?: string;
   value?: string[];
+  disabled?: boolean;
   onChange?: (tags: string[]) => void;
   onBlur?: any;
   seprators?: string[];
@@ -65,6 +66,7 @@ export const TagsInput = ({
   onChange,
   onBlur,
   seprators,
+  disabled,
   onRemoved,
 }: TagsInputProps) => {
   const [tags, setTags] = useState(value || []);
@@ -99,7 +101,7 @@ export const TagsInput = ({
   return (
     <div aria-labelledby={name} className={cc('rti--container', RTIContainer)}>
       {tags.map((tag) => (
-        <Tag key={tag} text={tag} remove={onTagRemove} />
+        <Tag key={tag} text={tag} remove={onTagRemove} blocked={disabled} />
       ))}
 
       <input
@@ -109,6 +111,7 @@ export const TagsInput = ({
         placeholder={placeHolder}
         onKeyDown={handleOnKeyUp}
         onBlur={onBlur}
+        disabled={disabled}
       />
     </div>
   );
