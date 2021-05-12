@@ -4,6 +4,7 @@ import cc from './classnames';
 
 interface TagProps {
   text: string;
+  textId: string;
   remove: any;
   blocked?: boolean;
 }
@@ -30,10 +31,10 @@ const tagStyles = css({
   },
 });
 
-export default function Tag({ text, remove, blocked }: TagProps) {
+export default function Tag({ text, textId, remove, blocked }: TagProps) {
   const handleOnRemove = (e) => {
     e.stopPropagation();
-    remove(text);
+    remove(textId);
   };
 
   return (

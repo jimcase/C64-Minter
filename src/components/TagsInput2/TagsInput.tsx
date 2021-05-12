@@ -7,9 +7,12 @@ import Tag from './Tag';
 export interface TagsInputProps {
   name?: string;
   placeHolder?: string;
-  value?: string[];
+  value?: {
+    text: string;
+    textId: string;
+  }[];
   disabled?: boolean;
-  onChange?: (tags: string[]) => void;
+  onChange?: (tags: { text: string; textId: string }[]) => void;
   onBlur?: any;
   seprators?: string[];
   onExisting?: (tag: string) => void;
@@ -69,7 +72,15 @@ export const TagsInput = ({
   disabled,
   onRemoved,
 }: TagsInputProps) => {
-  const [tags, setTags] = useState(value || []);
+  const [counter, incrementCounter] = useState(0);
+  const [tags, setTags] = useState(
+    value || [
+      {
+        text: '',
+        textId: '',
+      },
+    ]
+  );
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -86,22 +97,31 @@ export const TagsInput = ({
     }
 
     if (text && (seprators || defaultSeprators).includes(e.key)) {
-      setTags([...tags, text]);
+      setTags([...tags, { text, textId: `${text}`.concat(String(counter)) }]);
+      incrementCounter(counter + 1);
       e.target.value = '';
       e.preventDefault();
     }
   };
 
-  const onTagRemove = (text) => {
-    setTags(tags.filter((tag) => tag !== text));
+  const onTagRemove = (textId) => {
+    console.log(tags);
+    console.log(textId);
+    setTags(tags.filter((tag) => tag.textId !== textId));
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    onRemoved && onRemoved(text);
+    onRemoved && onRemoved(textId);
   };
 
   return (
     <div aria-labelledby={name} className={cc('rti--container', RTIContainer)}>
       {tags.map((tag) => (
-        <Tag key={tag} text={tag} remove={onTagRemove} blocked={disabled} />
+        <Tag
+          key={tag.textId}
+          text={tag.text}
+          textId={tag.text}
+          remove={() => onTagRemove(tag.textId)}
+          blocked={disabled}
+        />
       ))}
 
       <input

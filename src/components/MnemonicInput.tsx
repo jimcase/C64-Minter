@@ -6,23 +6,7 @@ interface MnemonicInputProps {}
 
 // eslint-disable-next-line react/prop-types
 const MnemonicInput: React.FC<MnemonicInputProps> = ({ parentCallback }) => {
-  const [selected, setSelected] = useState([
-    'pelican',
-    'void',
-    'shop',
-    'left',
-    'ice',
-    'glimpse',
-    'cream',
-    'dish',
-    'tongue',
-    'slice',
-    'join',
-    'supply',
-    'spoon',
-    'alone',
-    'eyebrow',
-  ]);
+  const [selected, setSelected] = useState([]);
 
   const disebldIputTags = false;
 
