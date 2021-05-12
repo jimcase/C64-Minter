@@ -49,7 +49,7 @@ const WalletModal = (props) => {
         centered
         backdrop="static"
       >
-        <ModalHeader toggle={toggle}>
+        <ModalHeader>
           <h3>Wallet</h3>
           <Row>
             <Col>
