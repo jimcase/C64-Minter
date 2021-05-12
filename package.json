@@ -263,6 +263,7 @@
     "electron-json-storage": "^4.5.0",
     "electron-log": "^4.2.4",
     "electron-updater": "^4.3.4",
+    "goober": "^2.0.37",
     "history": "^5.0.0",
     "nodemon": "^2.0.7",
     "openpgp": "^5.0.0-2",
