@@ -1,7 +1,8 @@
 import React from 'react';
-import * as FaIcons from 'react-icons/fa';
+
 import WalletInfo from '../WalletInfo';
 import WalletItem from '../components/wallet/WalletItem';
+import ModalDialog from '../components/ModalDialog';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps {}
@@ -24,10 +25,7 @@ class Wallet extends React.Component<IProps, IState> {
       <div>
         <div className="scrollmenu">
           <div id="addWalletButton">
-            <FaIcons.FaPlusCircle
-              className="sidebarIcons"
-              onClick={() => this.addWallet()}
-            />
+            <ModalDialog />
           </div>
           <WalletItem amount={0} name="myWallet1" selected />
           <WalletItem amount={0} name="myWallet2" selected={false} />
