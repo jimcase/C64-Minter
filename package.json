@@ -275,7 +275,6 @@
     "react-polymorph": "1.0.0-rc.2",
     "react-router-dom": "^5.2.0",
     "react-sidebar": "^3.0.2",
-    "react-tag-input-component": "^1.0.7",
     "reactstrap": "^8.9.0",
     "regenerator-runtime": "^0.13.5",
     "source-map-support": "^0.5.19"

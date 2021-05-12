@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import { TagsInput } from 'react-tag-input-component';
+import { TagsInput } from './TagsInput2/TagsInput';
 
-const MnemonicInput: React.FC = () => {
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface MnemonicInputProps {}
+
+// eslint-disable-next-line react/prop-types
+const MnemonicInput: React.FC<MnemonicInputProps> = ({ parentCallback }) => {
   const [selected, setSelected] = useState([
     'pelican',
     'void',
@@ -22,13 +26,17 @@ const MnemonicInput: React.FC = () => {
 
   return (
     <div>
-      <h1>Add words</h1>
+      <h1>Add words {selected.length}</h1>
       <pre>{JSON.stringify(selected)}</pre>
       <TagsInput
         value={selected}
-        onChange={setSelected}
+        onChange={() => {
+          setSelected(selected);
+          parentCallback(selected);
+        }}
+        onExisting={() => setSelected(selected)}
         name="fruits"
-        placeHolder="enter mnemonic"
+        placeHolder={`enter mnemonic (${selected.length})`}
       />
       <em>press enter to add new tag</em>
     </div>
