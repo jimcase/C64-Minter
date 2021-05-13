@@ -1,6 +1,6 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Modal,
@@ -14,25 +14,60 @@ import * as FaIcons from 'react-icons/fa';
 import RestoreWallet from './RestoreWallet';
 import CreateWallet from './CreateWallet';
 
-const WalletModal = (props) => {
-  const { className } = props;
+interface HandleWalletProps {
+  // eslint-disable-next-line react/require-default-props
+  tags: {
+    text: string;
+    textId: string;
+  }[];
+  // eslint-disable-next-line react/require-default-props
+  onChange?: (tags: { text: string; textId: string }[]) => void;
+}
 
+const HandleWallet: React.FC<HandleWalletProps> = ({
+  tags,
+  onChange,
+}: HandleWalletProps) => {
+  const maxTags = 15;
+  const minTags = 15;
   const [modal, setModal] = useState(false);
+  const [mnemonic, setMnemonic] = useState(tags);
   const [walletOptionSelected, selectWalletOption] = useState('');
 
   const toggle = () => setModal(!modal);
   const handleWalletOption = (op) => selectWalletOption(op);
 
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    onChange && onChange(mnemonic);
+  }, [mnemonic]);
+
   let walletOptionSelectedComponent;
   switch (walletOptionSelected) {
     case 'Restore':
-      walletOptionSelectedComponent = <RestoreWallet />;
+      walletOptionSelectedComponent = (
+        <RestoreWallet
+          maxTags={maxTags}
+          minTags={minTags}
+          onChange={(tgs) => {
+            setMnemonic(tgs);
+          }}
+        />
+      );
       break;
     default:
       walletOptionSelectedComponent = (
-        <CreateWallet tags={[{ text: 'hello', textId: 'hello' }]} />
+        <CreateWallet
+          tags={[{ text: 'hello', textId: 'hello' }]}
+          maxTags={15}
+          minTags={15}
+          onChange={(tgs) => {
+            setMnemonic(tgs);
+          }}
+        />
       );
   }
+
   return (
     <div>
       <Button id="addWalletButton">
@@ -42,7 +77,6 @@ const WalletModal = (props) => {
       <Modal
         isOpen={modal}
         toggle={toggle}
-        className={className}
         size="lg"
         keyboard={false}
         centered
@@ -74,10 +108,11 @@ const WalletModal = (props) => {
           <Button color="secondary" onClick={toggle} disabled>
             Continue
           </Button>
+          <pre>{JSON.stringify(mnemonic)}</pre>
         </ModalFooter>
       </Modal>
     </div>
   );
 };
 
-export default WalletModal;
+export default HandleWallet;

@@ -1,6 +1,6 @@
 import { css, setup } from 'goober';
 import React, { useEffect, useState } from 'react';
-
+import validWords from '../../utils/valid-words';
 import cc from './classnames';
 import Tag from './Tag';
 
@@ -11,6 +11,7 @@ export interface TagsInputProps {
     text: string;
     textId: string;
   }[];
+  maxTags: number;
   disabled?: boolean;
   onChange?: (tags: { text: string; textId: string }[]) => void;
   onBlur?: any;
@@ -66,6 +67,7 @@ export const TagsInput = ({
   name,
   placeHolder,
   value,
+  maxTags,
   onChange,
   onBlur,
   separators,
@@ -87,6 +89,17 @@ export const TagsInput = ({
     onChange && onChange(tags);
   }, [tags]);
 
+  const regexValidation = '^[a-z]+$';
+
+  const ValidWord = (word: string) => {
+    return validWords.includes(word);
+  };
+
+  const ValidText = (txt: string, rgx: string) => {
+    const regex = new RegExp(rgx);
+    return regex.test(txt);
+  };
+
   const handleOnKeyUp = (e) => {
     e.stopPropagation();
 
@@ -95,8 +108,13 @@ export const TagsInput = ({
     if (e.key === 'Backspace' && tags.length && !text) {
       setTags(tags.slice(0, -1));
     }
-
-    if (text && (separators || defaultSeprators).includes(e.key)) {
+    if (
+      tags.length < maxTags &&
+      text &&
+      ValidText(text, regexValidation) &&
+      ValidWord(text) &&
+      (separators || defaultSeprators).includes(e.key)
+    ) {
       setTags([...tags, { text, textId: `${text}`.concat(String(counter)) }]);
       incrementCounter(counter + 1);
       e.target.value = '';
@@ -109,8 +127,6 @@ export const TagsInput = ({
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     onRemoved && onRemoved(textId);
   };
-
-  const regexValidation = '^[a-z]+$';
   /*
    *   TODO: validate word with regex, max words.
    * */
@@ -123,7 +139,8 @@ export const TagsInput = ({
           textId={tag.text}
           remove={() => onTagRemove(tag.textId)}
           blocked={disabled}
-          validation={regexValidation}
+          validText={ValidText(tag.text, regexValidation)}
+          validWord={ValidWord(tag.text)}
         />
       ))}
 

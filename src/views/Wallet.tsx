@@ -2,7 +2,7 @@ import React from 'react';
 
 import WalletInfo from '../WalletInfo';
 import WalletItem from '../components/wallet/WalletItem';
-import WalletModal from '../components/WalletModal';
+import HandleWallet from '../components/HandleWallet';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface WalletProps {}
@@ -13,7 +13,7 @@ const Wallet: React.FC<WalletProps> = () => {
     <div>
       <div className="scrollmenu">
         <div id="addWalletButton">
-          <WalletModal />
+          <HandleWallet />
         </div>
         <WalletItem amount={0} name="myWallet1" selected />
         <WalletItem amount={0} name="myWallet2" selected={false} />

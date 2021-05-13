@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormGroup, Input } from 'reactstrap';
 import { TagsInput } from './TagsInput/TagsInput';
 
@@ -11,17 +11,29 @@ const styles = {
 
 interface CreateWalletProps {
   // eslint-disable-next-line react/require-default-props
-  tags?: {
+  tags: {
     text: string;
     textId: string;
   }[];
+  maxTags: number;
+  // eslint-disable-next-line react/no-unused-prop-types
+  minTags: number;
+  // eslint-disable-next-line react/require-default-props
+  onChange?: (tags: { text: string; textId: string }[]) => void;
 }
 
 // eslint-disable-next-line react/prop-types
 const CreateWallet: React.FC<CreateWalletProps> = ({
   tags,
+  maxTags,
+  onChange,
 }: CreateWalletProps) => {
-  const [selected, setSelected] = useState(tags || []);
+  const [selected, setSelected] = useState(tags);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    onChange && onChange(selected);
+  }, [selected]);
 
   // TODO: generate qr
   return (
@@ -31,6 +43,7 @@ const CreateWallet: React.FC<CreateWalletProps> = ({
       </FormGroup>
       <TagsInput
         value={selected}
+        maxTags={maxTags}
         onChange={(tgs) => {
           setSelected(tgs);
           // parentCallback(selected);
@@ -40,8 +53,7 @@ const CreateWallet: React.FC<CreateWalletProps> = ({
         placeHolder=""
         disabled
       />
-      <em>Generated mnomenic</em>
-      <pre>{JSON.stringify(selected)}</pre>
+      <em>Generated mnemonic</em>
     </div>
   );
 };

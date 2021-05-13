@@ -1,14 +1,14 @@
 import React from 'react';
 import { css } from 'goober';
 import cc from './classnames';
-import validWords from '../../utils/valid-words';
 
 interface TagProps {
   text: string;
   textId: string;
   remove: any;
   blocked?: boolean;
-  validation: string;
+  validText: boolean;
+  validWord: boolean;
 }
 
 const tagStyles = css({
@@ -32,36 +32,26 @@ const tagStyles = css({
     },
   },
 });
-
 const validationStyles = css({
   color: 'red',
 });
-
-const ValidText = (text: string, rgx: string) => {
-  const regex = new RegExp(rgx);
-  return regex.test(text);
-};
-
-const ValidWord = (word: string) => {
-  return validWords.includes(word);
-};
 
 export default function Tag({
   text,
   textId,
   remove,
   blocked,
-  validation,
+  validText,
+  validWord,
 }: TagProps) {
   const handleOnRemove = (e) => {
     e.stopPropagation();
     remove(textId);
   };
   let validatedTag = '';
-  if (!ValidText(text, validation) || !ValidWord(text)) {
+  if (!validText || !validWord) {
     validatedTag = cc('rti--tag', validationStyles);
   }
-
   return (
     <span className={cc('rti--tag', tagStyles)}>
       <span className={validatedTag}>{text}</span>
