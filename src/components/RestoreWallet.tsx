@@ -23,8 +23,6 @@ const RestoreWallet: React.FC<RestoreWalletProps> = ({
 }: RestoreWalletProps) => {
   const [selected, setSelected] = useState(tags || []);
 
-  const disebldIputTags = false;
-
   return (
     <div>
       <FormGroup>
@@ -41,7 +39,7 @@ const RestoreWallet: React.FC<RestoreWalletProps> = ({
         placeHolder="enter mnemonic"
         disabled={false}
       />
-      {!disebldIputTags ? <em>press enter to add new tag</em> : null}
+      <em>press enter to add new tag</em>
       <pre>{JSON.stringify(selected)}</pre>
     </div>
   );

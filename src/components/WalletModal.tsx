@@ -71,7 +71,7 @@ const WalletModal = (props) => {
           <Button color="primary" onClick={toggle}>
             Cancel
           </Button>{' '}
-          <Button color="secondary" onClick={toggle}>
+          <Button color="secondary" onClick={toggle} disabled>
             Continue
           </Button>
         </ModalFooter>

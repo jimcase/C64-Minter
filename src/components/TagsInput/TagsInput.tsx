@@ -60,7 +60,7 @@ const RTIInput = css({
   width: '50%',
 });
 
-const defaultSeprators = ['Enter'];
+const defaultSeprators = ['Enter', ',', ' '];
 
 export const TagsInput = ({
   name,
