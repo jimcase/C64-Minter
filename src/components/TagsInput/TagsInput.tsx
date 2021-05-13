@@ -14,7 +14,7 @@ export interface TagsInputProps {
   disabled?: boolean;
   onChange?: (tags: { text: string; textId: string }[]) => void;
   onBlur?: any;
-  seprators?: string[];
+  separators?: string[];
   onExisting?: (tag: string) => void;
   onRemoved?: (tag: string) => void;
 }
@@ -68,7 +68,7 @@ export const TagsInput = ({
   value,
   onChange,
   onBlur,
-  seprators,
+  separators,
   disabled,
   onRemoved,
 }: TagsInputProps) => {
@@ -83,10 +83,6 @@ export const TagsInput = ({
   );
 
   useEffect(() => {
-    // TODO: for (var key in dictionary){
-    // key will be -> 'id'
-    // dictionary[key] -> 'value'
-    // }
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     onChange && onChange(tags);
   }, [tags]);
@@ -100,7 +96,7 @@ export const TagsInput = ({
       setTags(tags.slice(0, -1));
     }
 
-    if (text && (seprators || defaultSeprators).includes(e.key)) {
+    if (text && (separators || defaultSeprators).includes(e.key)) {
       setTags([...tags, { text, textId: `${text}`.concat(String(counter)) }]);
       incrementCounter(counter + 1);
       e.target.value = '';
@@ -114,6 +110,7 @@ export const TagsInput = ({
     onRemoved && onRemoved(textId);
   };
 
+  const regexValidation = '^[a-z]+$';
   /*
    *   TODO: validate word with regex, max words.
    * */
@@ -126,6 +123,7 @@ export const TagsInput = ({
           textId={tag.text}
           remove={() => onTagRemove(tag.textId)}
           blocked={disabled}
+          validation={regexValidation}
         />
       ))}
 

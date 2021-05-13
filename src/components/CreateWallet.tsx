@@ -23,6 +23,7 @@ const CreateWallet: React.FC<CreateWalletProps> = ({
 }: CreateWalletProps) => {
   const [selected, setSelected] = useState(tags || []);
 
+  // TODO: generate qr
   return (
     <div>
       <FormGroup>
