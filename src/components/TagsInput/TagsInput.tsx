@@ -83,6 +83,10 @@ export const TagsInput = ({
   );
 
   useEffect(() => {
+    // TODO: for (var key in dictionary){
+    // key will be -> 'id'
+    // dictionary[key] -> 'value'
+    // }
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     onChange && onChange(tags);
   }, [tags]);
@@ -105,13 +109,14 @@ export const TagsInput = ({
   };
 
   const onTagRemove = (textId) => {
-    console.log(tags);
-    console.log(textId);
     setTags(tags.filter((tag) => tag.textId !== textId));
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     onRemoved && onRemoved(textId);
   };
 
+  /*
+   *   TODO: validate word with regex, max words.
+   * */
   return (
     <div aria-labelledby={name} className={cc('rti--container', RTIContainer)}>
       {tags.map((tag) => (

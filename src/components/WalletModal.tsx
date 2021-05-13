@@ -11,28 +11,27 @@ import {
   Col,
 } from 'reactstrap';
 import * as FaIcons from 'react-icons/fa';
-import MnemonicInput from './MnemonicInput';
+import RestoreWallet from './RestoreWallet';
+import CreateWallet from './CreateWallet';
 
 const WalletModal = (props) => {
-  const { buttonLabel, className } = props;
+  const { className } = props;
 
   const [modal, setModal] = useState(false);
-  const [mnemonicPhrase, setMnemonicPhrase] = useState([]);
   const [walletOptionSelected, selectWalletOption] = useState('');
 
   const toggle = () => setModal(!modal);
-  const setMnemonicInput = (m) => setMnemonicPhrase(m);
   const handleWalletOption = (op) => selectWalletOption(op);
 
   let walletOptionSelectedComponent;
   switch (walletOptionSelected) {
     case 'Restore':
-      walletOptionSelectedComponent = (
-        <MnemonicInput parentCallback={(m) => setMnemonicInput(m)} />
-      );
+      walletOptionSelectedComponent = <RestoreWallet />;
       break;
     default:
-      walletOptionSelectedComponent = <p>Create</p>;
+      walletOptionSelectedComponent = (
+        <CreateWallet tags={[{ text: 'hello', textId: 'hello' }]} />
+      );
   }
   return (
     <div>
@@ -75,8 +74,6 @@ const WalletModal = (props) => {
           <Button color="secondary" onClick={toggle}>
             Continue
           </Button>
-          <h4>callback:</h4>
-          <h4>{mnemonicPhrase}</h4>
         </ModalFooter>
       </Modal>
     </div>
