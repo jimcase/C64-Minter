@@ -33,9 +33,9 @@ export function removeDataFromStorage2(item) {
  */
 
 // Send wallet message to main electron process
-export function saveWalletInStorageByKey(key) {
+export function saveWalletInStorageByKey(key, wallet) {
   console.log('Renderer sending: SAVE_WALLET_IN_STORAGE_BY_KEY');
-  ipcRenderer.send(SAVE_WALLET_IN_STORAGE_BY_KEY, key);
+  ipcRenderer.send(SAVE_WALLET_IN_STORAGE_BY_KEY, key, wallet);
 }
 
 // remove wallet from storage by key
@@ -51,7 +51,7 @@ export function fetchWalletFromStorageByKey(key) {
 }
 
 // fetch all wallets from storage
-export function fetchAllWalletFromStorage() {
+export function fetchAllWalletsFromStorage() {
   console.log('Renderer sending: FETCH_ALL_WALLETS_FROM_STORAGE');
   ipcRenderer.send(FETCH_ALL_WALLETS_FROM_STORAGE);
 }

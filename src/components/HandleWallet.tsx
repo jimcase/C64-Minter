@@ -13,6 +13,7 @@ import {
 import * as FaIcons from 'react-icons/fa';
 import RestoreWallet from './RestoreWallet';
 import CreateWallet from './CreateWallet';
+import { saveWalletInStorageByKey } from '../renderer';
 
 interface HandleWalletProps {
   // eslint-disable-next-line react/require-default-props
@@ -30,6 +31,7 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
 }: HandleWalletProps) => {
   const maxTags = 15;
   const minTags = 15;
+  let counter = 0;
   const [modal, setModal] = useState(false);
   const [mnemonic, setMnemonic] = useState(tags);
   const [walletOptionSelected, selectWalletOption] = useState('');
@@ -41,6 +43,14 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     onChange && onChange(mnemonic);
   }, [mnemonic]);
+
+  // Send the wallet to main
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const addWalletInStorage = (wallet) => {
+    saveWalletInStorageByKey(counter, JSON.stringify(wallet));
+    counter += 1;
+  };
 
   let walletOptionSelectedComponent;
   switch (walletOptionSelected) {
