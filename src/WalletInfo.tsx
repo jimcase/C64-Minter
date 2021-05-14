@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button } from 'reactstrap';
 import CardanoModule from './lib/CardanoModule';
 import { generateWalletRootKey } from './lib/wallet';
-import { api } from './api';
+// import { api } from './api';
 import List from './components/List';
 import { loadSavedData, saveDataInStorage } from './renderer';
 import { encryptString } from './utils/crypto-utils';
@@ -77,6 +77,7 @@ const WalletInfo = () => {
     setVal('');
   };
 
+  /*
   useEffect(() => {
     init();
     api
@@ -84,6 +85,7 @@ const WalletInfo = () => {
       .then(({ data }) => setSuccessText(data))
       .catch((err) => console.error(err));
   }, []);
+  */
 
   // Grab the user's saved itemsToTrack after the app loads
   useEffect(() => {
