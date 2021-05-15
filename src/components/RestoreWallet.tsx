@@ -10,30 +10,27 @@ const styles = {
 };
 
 interface RestoreWalletProps {
-  // eslint-disable-next-line react/require-default-props
-  tags?: {
-    text: string;
-    textId: string;
-  }[];
+  // eslint-disable-next-line react/no-unused-prop-types,react/require-default-props
+  seed?: string[];
   maxTags: number;
   // eslint-disable-next-line react/no-unused-prop-types
   minTags: number;
   // eslint-disable-next-line react/require-default-props
-  onChange?: (tags: { text: string; textId: string }[]) => void;
+  onChange?: (seed: string[]) => void;
 }
 
 // eslint-disable-next-line react/prop-types
 const RestoreWallet: React.FC<RestoreWalletProps> = ({
-  tags,
+  seed,
   maxTags,
   onChange,
 }: RestoreWalletProps) => {
-  const [selected, setSelected] = useState(tags || []);
+  const [seedPhrase, setSeedPhrase] = useState(seed || []);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    onChange && onChange(selected);
-  }, [selected]);
+    onChange && onChange(seedPhrase);
+  }, [onChange, seedPhrase]);
 
   return (
     <div>
@@ -41,13 +38,15 @@ const RestoreWallet: React.FC<RestoreWalletProps> = ({
         <Input style={styles.input} placeholder="wallet name" />
       </FormGroup>
       <TagsInput
-        value={selected}
+        seedPhrase={seedPhrase}
         maxTags={maxTags}
         onChange={(tgs) => {
-          setSelected(tgs);
-          // parentCallback(selected);
+          const s: string[] = [];
+          tgs.forEach(function (wordObject: { text: string; textId: string }) {
+            s.push(wordObject.text);
+          });
+          setSeedPhrase(s);
         }}
-        onExisting={() => setSelected(selected)}
         name="fruits"
         placeHolder="enter mnemonic"
         disabled={false}

@@ -10,30 +10,26 @@ const styles = {
 };
 
 interface CreateWalletProps {
-  // eslint-disable-next-line react/require-default-props
-  tags: {
-    text: string;
-    textId: string;
-  }[];
+  seed: string[];
   maxTags: number;
   // eslint-disable-next-line react/no-unused-prop-types
   minTags: number;
   // eslint-disable-next-line react/require-default-props
-  onChange?: (tags: { text: string; textId: string }[]) => void;
+  onChange?: (tags: string[]) => void;
 }
 
 // eslint-disable-next-line react/prop-types
 const CreateWallet: React.FC<CreateWalletProps> = ({
-  tags,
+  seed,
   maxTags,
   onChange,
 }: CreateWalletProps) => {
-  const [selected, setSelected] = useState(tags);
+  const [seedPhrase] = useState(seed || []);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    onChange && onChange(selected);
-  }, [selected]);
+    onChange && onChange(seedPhrase);
+  }, [seedPhrase]);
 
   // TODO: generate qr
   return (
@@ -42,13 +38,8 @@ const CreateWallet: React.FC<CreateWalletProps> = ({
         <Input style={styles.input} placeholder="wallet name" />
       </FormGroup>
       <TagsInput
-        value={selected}
+        seedPhrase={seedPhrase}
         maxTags={maxTags}
-        onChange={(tgs) => {
-          setSelected(tgs);
-          // parentCallback(selected);
-        }}
-        onExisting={() => setSelected(selected)}
         name="fruits"
         placeHolder=""
         disabled

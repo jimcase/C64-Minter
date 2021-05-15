@@ -5,7 +5,7 @@ import CardanoModule from './CardanoModule';
 export const generateWalletRootKey = (mnemonic: string) => {
   const bip39entropy = mnemonicToEntropy(mnemonic);
   const EMPTY_PASSWORD = Buffer.from('');
-  const rootKey = CardanoModule.wallet.Bip32PrivateKey.from_bip39_entropy(
+  const rootKey = CardanoModule.wasmV4.Bip32PrivateKey.from_bip39_entropy(
     Buffer.from(bip39entropy, 'hex'),
     EMPTY_PASSWORD
   );
@@ -18,7 +18,7 @@ export const generateWalletRootKey = (mnemonic: string) => {
  * @param {number} index
  */
 export const generateAddress = (
-  accountPubKey: CardanoModule.wallet.Bip32PublicKey,
+  accountPubKey: CardanoModule.wasmV4.Bip32PublicKey,
   chain: number,
   index: number
 ) => {
@@ -31,10 +31,10 @@ export const generateAddress = (
     .derive(numbers.StakingKeyIndex)
     .to_raw_key();
 
-  const addr = CardanoModule.wallet.BaseAddress.new(
+  const addr = CardanoModule.wasmV4.BaseAddress.new(
     networks.CardanoMainnet.ChainNetworkId,
-    CardanoModule.wallet.StakeCredential.from_keyhash(addrKey.hash()),
-    CardanoModule.wallet.StakeCredential.from_keyhash(stakingKey.hash())
+    CardanoModule.wasmV4.StakeCredential.from_keyhash(addrKey.hash()),
+    CardanoModule.wasmV4.StakeCredential.from_keyhash(stakingKey.hash())
   );
   return addr.to_address().to_bech32();
 };

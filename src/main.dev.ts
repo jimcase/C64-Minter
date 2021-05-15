@@ -273,7 +273,7 @@ ipcMain.on(SAVE_WALLET_IN_STORAGE_BY_KEY, (_event, key, wallet) => {
 // Receive a REMOVE_DATA_FROM_STORAGE call from renderer
 ipcMain.on(REMOVE_WALLET_FROM_STORAGE_BY_KEY, (_event, key) => {
   console.log('Main Received: REMOVE_WALLET_FROM_STORAGE');
-  // Update the wallet
+  // Update the wasmV4
   delete wallets[key];
   // Save itemsToTrack to storage
   storage.set('wallets', wallets, (error) => {
@@ -283,7 +283,7 @@ ipcMain.on(REMOVE_WALLET_FROM_STORAGE_BY_KEY, (_event, key) => {
       // @ts-ignore
       mainWindow.send(HANDLE_REMOVE_WALLET, {
         success: false,
-        message: 'wallet not removed',
+        message: 'wasmV4 not removed',
       });
     } else {
       // Send new updated array to window as 2nd arg "data"
@@ -310,7 +310,7 @@ ipcMain.on(FETCH_WALLET_FROM_STORAGE_BY_KEY, (_event, key) => {
       // @ts-ignore
       mainWindow.send(HANDLE_FETCH_WALLET, {
         success: false,
-        message: 'wallet not returned',
+        message: 'wasmV4 not returned',
       });
     } else {
       // Send message back to window
@@ -318,7 +318,7 @@ ipcMain.on(FETCH_WALLET_FROM_STORAGE_BY_KEY, (_event, key) => {
       // @ts-ignore
       mainWindow.send(HANDLE_FETCH_DATA, {
         success: true,
-        message: wallets[key], // do something with the data
+        message: wallets[key],
       });
     }
   });
@@ -345,7 +345,7 @@ ipcMain.on(FETCH_ALL_WALLETS_FROM_STORAGE, (_event) => {
       // @ts-ignore
       mainWindow.send(HANDLE_FETCH_ALL_WALLETS, {
         success: true,
-        message: wallets, // do something with the data
+        message: wallets,
       });
     }
   });

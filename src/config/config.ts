@@ -23,6 +23,9 @@ export const networks = {
   CardanoMainnet: {
     ChainNetworkId: 1,
   },
+  CardanoTestnet: {
+    ChainNetworkId: 1097911063,
+  },
 };
 
 export const config = {};

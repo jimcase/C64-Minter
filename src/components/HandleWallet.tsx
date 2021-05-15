@@ -1,6 +1,4 @@
-/* eslint react/no-multi-comp: 0, react/prop-types: 0 */
-
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Modal,
@@ -17,39 +15,31 @@ import { saveWalletInStorageByKey } from '../renderer';
 
 interface HandleWalletProps {
   // eslint-disable-next-line react/require-default-props
-  tags: {
-    text: string;
-    textId: string;
-  }[];
-  // eslint-disable-next-line react/require-default-props
-  onChange?: (tags: { text: string; textId: string }[]) => void;
+  seed?: string[];
 }
 
 const HandleWallet: React.FC<HandleWalletProps> = ({
-  tags,
-  onChange,
+  seed,
 }: HandleWalletProps) => {
   const maxTags = 15;
   const minTags = 15;
   let counter = 0;
   const [modal, setModal] = useState(false);
-  const [mnemonic, setMnemonic] = useState(tags);
+  const [seedPhrase, setSeedPhrase] = useState(seed || []);
   const [walletOptionSelected, selectWalletOption] = useState('');
 
   const toggle = () => setModal(!modal);
   const handleWalletOption = (op) => selectWalletOption(op);
 
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    onChange && onChange(mnemonic);
-  }, [mnemonic]);
-
-  // Send the wallet to main
+  // Send the wasmV4 to main
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const addWalletInStorage = (wallet) => {
+  const saveWalletInStorage = (wallet) => {
     saveWalletInStorageByKey(counter, JSON.stringify(wallet));
     counter += 1;
+
+    // Close modal
+    toggle();
   };
 
   let walletOptionSelectedComponent;
@@ -60,7 +50,7 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
           maxTags={maxTags}
           minTags={minTags}
           onChange={(tgs) => {
-            setMnemonic(tgs);
+            setSeedPhrase(tgs);
           }}
         />
       );
@@ -68,11 +58,11 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
     default:
       walletOptionSelectedComponent = (
         <CreateWallet
-          tags={[{ text: 'hello', textId: 'hello' }]}
+          seed={['hello', 'hello']}
           maxTags={15}
           minTags={15}
           onChange={(tgs) => {
-            setMnemonic(tgs);
+            setSeedPhrase(tgs);
           }}
         />
       );
@@ -118,7 +108,7 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
           <Button color="secondary" onClick={toggle} disabled>
             Continue
           </Button>
-          <pre>{JSON.stringify(mnemonic)}</pre>
+          <pre>{JSON.stringify(seedPhrase)}</pre>
         </ModalFooter>
       </Modal>
     </div>
