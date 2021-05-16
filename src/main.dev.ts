@@ -22,6 +22,7 @@ const {
   FETCH_DATA_FROM_STORAGE,
   SAVE_DATA_IN_STORAGE,
   SAVE_WALLET_IN_STORAGE_BY_KEY,
+  HANDLE_SAVE_WALLET,
   REMOVE_DATA_FROM_STORAGE,
   HANDLE_REMOVE_DATA,
   HANDLE_SAVE_DATA,
@@ -246,7 +247,6 @@ ipcMain.on(SAVE_WALLET_IN_STORAGE_BY_KEY, (_event, key, wallet) => {
   // update the itemsToTrack array.
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  itemsToTrack.push(message);
   wallets[key] = wallet;
   // Save wallets to storage
   storage.set('wallets', wallets, (error) => {
@@ -335,7 +335,7 @@ ipcMain.on(FETCH_ALL_WALLETS_FROM_STORAGE, (_event) => {
     if (error) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      mainWindow.send(HANDLE_FETCH_ALL_WALLET, {
+      mainWindow.send(HANDLE_FETCH_ALL_WALLETS, {
         success: false,
         message: 'wallets not returned',
       });

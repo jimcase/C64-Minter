@@ -14,6 +14,11 @@ export function loadSavedData() {
   console.log('Renderer sending: FETCH_DATA_FROM_STORAGE');
   ipcRenderer.send(FETCH_DATA_FROM_STORAGE, 'itemsToTrack');
 }
+// Ask main to load data from its persistent storage
+export function loadSavedData2() {
+  console.log('Renderer sending: FETCH_ALL_WALLETS_FROM_STORAGE2');
+  ipcRenderer.send(FETCH_DATA_FROM_STORAGE, 'wallets');
+}
 
 // Send item message to main
 export function saveDataInStorage(item) {

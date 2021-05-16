@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'reactstrap';
 import CardanoModule from './lib/CardanoModule';
-import { generateWalletRootKey, generateWalletRootKey2 } from './lib/wallet';
-import { api } from './api';
+import { generateWalletRootKey } from './lib/wallet';
+
 import List from './components/List';
 import { loadSavedData, saveDataInStorage } from './renderer';
 import { encryptString } from './utils/crypto-utils';

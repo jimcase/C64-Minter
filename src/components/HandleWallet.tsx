@@ -12,6 +12,8 @@ import * as FaIcons from 'react-icons/fa';
 import RestoreWallet from './RestoreWallet';
 import CreateWallet from './CreateWallet';
 import { saveWalletInStorageByKey } from '../renderer';
+import { generateWalletRootKey } from '../lib/wallet';
+import CardanoModule from '../lib/CardanoModule';
 
 interface HandleWalletProps {
   // eslint-disable-next-line react/require-default-props
@@ -23,22 +25,36 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
 }: HandleWalletProps) => {
   const maxTags = 15;
   const minTags = 15;
-  let counter = 0;
   const [modal, setModal] = useState(false);
   const [seedPhrase, setSeedPhrase] = useState(seed || []);
   const [walletName, setWalletName] = useState('');
   const [walletOptionSelected, selectWalletOption] = useState('');
 
   const toggle = () => setModal(!modal);
-  const handleWalletOption = (op) => selectWalletOption(op);
+  const handleWalletOption = (option) => selectWalletOption(option);
 
-  // Send the wasmV4 to main
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const saveWalletInStorage = (wallet) => {
-    saveWalletInStorageByKey(counter, JSON.stringify(wallet));
-    counter += 1;
+  const isValidWallet = (wallet: {
+    masterKey: string;
+    name: string;
+  }): boolean => {
+    console.log(wallet.masterKey.length > 0 && wallet.name.length > 0);
+    return wallet.masterKey.length > 0 && wallet.name.length > 0;
+  };
 
+  const saveWalletInStorage = async (phrase: string, name: string) => {
+    await CardanoModule.load(); // TODO: add then
+    const masterKeyPtr = generateWalletRootKey(phrase);
+    const masterKey = Buffer.from(masterKeyPtr.as_bytes(), 'hex').toString(
+      'hex'
+    );
+
+    saveWalletInStorageByKey(
+      name,
+      JSON.stringify({
+        masterKey,
+        name,
+      })
+    );
     // Close modal
     toggle();
   };
@@ -111,7 +127,18 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
           <Button color="primary" onClick={toggle}>
             Cancel
           </Button>{' '}
-          <Button color="secondary" onClick={toggle} disabled>
+          <Button
+            color="secondary"
+            onClick={() =>
+              saveWalletInStorage(seedPhrase.join(' '), walletName)
+            }
+            disabled={
+              !isValidWallet({
+                masterKey: seedPhrase.join(' '),
+                name: walletName,
+              })
+            }
+          >
             Continue
           </Button>
           <p>{walletName}</p>
