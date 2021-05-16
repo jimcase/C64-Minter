@@ -17,7 +17,7 @@ export function loadSavedData() {
 // Ask main to load data from its persistent storage
 export function loadSavedData2() {
   console.log('Renderer sending: FETCH_ALL_WALLETS_FROM_STORAGE2');
-  ipcRenderer.send(FETCH_DATA_FROM_STORAGE, 'wallets');
+  ipcRenderer.send(FETCH_ALL_WALLETS_FROM_STORAGE);
 }
 
 // Send item message to main

@@ -3,32 +3,33 @@ import React, { useEffect, useState } from 'react';
 import WalletInfo from '../WalletInfo';
 import WalletItem from '../components/wallet/WalletItem';
 import HandleWallet from '../components/HandleWallet';
-import { loadSavedData } from '../renderer';
+import { loadSavedData2 } from '../renderer';
 
 const { ipcRenderer } = require('electron');
 const { HANDLE_FETCH_ALL_WALLETS } = require('../utils/constants');
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface WalletProps {}
+interface WalletProps {
+  walletList: { [key: string]: string }[];
+}
 
 // eslint-disable-next-line react/prop-types
-const Wallet: React.FC<WalletProps> = () => {
+const Wallet: React.FC<WalletProps> = (walletList) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const [wallets, setWallets] = useState([]); // localStorage
+  const [wallets, setWallets] = useState(walletList || []); // localStorage
 
-  // Receives itemsToTrack from main and sets the state
   const handleReceiveData = (_event, data) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    console.log('wallets:');
+    console.log('wallets');
     console.log(data);
-    // setWallets([...data.message]);
+    setWallets(data.message);
   };
 
   // Grab the user's saved itemsToTrack after the app loads
   useEffect(() => {
-    loadSavedData();
+    loadSavedData2();
   }, []);
 
   useEffect(() => {
@@ -49,10 +50,12 @@ const Wallet: React.FC<WalletProps> = () => {
         <WalletItem amount={0} name="myWallet3" selected={false} />
         <WalletItem amount={0} name="myWallet4" selected={false} />
         <WalletItem amount={0} name="myWallet5" selected={false} />
+        {Object.keys(wallets).map(function (key) {
+          return <div key={key}> {wallets[key]} </div>;
+        })}
       </div>
       <WalletInfo />
       <h5>Wallets:</h5>
-      <pre>{wallets}</pre>
     </div>
   );
 };
