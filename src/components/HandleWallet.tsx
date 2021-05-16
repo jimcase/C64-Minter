@@ -26,6 +26,7 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
   let counter = 0;
   const [modal, setModal] = useState(false);
   const [seedPhrase, setSeedPhrase] = useState(seed || []);
+  const [walletName, setWalletName] = useState('');
   const [walletOptionSelected, selectWalletOption] = useState('');
 
   const toggle = () => setModal(!modal);
@@ -49,8 +50,11 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
         <RestoreWallet
           maxTags={maxTags}
           minTags={minTags}
-          onChange={(tgs) => {
+          onChange={(tgs: string[]) => {
             setSeedPhrase(tgs);
+          }}
+          onChangeName={(wName: string) => {
+            setWalletName(wName);
           }}
         />
       );
@@ -58,11 +62,13 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
     default:
       walletOptionSelectedComponent = (
         <CreateWallet
-          seed={['hello', 'hello']}
           maxTags={15}
           minTags={15}
-          onChange={(tgs) => {
+          onChange={(tgs: string[]) => {
             setSeedPhrase(tgs);
+          }}
+          onChangeName={(wName: string) => {
+            setWalletName(wName);
           }}
         />
       );
@@ -108,6 +114,7 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
           <Button color="secondary" onClick={toggle} disabled>
             Continue
           </Button>
+          <p>{walletName}</p>
           <pre>{JSON.stringify(seedPhrase)}</pre>
         </ModalFooter>
       </Modal>

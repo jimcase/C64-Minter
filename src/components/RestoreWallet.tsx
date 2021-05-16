@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { FormGroup, Input } from 'reactstrap';
 import { TagsInput } from './TagsInput/TagsInput';
 
@@ -17,6 +17,8 @@ interface RestoreWalletProps {
   minTags: number;
   // eslint-disable-next-line react/require-default-props
   onChange?: (seed: string[]) => void;
+  // eslint-disable-next-line react/require-default-props
+  onChangeName?: (name: string) => void;
 }
 
 // eslint-disable-next-line react/prop-types
@@ -24,18 +26,32 @@ const RestoreWallet: React.FC<RestoreWalletProps> = ({
   seed,
   maxTags,
   onChange,
+  onChangeName,
 }: RestoreWalletProps) => {
   const [seedPhrase, setSeedPhrase] = useState(seed || []);
+  const [name, setName] = useState('');
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     onChange && onChange(seedPhrase);
   }, [onChange, seedPhrase]);
 
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    onChangeName && onChangeName(name);
+  }, [onChangeName, name]);
+
+  const HandleInputName = (e: ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
   return (
     <div>
       <FormGroup>
-        <Input style={styles.input} placeholder="wallet name" />
+        <Input
+          style={styles.input}
+          placeholder="wallet name"
+          onChange={(e) => HandleInputName(e)}
+        />
       </FormGroup>
       <TagsInput
         seedPhrase={seedPhrase}
@@ -51,7 +67,9 @@ const RestoreWallet: React.FC<RestoreWalletProps> = ({
         placeHolder="enter mnemonic"
         disabled={false}
       />
-      <em>press enter to add new tag</em>
+      <em>
+        press enter to add new tag ({seedPhrase.length}/{maxTags})
+      </em>
     </div>
   );
 };
