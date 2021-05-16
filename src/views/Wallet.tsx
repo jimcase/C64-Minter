@@ -45,13 +45,14 @@ const Wallet: React.FC<WalletProps> = (walletList) => {
         <div id="addWalletButton">
           <HandleWallet />
         </div>
-        <WalletItem amount={0} name="myWallet1" selected />
-        <WalletItem amount={0} name="myWallet2" selected={false} />
-        <WalletItem amount={0} name="myWallet3" selected={false} />
-        <WalletItem amount={0} name="myWallet4" selected={false} />
-        <WalletItem amount={0} name="myWallet5" selected={false} />
         {Object.keys(wallets).map(function (key) {
-          return <div key={key}> {wallets[key]} </div>;
+          return (
+            <WalletItem
+              key={key}
+              walletName={JSON.parse(wallets[key]).name}
+              selected
+            />
+          );
         })}
       </div>
       <WalletInfo />

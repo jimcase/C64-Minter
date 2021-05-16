@@ -1,35 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-interface IProps {
-  name: string;
-  amount: number;
+interface WalletItem2Props {
+  walletName: string;
+  // eslint-disable-next-line react/no-unused-prop-types,react/require-default-props
+  address?: string;
   selected: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IState {}
+// eslint-disable-next-line react/prop-types
+const WalletItem: React.FC<WalletItem2Props> = ({
+  walletName,
+  selected,
+}: WalletItem2Props) => {
+  const [amount] = useState(0);
 
-class WalletItem extends React.Component<IProps, IState> {
-  // ------------------------------------------^
-  constructor(props: IProps) {
-    super(props);
-    this.state = {};
+  let className = 'walletItem';
+  if (selected) {
+    className += ' selectedWallet';
   }
-
-  render() {
-    const { name, amount, selected } = this.props;
-
-    let className = 'walletItem';
-    if (selected) {
-      className += ' selectedWallet';
-    }
-    return (
-      <div className={className}>
-        <h3>{name}</h3>
-        <p>{amount}</p>
-      </div>
-    );
-  }
-}
+  return (
+    <div className={className}>
+      <h3>{walletName}</h3>
+      <p>{amount}</p>
+    </div>
+  );
+};
 
 export default WalletItem;
