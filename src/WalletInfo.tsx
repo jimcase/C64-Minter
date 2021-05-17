@@ -46,7 +46,7 @@ const WalletInfo = () => {
       'hex'
     );
     /* eslint-disable-next-line no-console */
-    console.log('wallet master key:', masterKey);
+    // console.log('wallet master key:', masterKey);
     setMasterKeyHex(masterKey);
   };
 

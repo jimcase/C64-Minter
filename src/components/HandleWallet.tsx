@@ -37,7 +37,7 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
     masterKey: string;
     name: string;
   }): boolean => {
-    console.log(wallet.masterKey.length > 0 && wallet.name.length > 0);
+    // console.log(wallet.masterKey.length > 0 && wallet.name.length > 0);
     return wallet.masterKey.length > 0 && wallet.name.length > 0;
   };
 

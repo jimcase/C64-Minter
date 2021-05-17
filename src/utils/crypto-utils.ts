@@ -69,7 +69,7 @@ async function encryptString(content: string, password: string) {
     passwords: password,
     armor: true, // ASCII armor (for not Uint8Array output)
   });
-  console.log(encrypted); // utf8
+  // console.log(encrypted); // utf8
   return encrypted;
 }
 
@@ -83,7 +83,7 @@ async function decryptString(encryptedContent: string, password: string) {
     passwords: password, // decrypt with password
     format: 'utf8', // output as string
   });
-  console.log(decrypted);
+  // console.log(decrypted);
   return decrypted;
 }
 */
@@ -110,7 +110,7 @@ async function encryptAndSignTextWithPGP(
     publicKeys: publicKey, // for encryption
     privateKeys: privateKey, // for signing (optional)
   });
-  console.log(encrypted);
+  // console.log(encrypted);
 }
 
 async function decryptSignedTextWithPGP(
@@ -137,8 +137,8 @@ async function decryptSignedTextWithPGP(
     privateKeys: privateKey, // for decryption
     expectSigned: true,
   });
-  console.log(decrypted); // 'Hello, World!'
-  console.log(signatures[0]); // signature validity (signed messages only)
+  // console.log(decrypted); // 'Hello, World!'
+  // console.log(signatures[0]); // signature validity (signed messages only)
 }
 
 async function signTextWithPGP(
@@ -164,7 +164,7 @@ async function signTextWithPGP(
   const signedMessage = await openpgp.readCleartextMessage({
     cleartextMessage: messageObject,
   });
-  console.log(signedMessage); // '-----BEGIN PGP SIGNED MESSAGE ... END PGP SIGNATURE-----'
+  // console.log(signedMessage); // '-----BEGIN PGP SIGNED MESSAGE ... END PGP SIGNATURE-----'
 }
 
 async function verifySignedMsg(content: string, pubKey: string) {
@@ -180,7 +180,7 @@ async function verifySignedMsg(content: string, pubKey: string) {
 
   const valid = verified.signatures[0].verified;
 
-  console.log(valid);
+  // console.log(valid);
 }
 
 // TODO: load self-signed certificate vs CA-signed certificate

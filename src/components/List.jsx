@@ -9,7 +9,7 @@ const List = ({ itemsToTrack }) => {
   const handleDecrypt = (e) => {
     decryptString(e, 'micontraseña')
       .then((en) => {
-        console.log(`decrypted msg: ${en}`);
+        // console.log(`decrypted msg: ${en}`);
         return en;
       })
       .catch((error) => console.log(error));

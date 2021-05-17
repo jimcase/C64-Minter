@@ -10,7 +10,7 @@ const { HANDLE_FETCH_ALL_WALLETS } = require('../utils/constants');
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface WalletProps {
-  walletList: { [key: string]: string }[];
+  walletList?: { [key: string]: string }[];
 }
 
 // eslint-disable-next-line react/prop-types
@@ -45,7 +45,7 @@ const Wallet: React.FC<WalletProps> = (walletList) => {
         <div id="addWalletButton">
           <HandleWallet />
         </div>
-        {/* Object.keys(wallets).map(function (key) {
+        {Object.keys(wallets).map(function (key) {
           return (
             <WalletItem
               key={key}
@@ -53,7 +53,7 @@ const Wallet: React.FC<WalletProps> = (walletList) => {
               selected
             />
           );
-        }) */}
+        })}
       </div>
       <WalletInfo />
       <h5>Wallets:</h5>
