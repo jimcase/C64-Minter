@@ -124,11 +124,6 @@ const WalletInfo = () => {
           New Item
         </Button>
         <input type="text" onChange={handleChange} value={val} />
-        {itemsToTrack.length ? (
-          <List itemsToTrack={itemsToTrack} />
-        ) : (
-          <p>Add an item to get started</p>
-        )}
       </div>
     </div>
   );

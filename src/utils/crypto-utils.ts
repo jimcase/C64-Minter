@@ -61,6 +61,7 @@ function buildBase64FromOnChainMetadata(
 /*
  * Spending Password Encryption
  */
+/*
 async function encryptString(content: string, password: string) {
   const message = await openpgp.createMessage({ text: content });
   const encrypted = await openpgp.encrypt({
@@ -85,10 +86,11 @@ async function decryptString(encryptedContent: string, password: string) {
   console.log(decrypted);
   return decrypted;
 }
-
+*/
 /*
  * PGP Encryption
  */
+/*
 async function encryptAndSignTextWithPGP(
   content: string,
   pubKey: string,
@@ -193,3 +195,4 @@ export {
   signTextWithPGP,
   verifySignedMsg,
 };
+*/

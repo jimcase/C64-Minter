@@ -1,7 +1,4 @@
 import React, { useContext } from 'react';
-import { ThemeProvider } from 'react-polymorph/lib/components/ThemeProvider';
-import { SimpleSkins } from 'react-polymorph/lib/skins/simple';
-import { SimpleDefaults } from 'react-polymorph/lib/themes/simple';
 import { LayoutContext } from '../Root/Root';
 import Minter from '../../views/Minter';
 import Wallet from '../../views/Wallet';
@@ -32,9 +29,7 @@ const Content: React.FC = () => {
       style={{ width: 'auto' }}
     >
       {/* Automatically pass a theme prop to all components in this subtree. */}
-      <ThemeProvider skins={SimpleSkins} variables={SimpleDefaults}>
-        {component}
-      </ThemeProvider>
+      {component}
     </div>
   );
 };
