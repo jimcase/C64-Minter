@@ -17,7 +17,6 @@ import log from 'electron-log';
 import storage from 'electron-json-storage';
 import MenuBuilder from './menu';
 
-const Store = require('electron-store');
 const {
   HANDLE_FETCH_DATA,
   FETCH_DATA_FROM_STORAGE,
@@ -39,8 +38,6 @@ const {
 let itemsToTrack = [];
 /* eslint prefer-const: "error" */
 const wallets = {};
-
-const store = new Store([]);
 
 export default class AppUpdater {
   constructor() {
