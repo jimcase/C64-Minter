@@ -21,23 +21,21 @@ const {
   HANDLE_FETCH_DATA,
   FETCH_DATA_FROM_STORAGE,
   SAVE_DATA_IN_STORAGE,
-  SAVE_WALLET_IN_STORAGE_BY_KEY,
   HANDLE_SAVE_WALLET,
   REMOVE_DATA_FROM_STORAGE,
   HANDLE_REMOVE_DATA,
   HANDLE_SAVE_DATA,
-  REMOVE_WALLET_FROM_STORAGE_BY_KEY,
   HANDLE_REMOVE_WALLET,
-  FETCH_WALLET_FROM_STORAGE_BY_KEY,
-  HANDLE_FETCH_WALLET,
-  FETCH_ALL_WALLETS_FROM_STORAGE,
-  HANDLE_FETCH_ALL_WALLETS,
+  SAVE_WALLET_IN_STORAGE,
+  FETCH_WALLETS_FROM_STORAGE,
+  REMOVE_WALLET_FROM_STORAGE,
+  HANDLE_FETCH_WALLETS,
 } = require('./utils/constants');
 
 // A reference to the itemsToTrack array, full of JS/JSON objects. All mutations to the array are performed in the main.js app, but each mutation will trigger a rewrite to the user's storage for data persistence
 let itemsToTrack = [];
 /* eslint prefer-const: "error" */
-const wallets = {};
+let wallets = [];
 
 export default class AppUpdater {
   constructor() {
@@ -250,17 +248,22 @@ ipcMain.on(REMOVE_DATA_FROM_STORAGE, (_event, message) => {
 });
 
 /*
-  Wallet handler
+  Wallet handler- NEW TRY
  */
 
-// Receive a SAVE_WALLET_IN_STORAGE_BY_KEY call from renderer
-ipcMain.on(SAVE_WALLET_IN_STORAGE_BY_KEY, (_event, key, wallet) => {
-  console.log('Main received: SAVE_WALLET_IN_STORAGE_BY_KEY');
+// Receive a SAVE_DATA_IN_STORAGE call from renderer
+ipcMain.on(SAVE_WALLET_IN_STORAGE, (_event, message) => {
+  console.log('Main received: SAVE_WALLET_IN_STORAGE');
+  console.log('Before SAVE, content:');
+  console.log(wallets);
   // update the itemsToTrack array.
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  wallets[key] = wallet;
-  // Save wallets to storage
+  wallets.push(message);
+
+  console.log('AFTER PUSH, content:');
+  console.log(wallets);
+  // Save itemsToTrack to storage
   storage.set('wallets', wallets, (error) => {
     if (error) {
       console.log('We errored! What was data?');
@@ -268,7 +271,7 @@ ipcMain.on(SAVE_WALLET_IN_STORAGE_BY_KEY, (_event, key, wallet) => {
       // @ts-ignore
       mainWindow.send(HANDLE_SAVE_WALLET, {
         success: false,
-        message: 'wallets not updated',
+        message: 'wallets not saved',
       });
     } else {
       // Send message back to window as 2nd arg "data"
@@ -276,17 +279,51 @@ ipcMain.on(SAVE_WALLET_IN_STORAGE_BY_KEY, (_event, key, wallet) => {
       // @ts-ignore
       mainWindow.send(HANDLE_SAVE_WALLET, {
         success: true,
-        message: wallets[key],
+        message,
       });
     }
   });
+  // console.log('Array de unicornios:');
+  // console.log(store.get('unicorn'));
+  // store.set('unicorn', message);
 });
 
-// Receive a REMOVE_DATA_FROM_STORAGE call from renderer
-ipcMain.on(REMOVE_WALLET_FROM_STORAGE_BY_KEY, (_event, key) => {
+ipcMain.on(FETCH_WALLETS_FROM_STORAGE, (_event) => {
+  console.log('Main received: FETCH_WALLETS_FROM_STORAGE with message:');
+  // Get the user's itemsToTrack from storage
+  // For our purposes, message = itemsToTrack array
+  storage.get('wallets', (error, data) => {
+    // if the itemsToTrack key does not yet exist in storage, data returns an empty object, so we will declare itemsToTrack to be an empty array
+    // eslint-disable-next-line @typescript-eslint/no-shadow
+    console.log('\nwallets FETCH');
+    console.log(wallets);
+    wallets = JSON.stringify(data) === '{}' ? [] : data;
+    if (error) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      mainWindow.send(HANDLE_FETCH_WALLETS, {
+        success: false,
+        message: 'wallets not returned',
+      });
+    } else {
+      // Send message back to window
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      mainWindow.send(HANDLE_FETCH_WALLETS, {
+        success: true,
+        message: wallets, // do something with the data
+      });
+    }
+  });
+  // console.log('\n\nStored unicorn');
+  // console.log(store.get('unicorn'));
+});
+
+// Receive a REMOVE_WALLET_FROM_STORAGE call from renderer
+ipcMain.on(REMOVE_WALLET_FROM_STORAGE, (_event, message) => {
   console.log('Main Received: REMOVE_WALLET_FROM_STORAGE');
-  // Update the wasmV4
-  delete wallets[key];
+  // Update the items to Track array.
+  wallets = wallets.filter((item) => item !== message);
   // Save itemsToTrack to storage
   storage.set('wallets', wallets, (error) => {
     if (error) {
@@ -295,67 +332,13 @@ ipcMain.on(REMOVE_WALLET_FROM_STORAGE_BY_KEY, (_event, key) => {
       // @ts-ignore
       mainWindow.send(HANDLE_REMOVE_WALLET, {
         success: false,
-        message: 'wasmV4 not removed',
+        message: 'wallets not saved',
       });
     } else {
       // Send new updated array to window as 2nd arg "data"
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      mainWindow.send(HANDLE_REMOVE_DATA, {
-        success: true,
-        message: wallets[key],
-      });
-    }
-  });
-});
-
-ipcMain.on(FETCH_WALLET_FROM_STORAGE_BY_KEY, (_event, key) => {
-  console.log('Main received: FETCH_WALLET_FROM_STORAGE_BY_KEY with key:', key);
-  // Get the user's itemsToTrack from storage
-  // For our purposes, message = itemsToTrack array
-  storage.get('wallets', (error, data) => {
-    // if the itemsToTrack key does not yet exist in storage, data returns an empty object, so we will declare itemsToTrack to be an empty array
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    const wallets = JSON.stringify(data) === '{}' ? [] : data;
-    if (error) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      mainWindow.send(HANDLE_FETCH_WALLET, {
-        success: false,
-        message: 'wasmV4 not returned',
-      });
-    } else {
-      // Send message back to window
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      mainWindow.send(HANDLE_FETCH_DATA, {
-        success: true,
-        message: wallets[key],
-      });
-    }
-  });
-});
-
-ipcMain.on(FETCH_ALL_WALLETS_FROM_STORAGE, (_event) => {
-  console.log('Main received: FETCH_ALL_WALLETS_FROM_STORAGE ');
-  // Get the user's itemsToTrack from storage
-  // For our purposes, message = itemsToTrack array
-  storage.get('wallets', (error, data) => {
-    // if the itemsToTrack key does not yet exist in storage, data returns an empty object, so we will declare itemsToTrack to be an empty array
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    const wallets = JSON.stringify(data) === '{}' ? [] : data;
-    if (error) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      mainWindow.send(HANDLE_FETCH_ALL_WALLETS, {
-        success: false,
-        message: 'wallets not returned',
-      });
-    } else {
-      // Send message back to window
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      mainWindow.send(HANDLE_FETCH_ALL_WALLETS, {
+      mainWindow.send(HANDLE_REMOVE_WALLET, {
         success: true,
         message: wallets,
       });

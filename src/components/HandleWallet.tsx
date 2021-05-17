@@ -48,13 +48,7 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
       'hex'
     );
 
-    saveWalletInStorageByKey(
-      name,
-      JSON.stringify({
-        masterKey,
-        name,
-      })
-    );
+    saveWalletInStorageByKey(name);
     // Close modal
     toggle();
   };

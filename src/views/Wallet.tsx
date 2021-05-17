@@ -6,18 +6,18 @@ import HandleWallet from '../components/HandleWallet';
 import { loadSavedData2 } from '../renderer';
 
 const { ipcRenderer } = require('electron');
-const { HANDLE_FETCH_ALL_WALLETS } = require('../utils/constants');
+const { HANDLE_FETCH_WALLETS } = require('../utils/constants');
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface WalletProps {
-  walletList?: { [key: string]: string }[];
+  walletList?: string[];
 }
 
 // eslint-disable-next-line react/prop-types
 const Wallet: React.FC<WalletProps> = (walletList) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const [wallets, setWallets] = useState(walletList || []); // localStorage
+  const [wallets, setWallets] = useState([]); // localStorage
 
   const handleReceiveData = (_event, data) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -33,9 +33,9 @@ const Wallet: React.FC<WalletProps> = (walletList) => {
   }, []);
 
   useEffect(() => {
-    ipcRenderer.on(HANDLE_FETCH_ALL_WALLETS, handleReceiveData);
+    ipcRenderer.on(HANDLE_FETCH_WALLETS, handleReceiveData);
     return () => {
-      ipcRenderer.removeListener(HANDLE_FETCH_ALL_WALLETS, handleReceiveData);
+      ipcRenderer.removeListener(HANDLE_FETCH_WALLETS, handleReceiveData);
     };
   });
 
@@ -45,15 +45,9 @@ const Wallet: React.FC<WalletProps> = (walletList) => {
         <div id="addWalletButton">
           <HandleWallet />
         </div>
-        {Object.keys(wallets).map(function (key) {
-          return (
-            <WalletItem
-              key={key}
-              walletName={JSON.parse(wallets[key]).name}
-              selected
-            />
-          );
-        })}
+        {wallets.map((name) => (
+          <WalletItem key={name} walletName={name} selected={false} />
+        ))}
       </div>
       <WalletInfo />
       <h5>Wallets:</h5>
