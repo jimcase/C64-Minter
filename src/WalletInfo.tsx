@@ -46,7 +46,7 @@ const WalletInfo = () => {
       'hex'
     );
     /* eslint-disable-next-line no-console */
-    // console.log('wallet master key:', masterKey);
+    console.log('wallet master key:', masterKey);
     setMasterKeyHex(masterKey);
   };
 
@@ -71,10 +71,12 @@ const WalletInfo = () => {
 
   // Send the input to main
   const addItem = (input) => {
+    saveDataInStorage(input);
+    /*
     encryptString(input, 'micontraseña')
       .then((en) => saveDataInStorage(en))
       .catch((error) => console.log(error));
-    setVal('');
+    setVal(''); */
   };
 
   useEffect(() => {
@@ -124,6 +126,11 @@ const WalletInfo = () => {
           New Item
         </Button>
         <input type="text" onChange={handleChange} value={val} />
+        {itemsToTrack.length ? (
+          <List itemsToTrack={itemsToTrack} />
+        ) : (
+          <p>Add an item to get started</p>
+        )}
       </div>
     </div>
   );

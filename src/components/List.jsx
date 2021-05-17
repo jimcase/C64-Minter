@@ -7,12 +7,15 @@ import { decryptString } from '../utils/crypto-utils';
 // eslint-disable-next-line react/prop-types
 const List = ({ itemsToTrack }) => {
   const handleDecrypt = (e) => {
+    return e;
+    /*
     decryptString(e, 'micontraseña')
       .then((en) => {
         // console.log(`decrypted msg: ${en}`);
         return en;
       })
       .catch((error) => console.log(error));
+    */
   };
   return (
     <Table striped bordered hover>
