@@ -48,9 +48,11 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
       'hex'
     );
 
+    // TODO: save masterKey
     saveWalletInStorageByKey(name);
     // Close modal
     toggle();
+    // TODO: update wallets array in react
   };
 
   let walletOptionSelectedComponent;

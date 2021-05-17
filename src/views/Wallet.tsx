@@ -22,8 +22,6 @@ const Wallet: React.FC<WalletProps> = (walletList) => {
   const handleReceiveData = (_event, data) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    console.log('wallets');
-    console.log(data);
     setWallets(data.message);
   };
 

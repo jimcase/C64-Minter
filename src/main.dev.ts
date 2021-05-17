@@ -155,15 +155,11 @@ app.on('activate', () => {
 // Receive a SAVE_DATA_IN_STORAGE call from renderer
 ipcMain.on(SAVE_DATA_IN_STORAGE, (_event, message) => {
   console.log('Main received: SAVE_DATA_IN_STORAGE');
-  console.log('Before SAVE, content:');
-  console.log(itemsToTrack);
   // update the itemsToTrack array.
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   itemsToTrack.push(message);
 
-  console.log('AFTER PUSH, content:');
-  console.log(itemsToTrack);
   // Save itemsToTrack to storage
   storage.set('itemsToTrack', itemsToTrack, (error) => {
     if (error) {
@@ -184,9 +180,6 @@ ipcMain.on(SAVE_DATA_IN_STORAGE, (_event, message) => {
       });
     }
   });
-  // console.log('Array de unicornios:');
-  // console.log(store.get('unicorn'));
-  // store.set('unicorn', message);
 });
 
 ipcMain.on(FETCH_DATA_FROM_STORAGE, (_event, message) => {
@@ -196,8 +189,6 @@ ipcMain.on(FETCH_DATA_FROM_STORAGE, (_event, message) => {
   storage.get(message, (error, data) => {
     // if the itemsToTrack key does not yet exist in storage, data returns an empty object, so we will declare itemsToTrack to be an empty array
     // eslint-disable-next-line @typescript-eslint/no-shadow
-    console.log('\nitemsToTrack FETCH');
-    console.log(itemsToTrack);
     itemsToTrack = JSON.stringify(data) === '{}' ? [] : data;
     if (error) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -216,8 +207,6 @@ ipcMain.on(FETCH_DATA_FROM_STORAGE, (_event, message) => {
       });
     }
   });
-  // console.log('\n\nStored unicorn');
-  // console.log(store.get('unicorn'));
 });
 
 // Receive a REMOVE_DATA_FROM_STORAGE call from renderer
@@ -251,19 +240,15 @@ ipcMain.on(REMOVE_DATA_FROM_STORAGE, (_event, message) => {
   Wallet handler- NEW TRY
  */
 
-// Receive a SAVE_DATA_IN_STORAGE call from renderer
+// Receive a SAVE_WALLET_IN_STORAGE call from renderer
 ipcMain.on(SAVE_WALLET_IN_STORAGE, (_event, message) => {
   console.log('Main received: SAVE_WALLET_IN_STORAGE');
-  console.log('Before SAVE, content:');
-  console.log(wallets);
-  // update the itemsToTrack array.
+  // update the wallets array.
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   wallets.push(message);
 
-  console.log('AFTER PUSH, content:');
-  console.log(wallets);
-  // Save itemsToTrack to storage
+  // Save wallets to storage
   storage.set('wallets', wallets, (error) => {
     if (error) {
       console.log('We errored! What was data?');
@@ -283,9 +268,6 @@ ipcMain.on(SAVE_WALLET_IN_STORAGE, (_event, message) => {
       });
     }
   });
-  // console.log('Array de unicornios:');
-  // console.log(store.get('unicorn'));
-  // store.set('unicorn', message);
 });
 
 ipcMain.on(FETCH_WALLETS_FROM_STORAGE, (_event) => {
@@ -293,10 +275,6 @@ ipcMain.on(FETCH_WALLETS_FROM_STORAGE, (_event) => {
   // Get the user's itemsToTrack from storage
   // For our purposes, message = itemsToTrack array
   storage.get('wallets', (error, data) => {
-    // if the itemsToTrack key does not yet exist in storage, data returns an empty object, so we will declare itemsToTrack to be an empty array
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    console.log('\nwallets FETCH');
-    console.log(wallets);
     wallets = JSON.stringify(data) === '{}' ? [] : data;
     if (error) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -315,8 +293,6 @@ ipcMain.on(FETCH_WALLETS_FROM_STORAGE, (_event) => {
       });
     }
   });
-  // console.log('\n\nStored unicorn');
-  // console.log(store.get('unicorn'));
 });
 
 // Receive a REMOVE_WALLET_FROM_STORAGE call from renderer
@@ -324,7 +300,7 @@ ipcMain.on(REMOVE_WALLET_FROM_STORAGE, (_event, message) => {
   console.log('Main Received: REMOVE_WALLET_FROM_STORAGE');
   // Update the items to Track array.
   wallets = wallets.filter((item) => item !== message);
-  // Save itemsToTrack to storage
+  // Save wallets to storage
   storage.set('wallets', wallets, (error) => {
     if (error) {
       console.log('We errored! What was data?');
