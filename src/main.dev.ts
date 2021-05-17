@@ -17,6 +17,7 @@ import log from 'electron-log';
 import storage from 'electron-json-storage';
 import MenuBuilder from './menu';
 
+const Store = require('electron-store');
 const {
   HANDLE_FETCH_DATA,
   FETCH_DATA_FROM_STORAGE,
@@ -38,6 +39,8 @@ const {
 let itemsToTrack = [];
 /* eslint prefer-const: "error" */
 const wallets = {};
+
+const store = new Store([]);
 
 export default class AppUpdater {
   constructor() {
@@ -154,40 +157,18 @@ app.on('activate', () => {
   if (mainWindow === null) createWindow();
 });
 
-ipcMain.on(FETCH_DATA_FROM_STORAGE, (_event, message) => {
-  console.log('Main received: FETCH_DATA_FROM_STORAGE with message:', message);
-  // Get the user's itemsToTrack from storage
-  // For our purposes, message = itemsToTrack array
-  storage.get(message, (error, data) => {
-    // if the itemsToTrack key does not yet exist in storage, data returns an empty object, so we will declare itemsToTrack to be an empty array
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    const itemsToTrack = JSON.stringify(data) === '{}' ? [] : data;
-    if (error) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      mainWindow.send(HANDLE_FETCH_DATA, {
-        success: false,
-        message: 'itemsToTrack not returned',
-      });
-    } else {
-      // Send message back to window
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      mainWindow.send(HANDLE_FETCH_DATA, {
-        success: true,
-        message: itemsToTrack, // do something with the data
-      });
-    }
-  });
-});
-
 // Receive a SAVE_DATA_IN_STORAGE call from renderer
 ipcMain.on(SAVE_DATA_IN_STORAGE, (_event, message) => {
   console.log('Main received: SAVE_DATA_IN_STORAGE');
+  console.log('Before SAVE, content:');
+  console.log(itemsToTrack);
   // update the itemsToTrack array.
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   itemsToTrack.push(message);
+
+  console.log('AFTER PUSH, content:');
+  console.log(itemsToTrack);
   // Save itemsToTrack to storage
   storage.set('itemsToTrack', itemsToTrack, (error) => {
     if (error) {
@@ -208,6 +189,40 @@ ipcMain.on(SAVE_DATA_IN_STORAGE, (_event, message) => {
       });
     }
   });
+  // console.log('Array de unicornios:');
+  // console.log(store.get('unicorn'));
+  // store.set('unicorn', message);
+});
+
+ipcMain.on(FETCH_DATA_FROM_STORAGE, (_event, message) => {
+  console.log('Main received: FETCH_DATA_FROM_STORAGE with message:', message);
+  // Get the user's itemsToTrack from storage
+  // For our purposes, message = itemsToTrack array
+  storage.get(message, (error, data) => {
+    // if the itemsToTrack key does not yet exist in storage, data returns an empty object, so we will declare itemsToTrack to be an empty array
+    // eslint-disable-next-line @typescript-eslint/no-shadow
+    console.log('\nitemsToTrack FETCH');
+    console.log(itemsToTrack);
+    itemsToTrack = JSON.stringify(data) === '{}' ? [] : data;
+    if (error) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      mainWindow.send(HANDLE_FETCH_DATA, {
+        success: false,
+        message: 'itemsToTrack not returned',
+      });
+    } else {
+      // Send message back to window
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      mainWindow.send(HANDLE_FETCH_DATA, {
+        success: true,
+        message: itemsToTrack, // do something with the data
+      });
+    }
+  });
+  // console.log('\n\nStored unicorn');
+  // console.log(store.get('unicorn'));
 });
 
 // Receive a REMOVE_DATA_FROM_STORAGE call from renderer
