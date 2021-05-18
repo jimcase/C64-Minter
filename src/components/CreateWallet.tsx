@@ -20,6 +20,8 @@ interface CreateWalletProps {
   onChange?: (tags: string[]) => void;
   // eslint-disable-next-line react/require-default-props
   onChangeName?: (name: string) => void;
+  // eslint-disable-next-line react/require-default-props
+  onChangeSpendingPassword?: (pass: string) => void;
 }
 
 // eslint-disable-next-line react/prop-types
@@ -28,9 +30,11 @@ const CreateWallet: React.FC<CreateWalletProps> = ({
   maxTags,
   onChange,
   onChangeName,
+  onChangeSpendingPassword,
 }: CreateWalletProps) => {
   const generatedSeed = generateMnemonicSeed(160);
   const [seedPhrase] = useState(seed || generatedSeed);
+  const [spendingPassword, setSpendingPassword] = useState('');
   const [name, setName] = useState('');
 
   useEffect(() => {
@@ -43,8 +47,16 @@ const CreateWallet: React.FC<CreateWalletProps> = ({
     onChangeName && onChangeName(name);
   }, [onChangeName, name]);
 
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    onChangeSpendingPassword && onChangeSpendingPassword(spendingPassword);
+  }, [onChangeSpendingPassword, spendingPassword]);
+
   const HandleInputName = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
+  };
+  const HandleSpendingPassword = (e: ChangeEvent<HTMLInputElement>) => {
+    setSpendingPassword(e.target.value);
   };
   return (
     <div>
@@ -65,7 +77,7 @@ const CreateWallet: React.FC<CreateWalletProps> = ({
               style={styles.input}
               type="password"
               placeholder="spending password"
-              onChange={(e) => HandleInputName(e)}
+              onChange={(e) => HandleSpendingPassword(e)}
             />
           </Col>
           <Col sm="6">
@@ -73,7 +85,6 @@ const CreateWallet: React.FC<CreateWalletProps> = ({
               style={styles.input}
               type="password"
               placeholder="repeat spending password"
-              onChange={(e) => HandleInputName(e)}
             />
           </Col>
         </Row>

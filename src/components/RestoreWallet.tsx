@@ -19,6 +19,8 @@ interface RestoreWalletProps {
   onChange?: (seed: string[]) => void;
   // eslint-disable-next-line react/require-default-props
   onChangeName?: (name: string) => void;
+  // eslint-disable-next-line react/require-default-props
+  onChangeSpendingPassword?: (pass: string) => void;
 }
 
 // eslint-disable-next-line react/prop-types
@@ -27,9 +29,11 @@ const RestoreWallet: React.FC<RestoreWalletProps> = ({
   maxTags,
   onChange,
   onChangeName,
+  onChangeSpendingPassword,
 }: RestoreWalletProps) => {
   const [seedPhrase, setSeedPhrase] = useState(seed || []);
   const [name, setName] = useState('');
+  const [spendingPassword, setSpendingPassword] = useState('');
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -41,8 +45,17 @@ const RestoreWallet: React.FC<RestoreWalletProps> = ({
     onChangeName && onChangeName(name);
   }, [onChangeName, name]);
 
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    onChangeSpendingPassword && onChangeSpendingPassword(spendingPassword);
+  }, [onChangeSpendingPassword, spendingPassword]);
+
   const HandleInputName = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
+  };
+
+  const HandleSpendingPassword = (e: ChangeEvent<HTMLInputElement>) => {
+    setSpendingPassword(e.target.value);
   };
   return (
     <div>
@@ -63,7 +76,7 @@ const RestoreWallet: React.FC<RestoreWalletProps> = ({
               style={styles.input}
               type="password"
               placeholder="spending password"
-              onChange={(e) => HandleInputName(e)}
+              onChange={(e) => HandleSpendingPassword(e)}
             />
           </Col>
           <Col sm="6">

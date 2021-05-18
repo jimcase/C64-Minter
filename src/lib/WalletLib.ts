@@ -1,4 +1,5 @@
 import { mnemonicToEntropy, generateMnemonic } from 'bip39';
+import cryptoRandomString from 'crypto-random-string';
 import { numbers, networks } from '../config/config';
 import CardanoModule from './CardanoModule';
 
@@ -58,3 +59,37 @@ export const generateAddress = (
   );
   return addr.to_address().to_bech32();
 };
+
+// From Yoroi Frontend: passwordCipher.js
+export function encryptWithPassword(
+  password: string,
+  bytes: Uint8Array
+): string {
+  const salt = Buffer.from(cryptoRandomString(2 * 32), 'hex');
+  const nonce = Buffer.from(cryptoRandomString(2 * 12), 'hex');
+  const encryptedBytes = CardanoModule.wasmV2.password_encrypt(
+    password,
+    salt,
+    nonce,
+    bytes
+  );
+  return Buffer.from(encryptedBytes).toString('hex');
+}
+
+// From Yoroi Frontend: passwordCipher.js
+export function decryptWithPassword(
+  password: string,
+  encryptedHex: string
+): Uint8Array {
+  const encryptedBytes = Buffer.from(encryptedHex, 'hex');
+  let decryptedBytes;
+  try {
+    decryptedBytes = CardanoModule.wasmV2.password_decrypt(
+      password,
+      encryptedBytes
+    );
+  } catch (err) {
+    console.log(err);
+  }
+  return decryptedBytes;
+}

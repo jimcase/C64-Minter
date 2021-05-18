@@ -36,7 +36,7 @@ const Wallet: React.FC<WalletProps> = () => {
   });
 
   return (
-    <div>
+    <div id="walletView" style={{ height: '100%' }}>
       <Container>
         <div className="scrollmenu">
           <div id="addWalletButton">

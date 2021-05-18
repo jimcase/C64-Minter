@@ -41,3 +41,16 @@ export const splitBase64 = (
 
   return chunckArray;
 };
+
+export const arrayBufferToString = (buffer: ArrayBuffer): string => {
+  return String.fromCharCode.apply(null, Array.from(new Uint8Array(buffer)));
+};
+export const stringToArrayBuffer = (str: string): ArrayBuffer => {
+  const stringLength = str.length;
+  const buffer = new ArrayBuffer(stringLength * 2);
+  const bufferView = new Uint8Array(buffer);
+  for (let i = 0; i < stringLength; i += 1) {
+    bufferView[i] = str.charCodeAt(i);
+  }
+  return buffer;
+};

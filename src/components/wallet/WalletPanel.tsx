@@ -72,6 +72,19 @@ const WalletPanel: React.FC<WalletPanelProps> = ({}: WalletPanelProps) => {
             NFTs
           </NavLink>
         </NavItem>
+        <NavItem>
+          <NavLink
+            className={classnames(
+              { active: activeTab === 'settings' },
+              'ml-auto'
+            )}
+            onClick={() => {
+              toggleTab('settings');
+            }}
+          >
+            Settings
+          </NavLink>
+        </NavItem>
       </Nav>
       <TabContent activeTab={activeTab}>
         <TabPane tabId="transactions">
@@ -138,6 +151,12 @@ const WalletPanel: React.FC<WalletPanelProps> = ({}: WalletPanelProps) => {
           <Row>
             <Col sm="6">tokens1</Col>
             <Col sm="6">tokens2</Col>
+          </Row>
+        </TabPane>
+        <TabPane tabId="settings">
+          <Row>
+            <Col sm="6">change name</Col>
+            <Col sm="6">delete</Col>
           </Row>
         </TabPane>
       </TabContent>

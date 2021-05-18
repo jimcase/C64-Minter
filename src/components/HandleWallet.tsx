@@ -14,6 +14,7 @@ import CreateWallet from './CreateWallet';
 import { saveWalletInStorageByKey } from '../renderer';
 import { generateWalletRootKey } from '../lib/wallet';
 import CardanoModule from '../lib/CardanoModule';
+import { encryptWithPassword } from '../lib/WalletLib';
 
 interface HandleWalletProps {
   // eslint-disable-next-line react/require-default-props
@@ -29,6 +30,7 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
   const [invalidMnemonic, setInvalidMnemonic] = useState(false);
   const [seedPhrase, setSeedPhrase] = useState(seed || []);
   const [walletName, setWalletName] = useState('');
+  const [spendingPassword, setSpendingPassword] = useState('');
   const [walletOptionSelected, selectWalletOption] = useState('');
 
   const toggle = () => setModal(!modal);
@@ -42,16 +44,23 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
     return wallet.masterKey.length > 0 && wallet.name.length > 0;
   };
 
-  const saveWalletInStorage = async (phrase: string, name: string) => {
+  const saveWalletInStorage = async (
+    phrase: string,
+    name: string,
+    password: string
+  ) => {
     try {
       await CardanoModule.load(); // TODO: add then
       const masterKeyPtr = generateWalletRootKey(phrase);
+      const masterKeyBytes = masterKeyPtr.as_bytes();
+      const encryptedMasterKey = encryptWithPassword(password, masterKeyBytes);
+
+      /*
       const masterKey = Buffer.from(masterKeyPtr.as_bytes(), 'hex').toString(
         'hex'
       );
-
-      // TODO: save masterKey
-      saveWalletInStorageByKey(JSON.stringify({ name, masterKey }));
+      */
+      saveWalletInStorageByKey(JSON.stringify({ name, encryptedMasterKey }));
       // Close modal
       toggle();
       // TODO: update wallets array in react with callback
@@ -74,6 +83,9 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
           onChangeName={(wName: string) => {
             setWalletName(wName);
           }}
+          onChangeSpendingPassword={(pass: string) => {
+            setSpendingPassword(pass);
+          }}
         />
       );
       break;
@@ -87,6 +99,9 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
           }}
           onChangeName={(wName: string) => {
             setWalletName(wName);
+          }}
+          onChangeSpendingPassword={(pass: string) => {
+            setSpendingPassword(pass);
           }}
         />
       );
@@ -135,7 +150,11 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
           <Button
             color="secondary"
             onClick={() =>
-              saveWalletInStorage(seedPhrase.join(' '), walletName)
+              saveWalletInStorage(
+                seedPhrase.join(' '),
+                walletName,
+                spendingPassword
+              )
             }
             disabled={
               !isValidWallet({
@@ -146,6 +165,7 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
           >
             Continue
           </Button>
+          <p>{spendingPassword}</p>
         </ModalFooter>
       </Modal>
     </div>

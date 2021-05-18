@@ -18,6 +18,9 @@ body {
 #root > div > div {
   background-color: white;
 }
+#root > div > div > div::-webkit-scrollbar {
+  width: 0 !important;
+}
 .commodoreFontStyle {
   font-family: commodoreFont !important;
 }
@@ -74,7 +77,9 @@ body {
 #content {
   padding-left: 30px;
 }
-
+#content {
+  min-height: 95%;
+}
 /*
   Content ends
 */
@@ -117,9 +122,10 @@ div.scrollmenu .selectedWallet {
 #walletPanel .nav-item .nav-link {
   font-family: commodoreFont2;
 }
+
 /*
-  Wallet ends
-*/
+    Wallet ends
+  */
 
 /*
   Minter
