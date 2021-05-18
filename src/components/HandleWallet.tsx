@@ -19,10 +19,13 @@ import { encryptWithPassword } from '../lib/WalletLib';
 interface HandleWalletProps {
   // eslint-disable-next-line react/require-default-props
   seed?: string[];
+  // eslint-disable-next-line react/require-default-props
+  onAddWallet?: () => void;
 }
 
 const HandleWallet: React.FC<HandleWalletProps> = ({
   seed,
+  onAddWallet,
 }: HandleWalletProps) => {
   const maxTags = 15;
   const minTags = 15;
@@ -63,7 +66,8 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
       saveWalletInStorageByKey(JSON.stringify({ name, encryptedMasterKey }));
       // Close modal
       toggle();
-      // TODO: update wallets array in react with callback
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      onAddWallet && onAddWallet();
     } catch (e) {
       setInvalidMnemonic(true);
       console.log(`Error while generating root key: ${e}`);

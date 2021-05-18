@@ -70,7 +70,7 @@ const CreateWallet: React.FC<CreateWalletProps> = ({
       <FormGroup>
         <Row>
           <FormText>
-            The password will no be stored in-app, you have to remember it.
+            The password will not be stored in-app, you have to remember it.
           </FormText>
           <Col sm="6">
             <Input

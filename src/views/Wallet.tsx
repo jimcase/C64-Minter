@@ -40,7 +40,11 @@ const Wallet: React.FC<WalletProps> = () => {
       <Container>
         <div className="scrollmenu">
           <div id="addWalletButton">
-            <HandleWallet />
+            <HandleWallet
+              onAddWallet={() => {
+                loadSavedData2();
+              }}
+            />
           </div>
           {wallets.map((wallet) => (
             <WalletItem
