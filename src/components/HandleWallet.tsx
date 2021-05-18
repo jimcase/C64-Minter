@@ -26,6 +26,7 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
   const maxTags = 15;
   const minTags = 15;
   const [modal, setModal] = useState(false);
+  const [invalidMnemonic, setInvalidMnemonic] = useState(false);
   const [seedPhrase, setSeedPhrase] = useState(seed || []);
   const [walletName, setWalletName] = useState('');
   const [walletOptionSelected, selectWalletOption] = useState('');
@@ -42,17 +43,22 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
   };
 
   const saveWalletInStorage = async (phrase: string, name: string) => {
-    await CardanoModule.load(); // TODO: add then
-    const masterKeyPtr = generateWalletRootKey(phrase);
-    const masterKey = Buffer.from(masterKeyPtr.as_bytes(), 'hex').toString(
-      'hex'
-    );
+    try {
+      await CardanoModule.load(); // TODO: add then
+      const masterKeyPtr = generateWalletRootKey(phrase);
+      const masterKey = Buffer.from(masterKeyPtr.as_bytes(), 'hex').toString(
+        'hex'
+      );
 
-    // TODO: save masterKey
-    saveWalletInStorageByKey(name);
-    // Close modal
-    toggle();
-    // TODO: update wallets array in react with callback
+      // TODO: save masterKey
+      saveWalletInStorageByKey(JSON.stringify({ name, masterKey }));
+      // Close modal
+      toggle();
+      // TODO: update wallets array in react with callback
+    } catch (e) {
+      setInvalidMnemonic(true);
+      console.log(`Error while generating root key: ${e}`);
+    }
   };
 
   let walletOptionSelectedComponent;
@@ -120,6 +126,9 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
           {walletOptionSelectedComponent}
         </ModalBody>
         <ModalFooter>
+          {invalidMnemonic ? (
+            <p style={{ color: 'red' }}>Invalid Mnemonic</p>
+          ) : null}
           <Button color="primary" onClick={toggle}>
             Cancel
           </Button>{' '}
@@ -137,8 +146,6 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
           >
             Continue
           </Button>
-          <p>{walletName}</p>
-          <pre>{JSON.stringify(seedPhrase)}</pre>
         </ModalFooter>
       </Modal>
     </div>

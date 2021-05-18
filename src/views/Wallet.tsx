@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
 import WalletInfo from '../WalletInfo';
 import WalletItem from '../components/wallet/WalletItem';
 import HandleWallet from '../components/HandleWallet';
@@ -10,7 +9,7 @@ const { HANDLE_FETCH_WALLETS } = require('../utils/constants');
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface WalletProps {
-  walletList?: string[];
+  walletList?: { name: string; masterKey: string }[];
 }
 
 // eslint-disable-next-line react/prop-types
@@ -43,8 +42,14 @@ const Wallet: React.FC<WalletProps> = (walletList) => {
         <div id="addWalletButton">
           <HandleWallet />
         </div>
-        {wallets.map((name) => (
-          <WalletItem key={name} walletName={name} selected={false} />
+        {wallets.map((wallet) => (
+          <WalletItem
+            key={JSON.parse(wallet).name}
+            walletName={JSON.parse(wallet).name}
+            selected={false}
+          >
+            {wallet}{' '}
+          </WalletItem>
         ))}
       </div>
       <WalletInfo />
