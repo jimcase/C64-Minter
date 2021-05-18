@@ -2,14 +2,26 @@ import React, { useContext } from 'react';
 
 import { Nav, Navbar, NavItem } from 'reactstrap';
 
+import * as FaIcons from 'react-icons/fa';
 import { LayoutContext } from '../Root/Root';
+
+const styles = {
+  arrow: {
+    margin: '3px',
+    fontSize: '30px',
+  },
+};
 
 const Header: React.FC = () => {
   const ctx = useContext(LayoutContext);
 
   const { navOpen, setNavOpen, navDocked, navAnimate } = ctx;
 
-  const icon = navOpen ? '⬅️' : '➡️';
+  const icon = navOpen ? (
+    <FaIcons.FaArrowCircleLeft style={styles.arrow} />
+  ) : (
+    <FaIcons.FaArrowCircleRight style={styles.arrow} />
+  );
 
   return (
     <Navbar color="light">

@@ -7,18 +7,20 @@
   font-family: commodoreFont;
   src: url('../assets/fonts/commodore_64/Commodore-Angled-v1.2.ttf');
 }
-
-body {
-  background: linear-gradient(
-    200.96deg,
-    #fedc2a -29.09%,
-    #dd5789 51.77%,
-    #7a2c9e 129.35%
-  );
-  font-family: sans-serif;
-  overflow-y: hidden;
+@font-face {
+  font-family: commodoreFont2;
+  src: url('../assets/fonts/commodore_64/Commodore-64-v6.3.ttf');
 }
 
+body {
+}
+
+#root > div > div {
+  background-color: white;
+}
+.commodoreFontStyle {
+  font-family: commodoreFont !important;
+}
 /*
   Sidebar
 */
@@ -78,7 +80,7 @@ body {
 */
 
 /*
-  Wallet ends
+  Wallet starts
 */
 div.scrollmenu {
   background-color: #333;
@@ -110,6 +112,10 @@ div.scrollmenu .selectedWallet {
   text-decoration: none;
   width: 150px;
   font-size: 40px;
+}
+
+#walletPanel .nav-item .nav-link {
+  font-family: commodoreFont2;
 }
 /*
   Wallet ends
