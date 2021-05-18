@@ -54,3 +54,8 @@ export const stringToArrayBuffer = (str: string): ArrayBuffer => {
   }
   return buffer;
 };
+
+export const validateText = (txt: string, rgx: string): boolean => {
+  const regex = new RegExp(rgx);
+  return regex.test(txt);
+};

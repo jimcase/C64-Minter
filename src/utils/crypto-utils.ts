@@ -1,4 +1,5 @@
-import * as openpgp from 'openpgp';
+// import * as openpgp from 'openpgp';
+import validWords from './valid-words';
 
 function buildHTTPMetadatasFromFile(
   type: string,
@@ -57,6 +58,11 @@ function buildBase64FromOnChainMetadata(
   }
   return base64;
 }
+
+// eslint-disable-next-line import/prefer-default-export
+export const validateWord = (word: string): boolean => {
+  return validWords.includes(word);
+};
 
 /*
  * Spending Password Encryption
