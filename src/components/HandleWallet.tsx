@@ -52,7 +52,7 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
     saveWalletInStorageByKey(name);
     // Close modal
     toggle();
-    // TODO: update wallets array in react
+    // TODO: update wallets array in react with callback
   };
 
   let walletOptionSelectedComponent;

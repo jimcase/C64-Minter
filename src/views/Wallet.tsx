@@ -48,7 +48,6 @@ const Wallet: React.FC<WalletProps> = (walletList) => {
         ))}
       </div>
       <WalletInfo />
-      <h5>Wallets:</h5>
     </div>
   );
 };
