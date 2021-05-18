@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { FormGroup, Input } from 'reactstrap';
+import { Col, FormGroup, FormText, Input, Row } from 'reactstrap';
 import { TagsInput } from './TagsInput/TagsInput';
 
 const styles = {
@@ -53,23 +53,54 @@ const RestoreWallet: React.FC<RestoreWalletProps> = ({
           onChange={(e) => HandleInputName(e)}
         />
       </FormGroup>
-      <TagsInput
-        seedPhrase={seedPhrase}
-        maxTags={maxTags}
-        onChange={(tgs) => {
-          const s: string[] = [];
-          tgs.forEach(function (wordObject: { text: string; textId: string }) {
-            s.push(wordObject.text);
-          });
-          setSeedPhrase(s);
-        }}
-        name="fruits"
-        placeHolder="enter mnemonic"
-        disabled={false}
-      />
-      <em>
-        press enter to add new tag ({seedPhrase.length}/{maxTags})
-      </em>
+      <FormGroup>
+        <Row>
+          <FormText>
+            The password will no be stored in-app, you have to remember it.
+          </FormText>
+          <Col sm="6">
+            <Input
+              style={styles.input}
+              type="password"
+              placeholder="spending password"
+              onChange={(e) => HandleInputName(e)}
+            />
+          </Col>
+          <Col sm="6">
+            <Input
+              style={styles.input}
+              type="password"
+              placeholder="repeat spending password"
+              onChange={(e) => HandleInputName(e)}
+            />
+          </Col>
+        </Row>
+      </FormGroup>
+      <FormGroup>
+        <FormText>
+          Recovery phrase <strong> stored Offline</strong>.
+        </FormText>
+        <TagsInput
+          seedPhrase={seedPhrase}
+          maxTags={maxTags}
+          onChange={(tgs) => {
+            const s: string[] = [];
+            tgs.forEach(function (wordObject: {
+              text: string;
+              textId: string;
+            }) {
+              s.push(wordObject.text);
+            });
+            setSeedPhrase(s);
+          }}
+          name="fruits"
+          placeHolder="enter mnemonic"
+          disabled={false}
+        />
+        <FormText>
+          press enter to add new tag ({seedPhrase.length}/{maxTags})
+        </FormText>
+      </FormGroup>
     </div>
   );
 };

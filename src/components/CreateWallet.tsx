@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { FormGroup, Input } from 'reactstrap';
+import { FormGroup, FormText, Input, Row, Col } from 'reactstrap';
 import { TagsInput } from './TagsInput/TagsInput';
 import { generateMnemonicSeed } from '../lib/WalletLib';
 
@@ -55,14 +55,43 @@ const CreateWallet: React.FC<CreateWalletProps> = ({
           onChange={(e) => HandleInputName(e)}
         />
       </FormGroup>
-      <TagsInput
-        seedPhrase={seedPhrase}
-        maxTags={maxTags}
-        name="fruits"
-        placeHolder=""
-        disabled
-      />
-      <em>Generated mnemonic ({seedPhrase.length})</em>
+      <FormGroup>
+        <Row>
+          <FormText>
+            The password will no be stored in-app, you have to remember it.
+          </FormText>
+          <Col sm="6">
+            <Input
+              style={styles.input}
+              type="password"
+              placeholder="spending password"
+              onChange={(e) => HandleInputName(e)}
+            />
+          </Col>
+          <Col sm="6">
+            <Input
+              style={styles.input}
+              type="password"
+              placeholder="repeat spending password"
+              onChange={(e) => HandleInputName(e)}
+            />
+          </Col>
+        </Row>
+      </FormGroup>
+      <FormGroup>
+        <FormText>
+          Recovery phrase that secures your funds forever,{' '}
+          <strong>must be stored Offline</strong>.
+        </FormText>
+        <TagsInput
+          seedPhrase={seedPhrase}
+          maxTags={maxTags}
+          name="fruits"
+          placeHolder=""
+          disabled
+        />
+        <FormText>Generated mnemonic ({seedPhrase.length})</FormText>
+      </FormGroup>
     </div>
   );
 };
