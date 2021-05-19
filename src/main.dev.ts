@@ -242,7 +242,6 @@ ipcMain.on(REMOVE_DATA_FROM_STORAGE, (_event, message) => {
 
 // Receive a SAVE_WALLET_IN_STORAGE call from renderer
 ipcMain.on(SAVE_WALLET_IN_STORAGE, (_event, message) => {
-  console.log('Main received: SAVE_WALLET_IN_STORAGE');
   // update the wallets array.
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -271,7 +270,6 @@ ipcMain.on(SAVE_WALLET_IN_STORAGE, (_event, message) => {
 });
 
 ipcMain.on(FETCH_WALLETS_FROM_STORAGE, (_event) => {
-  console.log('Main received: FETCH_WALLETS_FROM_STORAGE with message:');
   // Get the user's itemsToTrack from storage
   // For our purposes, message = itemsToTrack array
   storage.get('wallets', (error, data) => {
@@ -297,7 +295,6 @@ ipcMain.on(FETCH_WALLETS_FROM_STORAGE, (_event) => {
 
 // Receive a REMOVE_WALLET_FROM_STORAGE call from renderer
 ipcMain.on(REMOVE_WALLET_FROM_STORAGE, (_event, message) => {
-  console.log('Main Received: REMOVE_WALLET_FROM_STORAGE');
   // Update the items to Track array.
   wallets = wallets.filter((item) => item !== message);
   // Save wallets to storage
