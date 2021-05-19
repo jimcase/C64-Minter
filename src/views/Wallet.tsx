@@ -22,12 +22,14 @@ const Wallet: React.FC<WalletProps> = () => {
       pubAddress: '',
     },
   ]); // localStorage
-  const [selectedWallet, setWallet] = useState({
-    name: '',
-    encryptedMasterKey: '',
-    publicKey: '',
-    pubAddress: '',
-  });
+  const [selectedWallet, setWallet] = useState(
+    wallets[0] || {
+      name: '',
+      encryptedMasterKey: '',
+      publicKey: '',
+      pubAddress: '',
+    }
+  );
 
   const getWallet = (
     name: string
@@ -63,7 +65,10 @@ const Wallet: React.FC<WalletProps> = () => {
   // Grab the user's saved itemsToTrack after the app loads
   useEffect(() => {
     loadSavedData2();
-  }, []);
+    if (selectedWallet.name === '' && wallets && wallets.length) {
+      setWallet(wallets[0]);
+    }
+  }, [selectedWallet.name, wallets]);
 
   useEffect(() => {
     ipcRenderer.on(HANDLE_FETCH_WALLETS, handleReceiveData);
