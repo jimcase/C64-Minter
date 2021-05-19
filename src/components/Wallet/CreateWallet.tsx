@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { FormGroup, FormText, Input, Row, Col } from 'reactstrap';
-import { TagsInput } from './TagsInput/TagsInput';
-import { generateMnemonicSeed } from '../lib/WalletLib';
+import { TagsInput } from '../TagsInput/TagsInput';
+import { generateMnemonicSeed } from '../../lib/WalletLib';
 
 const styles = {
   input: {

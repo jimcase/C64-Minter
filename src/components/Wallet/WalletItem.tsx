@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-interface WalletItem2Props {
+interface WalletItemProps {
   walletName: string;
   // eslint-disable-next-line react/no-unused-prop-types,react/require-default-props
   address?: string;
@@ -8,10 +8,10 @@ interface WalletItem2Props {
 }
 
 // eslint-disable-next-line react/prop-types
-const WalletItem: React.FC<WalletItem2Props> = ({
+const WalletItem: React.FC<WalletItemProps> = ({
   walletName,
   selected,
-}: WalletItem2Props) => {
+}: WalletItemProps) => {
   const [amount] = useState(0);
 
   let className = 'walletItem';
@@ -19,6 +19,7 @@ const WalletItem: React.FC<WalletItem2Props> = ({
     className += ' selectedWallet';
   }
   return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
     <div className={className}>
       <h3>{walletName}</h3>
       <p>{amount}</p>

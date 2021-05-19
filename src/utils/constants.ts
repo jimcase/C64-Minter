@@ -10,10 +10,10 @@ module.exports = {
   // FETCH Wallets
   HANDLE_FETCH_WALLETS: 'handle-fetch-wallets',
   FETCH_WALLETS_FROM_STORAGE: 'fetch-wallets-from-storage',
-  // SAVE wallet
-  HANDLE_SAVE_WALLET: 'handle-save-wallet', // call from react
-  SAVE_WALLET_IN_STORAGE: 'save-wallet-in-storage',
-  // REMOVE wallet
-  HANDLE_REMOVE_WALLET: 'handle-remove-wallet',
-  REMOVE_WALLET_FROM_STORAGE: 'remove-wallet-from-storage',
+  // SAVE Wallet
+  HANDLE_SAVE_WALLET: 'handle-save-Wallet', // call from react
+  SAVE_WALLET_IN_STORAGE: 'save-Wallet-in-storage',
+  // REMOVE Wallet
+  HANDLE_REMOVE_WALLET: 'handle-remove-Wallet',
+  REMOVE_WALLET_FROM_STORAGE: 'remove-Wallet-from-storage',
 };

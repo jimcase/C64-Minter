@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Container } from 'reactstrap';
-import WalletItem from '../components/wallet/WalletItem';
-import HandleWallet from '../components/HandleWallet';
+import WalletItem from '../components/Wallet/WalletItem';
+import HandleWallet from '../components/Wallet/HandleWallet';
 import { loadSavedData2 } from '../renderer';
-import WalletPanel from '../components/wallet/WalletPanel';
+import WalletPanel from '../components/Wallet/Panel/WalletPanel';
 
 const { ipcRenderer } = require('electron');
 const { HANDLE_FETCH_WALLETS } = require('../utils/constants');
@@ -15,12 +14,50 @@ interface WalletProps {}
 const Wallet: React.FC<WalletProps> = () => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const [wallets, setWallets] = useState([]); // localStorage
+  const [wallets, setWallets] = useState([
+    {
+      name: '',
+      encryptedMasterKey: '',
+      publicKey: '',
+      pubAddress: '',
+    },
+  ]); // localStorage
+  const [selectedWallet, setWallet] = useState({
+    name: '',
+    encryptedMasterKey: '',
+    publicKey: '',
+    pubAddress: '',
+  });
 
+  const getWallet = (
+    name: string
+  ): {
+    name: string;
+    encryptedMasterKey: string;
+    publicKey: string;
+    pubAddress: string;
+  } => {
+    console.log(`selected wallet ${name}`);
+    for (let i = 0; i < wallets.length; i += 1) {
+      if (wallets[i].name === name) {
+        return wallets[i];
+      }
+    }
+    return wallets[0];
+  };
   const handleReceiveData = (_event, data) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    setWallets(data.message);
+    const wts: {
+      name: string;
+      encryptedMasterKey: string;
+      publicKey: string;
+      pubAddress: string;
+    }[] = [];
+    data.message.forEach(function (wallet: string) {
+      wts.push(JSON.parse(wallet));
+    });
+    setWallets(wts);
   };
 
   // Grab the user's saved itemsToTrack after the app loads
@@ -37,7 +74,7 @@ const Wallet: React.FC<WalletProps> = () => {
 
   return (
     <div id="walletView" style={{ height: '100%' }}>
-      <Container>
+      <div id="walletContent">
         <div className="scrollmenu">
           <div id="addWalletButton">
             <HandleWallet
@@ -47,17 +84,17 @@ const Wallet: React.FC<WalletProps> = () => {
             />
           </div>
           {wallets.map((wallet) => (
-            <WalletItem
-              key={JSON.parse(wallet).name}
-              walletName={JSON.parse(wallet).name}
-              selected={false}
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
+            <span
+              key={wallet.name}
+              onClick={() => setWallet(getWallet(wallet.name))}
             >
-              {wallet}{' '}
-            </WalletItem>
+              <WalletItem walletName={wallet.name} selected={false} />
+            </span>
           ))}
         </div>
-        <WalletPanel />
-      </Container>
+        <WalletPanel wallet={selectedWallet} />
+      </div>
     </div>
   );
 };

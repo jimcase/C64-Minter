@@ -35,7 +35,7 @@ export const getCryptoDaedalusWalletFromMasterKey = (masterKeyHex: string) => {
 
 /**
  * @param {Bip32PublicKey} accountPubKey:
- * @param {number} chain - 0 or 1
+ * @param {number} chain - 0 or 1, ExpectedSoftDerivation
  * @param {number} index
  */
 export const generateAddress = (

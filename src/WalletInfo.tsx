@@ -5,7 +5,6 @@ import { generateWalletRootKey } from './lib/wallet';
 
 import List from './components/List';
 import { loadSavedData, saveDataInStorage } from './renderer';
-import { encryptString } from './utils/crypto-utils';
 
 const { ipcRenderer } = require('electron');
 const {
@@ -33,7 +32,6 @@ const styles = {
 
 const WalletInfo = () => {
   const [masterKeyHex, setMasterKeyHex] = useState<string>('');
-  const [successText, setSuccessText] = useState(null); // from nodejs
   const [val, setVal] = useState('');
   const [itemsToTrack, setItems] = useState([]); // localStorage
 
@@ -46,7 +44,7 @@ const WalletInfo = () => {
       'hex'
     );
     /* eslint-disable-next-line no-console */
-    console.log('wallet master key:', masterKey);
+    console.log('Wallet master key:', masterKey);
     setMasterKeyHex(masterKey);
   };
 

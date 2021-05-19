@@ -11,10 +11,10 @@ import {
 import * as FaIcons from 'react-icons/fa';
 import RestoreWallet from './RestoreWallet';
 import CreateWallet from './CreateWallet';
-import { saveWalletInStorageByKey } from '../renderer';
-import { generateWalletRootKey } from '../lib/wallet';
-import CardanoModule from '../lib/CardanoModule';
-import { encryptWithPassword } from '../lib/WalletLib';
+import { saveWalletInStorageByKey } from '../../renderer';
+import { generateWalletRootKey } from '../../lib/wallet';
+import CardanoModule from '../../lib/CardanoModule';
+import { encryptWithPassword, generateAddress } from '../../lib/WalletLib';
 
 interface HandleWalletProps {
   // eslint-disable-next-line react/require-default-props
@@ -43,7 +43,7 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
     masterKey: string;
     name: string;
   }): boolean => {
-    // console.log(wallet.masterKey.length > 0 && wallet.name.length > 0);
+    // console.log(Wallet.masterKey.length > 0 && Wallet.name.length > 0);
     return wallet.masterKey.length > 0 && wallet.name.length > 0;
   };
 
@@ -56,14 +56,27 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
       await CardanoModule.load(); // TODO: add then
       const masterKeyPtr = generateWalletRootKey(phrase);
       const masterKeyBytes = masterKeyPtr.as_bytes();
+      // const publicKey = masterKeyPtr.to_public();
+      const publicKeyHex = Buffer.from(
+        masterKeyPtr.to_public().as_bytes(),
+        'hex'
+      ).toString('hex');
       const encryptedMasterKey = encryptWithPassword(password, masterKeyBytes);
 
+      const pubAddress = generateAddress(masterKeyPtr.to_public(), 1, 1);
       /*
       const masterKey = Buffer.from(masterKeyPtr.as_bytes(), 'hex').toString(
         'hex'
       );
       */
-      saveWalletInStorageByKey(JSON.stringify({ name, encryptedMasterKey }));
+      saveWalletInStorageByKey(
+        JSON.stringify({
+          name,
+          encryptedMasterKey,
+          publicKeyHex,
+          pubAddress,
+        })
+      );
       // Close modal
       toggle();
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions

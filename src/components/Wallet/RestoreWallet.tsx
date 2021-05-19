@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Col, FormGroup, FormText, Input, Row } from 'reactstrap';
-import { TagsInput } from './TagsInput/TagsInput';
+import { TagsInput } from '../TagsInput/TagsInput';
 
 const styles = {
   input: {
