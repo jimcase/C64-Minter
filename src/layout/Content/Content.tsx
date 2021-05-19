@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import { LayoutContext } from '../Root/Root';
 import Minter from '../../views/Minter';
 import Wallet from '../../views/Wallet';
+import Gallery from '../../views/Gallery';
+import Settings from '../../views/Settings';
 
 const Content: React.FC = () => {
   const ctx = useContext(LayoutContext);
@@ -14,10 +16,10 @@ const Content: React.FC = () => {
       component = <Minter />;
       break;
     case 'Gallery':
-      component = <p>Gallery content</p>;
+      component = <Gallery />;
       break;
     case 'About':
-      component = <p>About content</p>;
+      component = <Settings />;
       break;
     default:
       component = <Wallet />;
