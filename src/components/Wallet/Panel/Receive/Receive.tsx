@@ -56,7 +56,7 @@ const Receive: React.FC<ReceiveProps> = ({
         return '';
       });
   };
-
+  // Pasar las direcciones solo como props y con una callback actualizar/ampliar
   useEffect(() => {
     // External address for receive payments
     const addressesList: string[] = [];

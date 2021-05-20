@@ -86,8 +86,8 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
               name,
               encryptedMasterKey,
               publicKeyHex,
-              internalPubAddress,
-              externalPubAddress,
+              internalPubAddress: [internalPubAddress],
+              externalPubAddress: [externalPubAddress],
             })
           );
           // Close modal

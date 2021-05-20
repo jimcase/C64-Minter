@@ -21,8 +21,8 @@ interface WalletPanelProps {
     name: string;
     encryptedMasterKey: string;
     publicKeyHex: string;
-    internalPubAddress: string;
-    externalPubAddress: string;
+    internalPubAddress: string[];
+    externalPubAddress: string[];
   };
 }
 
@@ -30,7 +30,7 @@ interface WalletPanelProps {
 const WalletPanel: React.FC<WalletPanelProps> = ({
   wallet,
 }: WalletPanelProps) => {
-  const [activeTab, setActiveTab] = useState('transactions');
+  const [activeTab, setActiveTab] = useState('receive');
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -125,7 +125,11 @@ const WalletPanel: React.FC<WalletPanelProps> = ({
         </TabPane>
         <TabPane tabId="receive">
           <Row>
-            <Receive publicKeyHex={wallet.publicKeyHex} />
+            <Receive
+              publicKeyHex={wallet.publicKeyHex}
+              externalAddrList={wallet.externalPubAddress}
+              internalAddrList={wallet.internalPubAddress}
+            />
           </Row>
         </TabPane>
         <TabPane tabId="send">
