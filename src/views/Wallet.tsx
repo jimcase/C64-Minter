@@ -68,7 +68,7 @@ const Wallet: React.FC<WalletProps> = () => {
     if (selectedWallet.name === '' && wallets && wallets.length) {
       setWallet(wallets[0]);
     }
-  }, [selectedWallet.name, wallets]);
+  }, []);
 
   useEffect(() => {
     ipcRenderer.on(HANDLE_FETCH_WALLETS, handleReceiveData);
