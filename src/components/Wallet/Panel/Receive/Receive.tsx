@@ -58,6 +58,7 @@ const Receive: React.FC<ReceiveProps> = ({
   };
 
   useEffect(() => {
+    // External address for receive payments
     const addressesList: string[] = [];
     // eslint-disable-next-line promise/catch-or-return,promise/always-return
     getAddress(0, 1)
