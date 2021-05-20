@@ -18,16 +18,18 @@ const Wallet: React.FC<WalletProps> = () => {
     {
       name: '',
       encryptedMasterKey: '',
-      publicKey: '',
-      pubAddress: '',
+      publicKeyHex: '',
+      internalPubAddress: '',
+      externalPubAddress: '',
     },
   ]); // localStorage
   const [selectedWallet, setWallet] = useState(
     wallets[0] || {
       name: '',
       encryptedMasterKey: '',
-      publicKey: '',
-      pubAddress: '',
+      publicKeyHex: '',
+      internalPubAddress: '',
+      externalPubAddress: '',
     }
   );
 
@@ -36,8 +38,9 @@ const Wallet: React.FC<WalletProps> = () => {
   ): {
     name: string;
     encryptedMasterKey: string;
-    publicKey: string;
-    pubAddress: string;
+    publicKeyHex: string;
+    internalPubAddress: string;
+    externalPubAddress: string;
   } => {
     console.log(`selected wallet ${name}`);
     for (let i = 0; i < wallets.length; i += 1) {
@@ -53,8 +56,9 @@ const Wallet: React.FC<WalletProps> = () => {
     const wts: {
       name: string;
       encryptedMasterKey: string;
-      publicKey: string;
-      pubAddress: string;
+      publicKeyHex: string;
+      internalPubAddress: string;
+      externalPubAddress: string;
     }[] = [];
     data.message.forEach(function (wallet: string) {
       wts.push(JSON.parse(wallet));
@@ -62,7 +66,7 @@ const Wallet: React.FC<WalletProps> = () => {
     setWallets(wts);
   };
 
-  // Grab the user's saved itemsToTrack after the app loads
+  // Grab the user's saved wallets after the app loads, just one time
   useEffect(() => {
     loadSavedData2();
     if (selectedWallet.name === '' && wallets && wallets.length) {
@@ -75,7 +79,7 @@ const Wallet: React.FC<WalletProps> = () => {
     return () => {
       ipcRenderer.removeListener(HANDLE_FETCH_WALLETS, handleReceiveData);
     };
-  });
+  }, []);
 
   return (
     <div id="walletView" style={{ height: '100%' }}>

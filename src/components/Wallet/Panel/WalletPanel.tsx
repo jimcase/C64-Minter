@@ -11,7 +11,8 @@ import {
   Jumbotron,
 } from 'reactstrap';
 import classnames from 'classnames';
-import Transactions from './Transactions';
+import Transactions from './Transactions/Transactions';
+import Receive from './Receive/Receive';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface WalletPanelProps {
@@ -19,8 +20,9 @@ interface WalletPanelProps {
   wallet: {
     name: string;
     encryptedMasterKey: string;
-    publicKey: string;
-    pubAddress: string;
+    publicKeyHex: string;
+    internalPubAddress: string;
+    externalPubAddress: string;
   };
 }
 
@@ -49,10 +51,15 @@ const WalletPanel: React.FC<WalletPanelProps> = ({
               {wallet.encryptedMasterKey[wallet.encryptedMasterKey.length - 1]}
             </p>
             <p>
-              <strong>PublicKey:</strong> {wallet.publicKey}
+              <strong>PublicKey:</strong> {wallet.publicKeyHex}
             </p>
             <p>
-              <strong>PublicAddress:</strong> {wallet.pubAddress}
+              <strong>Internal PublicAddress:</strong>{' '}
+              {wallet.internalPubAddress}
+            </p>
+            <p>
+              <strong>External PublicAddress:</strong>{' '}
+              {wallet.externalPubAddress}
             </p>
           </Jumbotron>
         </Card>
@@ -118,12 +125,7 @@ const WalletPanel: React.FC<WalletPanelProps> = ({
         </TabPane>
         <TabPane tabId="receive">
           <Row>
-            <Col sm="6">
-              <ul>
-                <li>Addres: {}</li>
-              </ul>
-            </Col>
-            <Col sm="6">jj</Col>
+            <Receive publicKeyHex={wallet.publicKeyHex} />
           </Row>
         </TabPane>
         <TabPane tabId="send">

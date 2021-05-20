@@ -12,9 +12,12 @@ import * as FaIcons from 'react-icons/fa';
 import RestoreWallet from './RestoreWallet';
 import CreateWallet from './CreateWallet';
 import { saveWalletInStorageByKey } from '../../renderer';
-import { generateWalletRootKey } from '../../lib/wallet';
+import {
+  generateWalletRootKey,
+  encryptWithPassword,
+  generateAddress,
+} from '../../lib/WalletLib';
 import CardanoModule from '../../lib/CardanoModule';
-import { encryptWithPassword, generateAddress } from '../../lib/WalletLib';
 
 interface HandleWalletProps {
   // eslint-disable-next-line react/require-default-props
@@ -52,39 +55,51 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
     name: string,
     password: string
   ) => {
-    try {
-      await CardanoModule.load(); // TODO: add then
-      const masterKeyPtr = generateWalletRootKey(phrase);
-      const masterKeyBytes = masterKeyPtr.as_bytes();
-      // const publicKey = masterKeyPtr.to_public();
-      const publicKeyHex = Buffer.from(
-        masterKeyPtr.to_public().as_bytes(),
-        'hex'
-      ).toString('hex');
-      const encryptedMasterKey = encryptWithPassword(password, masterKeyBytes);
+    CardanoModule.load()
+      .then(() => {
+        // eslint-disable-next-line promise/always-return
+        try {
+          const masterKeyPtr = generateWalletRootKey(phrase);
+          const masterKeyBytes = masterKeyPtr.as_bytes();
+          // const publicKey = masterKeyPtr.to_public();
+          const publicKeyHex = Buffer.from(
+            masterKeyPtr.to_public().as_bytes(),
+            'hex'
+          ).toString('hex');
+          const encryptedMasterKey = encryptWithPassword(
+            password,
+            masterKeyBytes
+          );
 
-      const pubAddress = generateAddress(masterKeyPtr.to_public(), 1, 1);
-      /*
-      const masterKey = Buffer.from(masterKeyPtr.as_bytes(), 'hex').toString(
-        'hex'
-      );
-      */
-      saveWalletInStorageByKey(
-        JSON.stringify({
-          name,
-          encryptedMasterKey,
-          publicKeyHex,
-          pubAddress,
-        })
-      );
-      // Close modal
-      toggle();
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      onAddWallet && onAddWallet();
-    } catch (e) {
-      setInvalidMnemonic(true);
-      console.log(`Error while generating root key: ${e}`);
-    }
+          const internalPubAddress = generateAddress(
+            masterKeyPtr.to_public(),
+            1,
+            1
+          );
+          const externalPubAddress = generateAddress(
+            masterKeyPtr.to_public(),
+            0,
+            1
+          );
+          saveWalletInStorageByKey(
+            JSON.stringify({
+              name,
+              encryptedMasterKey,
+              publicKeyHex,
+              internalPubAddress,
+              externalPubAddress,
+            })
+          );
+          // Close modal
+          toggle();
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+          onAddWallet && onAddWallet();
+        } catch (e) {
+          setInvalidMnemonic(true);
+          console.log(`Error while generating root key: ${e}`);
+        }
+      })
+      .catch((e) => console.log(e));
   };
 
   let walletOptionSelectedComponent;

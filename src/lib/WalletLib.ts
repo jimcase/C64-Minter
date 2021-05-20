@@ -16,6 +16,11 @@ export const generateWalletRootKey = (mnemonic: string) => {
   );
   return rootKey;
 };
+export const getPublicKeyFromHex = (publicKeyHex: string) => {
+  return CardanoModule.wasmV4.Bip32PublicKey.from_bytes(
+    Buffer.from(publicKeyHex, 'hex')
+  );
+};
 
 /** Generate a Daedalus /wasmV4/ to create transactions. Do not save this. Regenerate every time. */
 export const getCryptoDaedalusWalletFromMnemonics = (mnemonic: string) => {
@@ -42,7 +47,7 @@ export const generateAddress = (
   accountPubKey: CardanoModule.wasmV4.Bip32PublicKey,
   chain: number,
   index: number
-) => {
+): string => {
   const chainKey = accountPubKey.derive(chain);
   const addrKey = chainKey.derive(index).to_raw_key();
 

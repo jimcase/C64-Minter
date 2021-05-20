@@ -22,7 +22,7 @@ body {
   width: 0 !important;
 }
 .commodoreFontStyle {
-  font-family: commodoreFont !important;
+  /*font-family: commodoreFont !important;*/
 }
 /*
   Sidebar
@@ -43,7 +43,6 @@ body {
   font-size: 35px;
   padding: 10px;
   font-family: commodoreFont;
-  /*font-family: commodoreFont;*/
 }
 #navBar ul {
   list-style: none;
@@ -124,7 +123,7 @@ div.scrollmenu .selectedWallet {
 }
 
 #walletPanel .nav-item .nav-link {
-  font-family: commodoreFont;
+  /*font-family: commodoreFont;*/
 }
 
 /*
