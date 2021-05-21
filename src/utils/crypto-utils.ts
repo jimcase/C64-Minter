@@ -1,7 +1,7 @@
 // import * as openpgp from 'openpgp';
 import validWords from './valid-words';
 
-function buildHTTPMetadatasFromFile(
+export function buildHTTPMetadatasFromFile(
   type: string,
   chunks: string[],
   metadatum: number
@@ -45,7 +45,7 @@ function buildHTTPMetadatasFromFile(
   return metadataTxs;
 }
 
-function buildBase64FromOnChainMetadata(
+export function buildBase64FromOnChainMetadata(
   onChainMetadata: string[] | undefined,
   metadatum: number
 ) {
