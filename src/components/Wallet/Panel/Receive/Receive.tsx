@@ -18,14 +18,15 @@ import {
   getPublicKeyFromHex,
 } from '../../../../lib/WalletLib';
 import CardanoModule from '../../../../lib/CardanoModule';
+import QrCodeAddress from './QrCodeAddress';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ReceiveProps {
   publicKeyHex: string;
   // eslint-disable-next-line react/require-default-props
-  externalAddrList?: string[];
+  externalAddrList: string[];
   // eslint-disable-next-line react/require-default-props
-  internalAddrList?: string[];
+  internalAddrList: string[];
 }
 
 // eslint-disable-next-line react/prop-types,no-empty-pattern
@@ -35,13 +36,6 @@ const Receive: React.FC<ReceiveProps> = ({
   internalAddrList,
 }: ReceiveProps) => {
   const [activeTab, setActiveTab] = useState('1');
-  const [externalAddressList, setExternalAddressList] = useState(
-    externalAddrList || []
-  );
-  const [internalAddressList, setInternalAddressList] = useState(
-    internalAddrList || []
-  );
-
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
@@ -56,6 +50,7 @@ const Receive: React.FC<ReceiveProps> = ({
         return '';
       });
   };
+  /*
   // Pasar las direcciones solo como props y con una callback actualizar/ampliar
   useEffect(() => {
     // External address for receive payments
@@ -81,6 +76,7 @@ const Receive: React.FC<ReceiveProps> = ({
       .catch((e) => console.log(e));
   }, []);
 
+  */
   return (
     <div>
       <Nav tabs>
@@ -110,7 +106,7 @@ const Receive: React.FC<ReceiveProps> = ({
           <Row>
             <Col sm="12">
               <ListGroup>
-                {externalAddressList.map((addr) => (
+                {externalAddrList.map((addr) => (
                   <ListGroupItem
                     key={addr}
                     className="justify-content-between"
@@ -118,7 +114,19 @@ const Receive: React.FC<ReceiveProps> = ({
                   >
                     {addr}
                     <Badge style={{ color: 'black', fontSize: '20px' }} pill>
-                      <FaIcons.FaCopy />
+                      <QrCodeAddress value={addr} />
+                      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid,jsx-a11y/control-has-associated-label */}
+                      <a
+                        href="#"
+                        style={{
+                          display: 'inline-block',
+                          margin: '2px',
+                          textDecoration: 'none',
+                          color: 'black',
+                        }}
+                      >
+                        <FaIcons.FaCopy />
+                      </a>
                     </Badge>
                   </ListGroupItem>
                 ))}
@@ -136,15 +144,27 @@ const Receive: React.FC<ReceiveProps> = ({
           <Row>
             <Col sm="12">
               <ListGroup>
-                {internalAddressList.map((addr) => (
+                {internalAddrList.map((addr2) => (
                   <ListGroupItem
-                    key={addr}
+                    key={addr2}
                     className="justify-content-between"
                     style={{ textAlign: 'center' }}
                   >
-                    {addr}
+                    {addr2}
                     <Badge style={{ color: 'black', fontSize: '20px' }} pill>
-                      <FaIcons.FaCopy />
+                      <QrCodeAddress value={addr2} />
+                      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid,jsx-a11y/control-has-associated-label */}
+                      <a
+                        href="#"
+                        style={{
+                          display: 'inline-block',
+                          margin: '2px',
+                          textDecoration: 'none',
+                          color: 'black',
+                        }}
+                      >
+                        <FaIcons.FaCopy />
+                      </a>
                     </Badge>
                   </ListGroupItem>
                 ))}
