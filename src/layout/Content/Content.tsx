@@ -38,26 +38,31 @@ const Content: React.FC = () => {
         color="success"
         style={{ position: 'fixed', bottom: '0', right: '50px' }}
       >
-        With{' '}
-        <span>
-          <FaIcons.FaHeart />
-        </span>{' '}
-        by{' '}
-        <a
-          href="https://adapools.org/pool/6b5179aee4db62de5bec35029e4c9b02145366acfec872f1594924db"
-          target="_blank"
-          rel="noreferrer"
-        >
-          BOOST
-        </a>{' '}
-        &{' '}
-        <a
-          href="https://adapools.org/pool/bd24b3372791f401cc029455c44ea77f3c8750ce3b804a354af0ff16"
-          target="_blank"
-          rel="noreferrer"
-        >
-          PEACE
-        </a>
+        <div>
+          With{' '}
+          <span>
+            <FaIcons.FaHeart style={{ color: 'red' }} />
+          </span>{' '}
+          by{' '}
+          <a
+            href="https://adapools.org/pool/6b5179aee4db62de5bec35029e4c9b02145366acfec872f1594924db"
+            target="_blank"
+            rel="noreferrer"
+          >
+            BOOST
+          </a>{' '}
+          &{' '}
+          <a
+            href="https://adapools.org/pool/bd24b3372791f401cc029455c44ea77f3c8750ce3b804a354af0ff16"
+            target="_blank"
+            rel="noreferrer"
+          >
+            PEACE
+          </a>
+        </div>
+        <em style={{ fontSize: '12px' }}>
+          Promo while each pool is under 4M in stake
+        </em>
       </Alert>
     </div>
   );
