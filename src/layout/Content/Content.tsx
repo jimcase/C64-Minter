@@ -15,11 +15,11 @@ const Content: React.FC = () => {
 
   let component;
   switch (contentSelected) {
-    case 'Wallet':
-      component = <Wallet />;
-      break;
     case 'Minter':
       component = <Minter />;
+      break;
+    case 'Wallet':
+      component = <Wallet />;
       break;
     case 'Gallery':
       component = <Gallery />;
@@ -29,6 +29,7 @@ const Content: React.FC = () => {
       break;
     default:
       component = <Menu />;
+      break;
   }
   return (
     <div

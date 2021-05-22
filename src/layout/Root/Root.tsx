@@ -47,7 +47,7 @@ const Root: React.FC<RootProps> = ({ children }) => {
   const [navAnimate, setNavAnimate] = useState(false);
   const [navOpen, setNavOpen] = useState(navStartsOpen);
   const [navDocked, setNavDocked] = useState(true);
-  const [contentSelected, selectContent] = useState('Wallet');
+  const [contentSelected, selectContent] = useState('Menu');
 
   // Allow the sidebar to render without animated. By defualt, it
   // animates when it initially loads, making the page jump around with
