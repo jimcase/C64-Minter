@@ -21,7 +21,11 @@ const Nav: React.FC = () => {
       className="bg-light border-right"
       style={{ width: 'auto', height: '100%' }}
     >
-      <div id="navBrand">C64</div>
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
+      <div id="navBrand" onClick={() => selectContent('Menu')}>
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+        <a href="#">C64</a>
+      </div>
       <ul style={styles.nav}>
         <li>
           <FaIcons.FaWallet

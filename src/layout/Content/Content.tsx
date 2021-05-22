@@ -6,6 +6,7 @@ import Minter from '../../views/Minter';
 import Wallet from '../../views/Wallet';
 import Gallery from '../../views/Gallery';
 import Settings from '../../views/Settings';
+import Menu from '../../views/Menu';
 
 const Content: React.FC = () => {
   const ctx = useContext(LayoutContext);
@@ -14,6 +15,9 @@ const Content: React.FC = () => {
 
   let component;
   switch (contentSelected) {
+    case 'Wallet':
+      component = <Wallet />;
+      break;
     case 'Minter':
       component = <Minter />;
       break;
@@ -24,7 +28,7 @@ const Content: React.FC = () => {
       component = <Settings />;
       break;
     default:
-      component = <Wallet />;
+      component = <Menu />;
   }
   return (
     <div

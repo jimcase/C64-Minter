@@ -44,6 +44,10 @@ body {
   padding: 10px;
   font-family: commodoreFont;
 }
+#navBrand a {
+  color: inherit;
+  text-decoration: none;
+}
 #navBar ul {
   list-style: none;
   padding: 0.5em 0;
