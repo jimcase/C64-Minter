@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Row, Col } from 'reactstrap';
+import { LayoutContext } from '../layout/Root/Root';
 
 const styles = {
   menuOption: {
@@ -15,6 +16,10 @@ interface MenuProps {}
 
 // eslint-disable-next-line react/prop-types
 const Menu: React.FC<MenuProps> = () => {
+  const ctx = useContext(LayoutContext);
+
+  const { selectContent } = ctx;
+
   return (
     <div id="menuView" style={{ height: '100%' }}>
       <div style={{ padding: '15px' }}>
@@ -27,13 +32,23 @@ const Menu: React.FC<MenuProps> = () => {
           <Col>
             <div style={styles.menuOption}>
               {/* eslint-disable-next-line react/button-has-type */}
-              <button style={styles.menuButton}>Gallery</button>
+              <button
+                style={styles.menuButton}
+                onClick={() => selectContent('Gallery')}
+              >
+                Gallery
+              </button>
             </div>
           </Col>
           <Col>
             <div style={styles.menuOption}>
               {/* eslint-disable-next-line react/button-has-type */}
-              <button style={styles.menuButton}>Mint NFTs</button>
+              <button
+                style={styles.menuButton}
+                onClick={() => selectContent('Minter')}
+              >
+                Mint NFTs
+              </button>
             </div>
           </Col>
         </Row>
@@ -41,7 +56,12 @@ const Menu: React.FC<MenuProps> = () => {
           <Col>
             <div style={styles.menuOption}>
               {/* eslint-disable-next-line react/button-has-type */}
-              <button style={styles.menuButton}>Wallet</button>
+              <button
+                style={styles.menuButton}
+                onClick={() => selectContent('Wallet')}
+              >
+                Wallet
+              </button>
             </div>
           </Col>
         </Row>

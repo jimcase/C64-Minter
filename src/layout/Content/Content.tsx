@@ -65,9 +65,6 @@ const Content: React.FC = () => {
             PEACE
           </a>
         </div>
-        <em style={{ fontSize: '12px' }}>
-          Promo while each pool is under 4M in stake
-        </em>
       </Alert>
     </div>
   );
