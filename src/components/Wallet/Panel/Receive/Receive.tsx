@@ -22,9 +22,29 @@ import CardanoModule from '../../../../lib/CardanoModule';
 import QrCodeAddress from './QrCodeAddress';
 
 const styles = {
+  listGroupItem: {
+    textAlign: 'center',
+  },
   input: {
     fontSize: '12px',
     minWidth: '50px',
+  },
+  newAddress: {
+    textAlign: 'center',
+    fontSize: '30px',
+  },
+  address: {
+    fontSize: '12px',
+  },
+  tools: {
+    color: 'black',
+    fontSize: '20px',
+  },
+  copyPaste: {
+    display: 'inline-block',
+    margin: '2px',
+    textDecoration: 'none',
+    color: 'black',
   },
 };
 
@@ -43,7 +63,7 @@ const Receive: React.FC<ReceiveProps> = ({
   externalAddrList,
   internalAddrList,
 }: ReceiveProps) => {
-  const [activeTab, setActiveTab] = useState('1');
+  const [activeTab, setActiveTab] = useState('external');
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
@@ -85,14 +105,15 @@ const Receive: React.FC<ReceiveProps> = ({
   }, []);
 
   */
+
   return (
     <div>
       <Nav tabs>
         <NavItem>
           <NavLink
-            className={classnames({ active: activeTab === '1' })}
+            className={classnames({ active: activeTab === 'external' })}
             onClick={() => {
-              toggle('1');
+              toggle('external');
             }}
           >
             External
@@ -100,9 +121,9 @@ const Receive: React.FC<ReceiveProps> = ({
         </NavItem>
         <NavItem>
           <NavLink
-            className={classnames({ active: activeTab === '2' })}
+            className={classnames({ active: activeTab === 'internal' })}
             onClick={() => {
-              toggle('2');
+              toggle('internal');
             }}
           >
             Internal
@@ -110,7 +131,7 @@ const Receive: React.FC<ReceiveProps> = ({
         </NavItem>
       </Nav>
       <TabContent activeTab={activeTab}>
-        <TabPane tabId="1">
+        <TabPane tabId="external">
           <Row>
             <Col sm="12">
               <ListGroup>
@@ -118,31 +139,20 @@ const Receive: React.FC<ReceiveProps> = ({
                   <ListGroupItem
                     key={addr}
                     className="justify-content-between"
-                    style={{ textAlign: 'center' }}
+                    style={styles.listGroupItem}
                   >
                     <Row>
                       <Col sm="2">
                         <Input style={styles.input} />
                       </Col>
                       <Col>
-                        <em style={{ fontSize: '12px' }}>{addr}</em>
+                        <em style={styles.address}>{addr}</em>
                       </Col>
                       <Col>
-                        <Badge
-                          style={{ color: 'black', fontSize: '20px' }}
-                          pill
-                        >
+                        <Badge style={styles.tools} pill>
                           <QrCodeAddress value={addr} />
                           {/* eslint-disable-next-line jsx-a11y/anchor-is-valid,jsx-a11y/control-has-associated-label */}
-                          <a
-                            href="#"
-                            style={{
-                              display: 'inline-block',
-                              margin: '2px',
-                              textDecoration: 'none',
-                              color: 'black',
-                            }}
-                          >
+                          <a href="#" style={styles.copyPaste}>
                             <FaIcons.FaCopy />
                           </a>
                         </Badge>
@@ -152,7 +162,7 @@ const Receive: React.FC<ReceiveProps> = ({
                 ))}
                 <ListGroupItem
                   className="justify-content-between"
-                  style={{ textAlign: 'center', fontSize: '30px' }}
+                  style={styles.newAddress}
                 >
                   <FaIcons.FaPlusCircle />
                 </ListGroupItem>
@@ -160,7 +170,7 @@ const Receive: React.FC<ReceiveProps> = ({
             </Col>
           </Row>
         </TabPane>
-        <TabPane tabId="2">
+        <TabPane tabId="internal">
           <Row>
             <Col sm="12">
               <ListGroup>
@@ -168,31 +178,20 @@ const Receive: React.FC<ReceiveProps> = ({
                   <ListGroupItem
                     key={addr}
                     className="justify-content-between"
-                    style={{ textAlign: 'center' }}
+                    style={styles.listGroupItem}
                   >
                     <Row>
                       <Col sm="2">
                         <Input style={styles.input} />
                       </Col>
                       <Col>
-                        <em style={{ fontSize: '12px' }}>{addr}</em>
+                        <em style={styles.address}>{addr}</em>
                       </Col>
                       <Col>
-                        <Badge
-                          style={{ color: 'black', fontSize: '20px' }}
-                          pill
-                        >
+                        <Badge style={styles.tools} pill>
                           <QrCodeAddress value={addr} />
                           {/* eslint-disable-next-line jsx-a11y/anchor-is-valid,jsx-a11y/control-has-associated-label */}
-                          <a
-                            href="#"
-                            style={{
-                              display: 'inline-block',
-                              margin: '2px',
-                              textDecoration: 'none',
-                              color: 'black',
-                            }}
-                          >
+                          <a href="#" style={styles.copyPaste}>
                             <FaIcons.FaCopy />
                           </a>
                         </Badge>
@@ -202,7 +201,7 @@ const Receive: React.FC<ReceiveProps> = ({
                 ))}
                 <ListGroupItem
                   className="justify-content-between"
-                  style={{ textAlign: 'center', fontSize: '30px' }}
+                  style={styles.newAddress}
                 >
                   <FaIcons.FaPlusCircle />
                 </ListGroupItem>
