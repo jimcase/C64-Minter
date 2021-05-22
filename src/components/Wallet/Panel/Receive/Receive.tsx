@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Col,
   Row,
@@ -10,6 +10,7 @@ import {
   ListGroup,
   ListGroupItem,
   Badge,
+  Input,
 } from 'reactstrap';
 import classnames from 'classnames';
 import * as FaIcons from 'react-icons/fa';
@@ -19,6 +20,13 @@ import {
 } from '../../../../lib/WalletLib';
 import CardanoModule from '../../../../lib/CardanoModule';
 import QrCodeAddress from './QrCodeAddress';
+
+const styles = {
+  input: {
+    fontSize: '12px',
+    minWidth: '50px',
+  },
+};
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ReceiveProps {
@@ -112,22 +120,34 @@ const Receive: React.FC<ReceiveProps> = ({
                     className="justify-content-between"
                     style={{ textAlign: 'center' }}
                   >
-                    {addr}
-                    <Badge style={{ color: 'black', fontSize: '20px' }} pill>
-                      <QrCodeAddress value={addr} />
-                      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid,jsx-a11y/control-has-associated-label */}
-                      <a
-                        href="#"
-                        style={{
-                          display: 'inline-block',
-                          margin: '2px',
-                          textDecoration: 'none',
-                          color: 'black',
-                        }}
-                      >
-                        <FaIcons.FaCopy />
-                      </a>
-                    </Badge>
+                    <Row>
+                      <Col sm="2">
+                        <Input style={styles.input} />
+                      </Col>
+                      <Col>
+                        <em style={{ fontSize: '12px' }}>{addr}</em>
+                      </Col>
+                      <Col>
+                        <Badge
+                          style={{ color: 'black', fontSize: '20px' }}
+                          pill
+                        >
+                          <QrCodeAddress value={addr} />
+                          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid,jsx-a11y/control-has-associated-label */}
+                          <a
+                            href="#"
+                            style={{
+                              display: 'inline-block',
+                              margin: '2px',
+                              textDecoration: 'none',
+                              color: 'black',
+                            }}
+                          >
+                            <FaIcons.FaCopy />
+                          </a>
+                        </Badge>
+                      </Col>
+                    </Row>
                   </ListGroupItem>
                 ))}
                 <ListGroupItem
@@ -144,28 +164,40 @@ const Receive: React.FC<ReceiveProps> = ({
           <Row>
             <Col sm="12">
               <ListGroup>
-                {internalAddrList.map((addr2) => (
+                {internalAddrList.map((addr) => (
                   <ListGroupItem
-                    key={addr2}
+                    key={addr}
                     className="justify-content-between"
                     style={{ textAlign: 'center' }}
                   >
-                    {addr2}
-                    <Badge style={{ color: 'black', fontSize: '20px' }} pill>
-                      <QrCodeAddress value={addr2} />
-                      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid,jsx-a11y/control-has-associated-label */}
-                      <a
-                        href="#"
-                        style={{
-                          display: 'inline-block',
-                          margin: '2px',
-                          textDecoration: 'none',
-                          color: 'black',
-                        }}
-                      >
-                        <FaIcons.FaCopy />
-                      </a>
-                    </Badge>
+                    <Row>
+                      <Col sm="2">
+                        <Input style={styles.input} />
+                      </Col>
+                      <Col>
+                        <em style={{ fontSize: '12px' }}>{addr}</em>
+                      </Col>
+                      <Col>
+                        <Badge
+                          style={{ color: 'black', fontSize: '20px' }}
+                          pill
+                        >
+                          <QrCodeAddress value={addr} />
+                          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid,jsx-a11y/control-has-associated-label */}
+                          <a
+                            href="#"
+                            style={{
+                              display: 'inline-block',
+                              margin: '2px',
+                              textDecoration: 'none',
+                              color: 'black',
+                            }}
+                          >
+                            <FaIcons.FaCopy />
+                          </a>
+                        </Badge>
+                      </Col>
+                    </Row>
                   </ListGroupItem>
                 ))}
                 <ListGroupItem
