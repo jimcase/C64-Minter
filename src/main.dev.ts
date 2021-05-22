@@ -237,7 +237,7 @@ ipcMain.on(REMOVE_DATA_FROM_STORAGE, (_event, message) => {
 });
 
 /*
-  Wallet handler- NEW TRY
+  Wallet Handler
  */
 
 // Receive a SAVE_WALLET_IN_STORAGE call from renderer
@@ -259,12 +259,16 @@ ipcMain.on(SAVE_WALLET_IN_STORAGE, (_event, message) => {
       });
     } else {
       // Send message back to window as 2nd arg "data"
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      mainWindow.send(HANDLE_SAVE_WALLET, {
-        success: true,
-        message,
-      });
+      try {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        mainWindow.send(HANDLE_SAVE_WALLET, {
+          success: true,
+          message,
+        });
+      } catch (e) {
+        console.log(e);
+      }
     }
   });
 });
@@ -282,13 +286,16 @@ ipcMain.on(FETCH_WALLETS_FROM_STORAGE, (_event) => {
         message: 'wallets not returned',
       });
     } else {
-      // Send message back to window
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      mainWindow.send(HANDLE_FETCH_WALLETS, {
-        success: true,
-        message: wallets, // do something with the data
-      });
+      try {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        mainWindow.send(HANDLE_FETCH_WALLETS, {
+          success: true,
+          message: wallets, // do something with the data
+        });
+      } catch (e) {
+        console.log(e);
+      }
     }
   });
 });
@@ -308,13 +315,16 @@ ipcMain.on(REMOVE_WALLET_FROM_STORAGE, (_event, message) => {
         message: 'wallets not saved',
       });
     } else {
-      // Send new updated array to window as 2nd arg "data"
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      mainWindow.send(HANDLE_REMOVE_WALLET, {
-        success: true,
-        message: wallets,
-      });
+      try {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        mainWindow.send(HANDLE_REMOVE_WALLET, {
+          success: true,
+          message: wallets,
+        });
+      } catch (e) {
+        console.log(e);
+      }
     }
   });
 });
