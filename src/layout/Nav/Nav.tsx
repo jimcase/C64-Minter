@@ -48,7 +48,7 @@ const Nav: React.FC = () => {
         <li style={{ marginTop: 'auto' }}>
           <FaIcons.FaTools
             className="sidebarIcons"
-            onClick={() => selectContent('About')}
+            onClick={() => selectContent('Settings')}
           />
         </li>
       </ul>

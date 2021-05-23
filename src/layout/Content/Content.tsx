@@ -24,7 +24,7 @@ const Content: React.FC = () => {
     case 'Gallery':
       component = <Gallery />;
       break;
-    case 'About':
+    case 'Settings':
       component = <Settings />;
       break;
     default:
