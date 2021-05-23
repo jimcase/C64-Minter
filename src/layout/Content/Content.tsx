@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Alert } from 'reactstrap';
 import * as FaIcons from 'react-icons/fa';
-import { LayoutContext } from '../Root/Root';
+import { AppContext } from '../Root/Root';
 import Minter from '../../views/Minter';
 import Wallet from '../../views/Wallet';
 import Gallery from '../../views/Gallery';
@@ -9,7 +9,7 @@ import Settings from '../../views/Settings';
 import Menu from '../../views/Menu';
 
 const Content: React.FC = () => {
-  const ctx = useContext(LayoutContext);
+  const ctx = useContext(AppContext);
 
   const { contentSelected } = ctx; // TODO: set var when
 

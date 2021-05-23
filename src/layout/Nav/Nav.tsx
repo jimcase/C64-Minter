@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import * as FaIcons from 'react-icons/fa';
-import { LayoutContext } from '../Root/Root';
+import { AppContext } from '../Root/Root';
 
 const styles = {
   nav: {
@@ -11,7 +11,7 @@ const styles = {
 };
 
 const Nav: React.FC = () => {
-  const ctx = useContext(LayoutContext);
+  const ctx = useContext(AppContext);
 
   const { selectContent } = ctx;
 

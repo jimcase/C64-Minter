@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Row, Col } from 'reactstrap';
-import { LayoutContext } from '../layout/Root/Root';
+import { AppContext } from '../layout/Root/Root';
 
 const styles = {
   menuOption: {
@@ -16,7 +16,7 @@ interface MenuProps {}
 
 // eslint-disable-next-line react/prop-types
 const Menu: React.FC<MenuProps> = () => {
-  const ctx = useContext(LayoutContext);
+  const ctx = useContext(AppContext);
 
   const { selectContent } = ctx;
 

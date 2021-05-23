@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import Media from 'react-media';
 
+const { ENDPOINTS, NETWORK } = require('../../utils/settings/constants');
+
 const BootrapBreakpoints = {
   xs: 576,
   sm: 768,
@@ -9,20 +11,27 @@ const BootrapBreakpoints = {
   lg: 1200,
 };
 
-interface LayoutState {
+interface AppState {
+  // Layout
   navAnimate: boolean;
   navBreakpoint: 'xs' | 'sm' | 'md' | 'lg';
   navOpen: boolean;
   navDocked: boolean;
   navWidth: number;
   contentSelected: string;
-
   setNavOpen: (open: boolean) => void;
   setNavDocked: (docked: boolean) => void;
   selectContent: (content: string) => void;
+
+  // Settings
+  networkSelected: { network: string };
+  setNetwork: (network: { network: string }) => void;
+  endpointSelected: { mainnet: string; testnet: string };
+  setEndpoint: (endpoint: { mainnet: string; testnet: string }) => void;
 }
 
-export const LayoutContext = React.createContext<LayoutState>({
+export const AppContext = React.createContext<AppState>({
+  // Layout
   navAnimate: true,
   navBreakpoint: 'sm',
   navOpen: false,
@@ -32,6 +41,12 @@ export const LayoutContext = React.createContext<LayoutState>({
   selectContent: () => {},
   setNavOpen: () => {},
   setNavDocked: () => {},
+
+  // Settings
+  networkSelected: { network: NETWORK.testnet },
+  setNetwork: () => {},
+  endpointSelected: ENDPOINTS[0],
+  setEndpoint: () => {},
 });
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -49,6 +64,9 @@ const Root: React.FC<RootProps> = ({ children }) => {
   const [navDocked, setNavDocked] = useState(true);
   const [contentSelected, selectContent] = useState('Menu');
 
+  const [networkSelected, setNetwork] = useState({ network: NETWORK.testnet });
+  const [endpointSelected, setEndpoint] = useState(ENDPOINTS[0]);
+
   // Allow the sidebar to render without animated. By defualt, it
   // animates when it initially loads, making the page jump around with
   // every page load. This enables it to appear fully in instantly, but
@@ -62,7 +80,7 @@ const Root: React.FC<RootProps> = ({ children }) => {
   }, []);
 
   // Genereate desired Layout state here.
-  const layout: LayoutState = {
+  const layout: AppState = {
     navAnimate,
     navBreakpoint: 'sm',
     navOpen,
@@ -72,10 +90,14 @@ const Root: React.FC<RootProps> = ({ children }) => {
     selectContent,
     setNavOpen,
     setNavDocked,
+    networkSelected,
+    setNetwork,
+    endpointSelected,
+    setEndpoint,
   };
 
   return (
-    <LayoutContext.Provider value={layout}>
+    <AppContext.Provider value={layout}>
       <Media
         query={{ minWidth: BootrapBreakpoints.sm }}
         onChange={(isLarge) => {
@@ -84,7 +106,7 @@ const Root: React.FC<RootProps> = ({ children }) => {
         }}
       />
       <div>{children}</div>
-    </LayoutContext.Provider>
+    </AppContext.Provider>
   );
 };
 

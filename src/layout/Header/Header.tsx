@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { Nav, Navbar, NavItem } from 'reactstrap';
 
 import * as FaIcons from 'react-icons/fa';
-import { LayoutContext } from '../Root/Root';
+import { AppContext } from '../Root/Root';
 
 const styles = {
   arrow: {
@@ -13,7 +13,7 @@ const styles = {
 };
 
 const Header: React.FC = () => {
-  const ctx = useContext(LayoutContext);
+  const ctx = useContext(AppContext);
 
   const { navOpen, setNavOpen, navDocked, navAnimate } = ctx;
 
