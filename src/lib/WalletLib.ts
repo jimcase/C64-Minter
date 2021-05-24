@@ -99,8 +99,26 @@ export function decryptWithPassword(
   return decryptedBytes;
 }
 
-export const buildTransaction = () => {
+export const buildTransaction = (inputHex: string, outputHex: string) => {
+  const inputs = CardanoModule.wasmV4.TransactionInputs.new();
+  inputs.add(
+    CardanoModule.wasmV4.TransactionInput.new(
+      CardanoModule.wasmV4.TransactionHash.from_bytes(
+        Buffer.from(inputHex, 'hex'),
+        1
+      )
+    )
+  );
+
   const outputs = CardanoModule.wasmV4.TransactionOutputs.new();
+  outputs.add(
+    CardanoModule.wasmV4.TransactionOutput.new(
+      CardanoModule.wasmV4.TransactionHash.from_bytes(
+        Buffer.from(inputHex, 'hex'), // TODO: derive from root key, get it from localStorage
+        1
+      )
+    )
+  );
 
   const value = CardanoModule.wasmV4.Value.new(
     CardanoModule.wasmV4.BigNum.from_str((100).toString())
