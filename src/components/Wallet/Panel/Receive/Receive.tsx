@@ -51,16 +51,12 @@ const styles = {
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ReceiveProps {
   publicKeyHex: string;
-  // eslint-disable-next-line react/require-default-props
-  externalAddrList: string[];
-  // eslint-disable-next-line react/require-default-props
-  internalAddrList: string[];
   // eslint-disable-next-line react/require-default-props,react/no-unused-prop-types
-  externalAddrList2: {
+  externalAddrList: {
     [key: string]: string;
   };
   // eslint-disable-next-line react/require-default-props,react/no-unused-prop-types
-  internalAddrList2?: {
+  internalAddrList: {
     [key: string]: string;
   };
 }
@@ -70,7 +66,6 @@ const Receive: React.FC<ReceiveProps> = ({
   publicKeyHex,
   externalAddrList,
   internalAddrList,
-  externalAddrList2,
 }: ReceiveProps) => {
   const [activeTab, setActiveTab] = useState('external');
   const toggle = (tab) => {
@@ -144,13 +139,65 @@ const Receive: React.FC<ReceiveProps> = ({
           <Row>
             <Col sm="12">
               <ListGroup>
-                {Object.keys(externalAddrList2).map((key, index) => (
+                {Object.keys(externalAddrList).map((key) => (
                   // eslint-disable-next-line react/no-array-index-key
-                  <p key={index}>
-                    {' '}
-                    this is my key {key} and this is my value{' '}
-                    {externalAddrList2[key]}
-                  </p>
+                  <ListGroupItem
+                    key={key}
+                    className="justify-content-between"
+                    style={styles.listGroupItem}
+                  >
+                    <Row>
+                      <Col sm="2">
+                        <Input defaultValue={key} style={styles.input} />
+                      </Col>
+                      <Col>
+                        <em style={styles.address}>{externalAddrList[key]}</em>
+                      </Col>
+                      <Col>
+                        <Badge style={styles.tools} pill>
+                          <QrCodeAddress value={externalAddrList[key]} />
+                          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid,jsx-a11y/control-has-associated-label */}
+                          <a href="#" style={styles.copyPaste}>
+                            <FaIcons.FaCopy />
+                          </a>
+                        </Badge>
+                      </Col>
+                    </Row>
+                  </ListGroupItem>
+                ))}
+              </ListGroup>
+            </Col>
+          </Row>
+        </TabPane>
+        <TabPane tabId="internal">
+          <Row>
+            <Col sm="12">
+              <ListGroup>
+                {Object.keys(internalAddrList).map((key) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <ListGroupItem
+                    key={key}
+                    className="justify-content-between"
+                    style={styles.listGroupItem}
+                  >
+                    <Row>
+                      <Col sm="2">
+                        <Input defaultValue={key} style={styles.input} />
+                      </Col>
+                      <Col>
+                        <em style={styles.address}>{internalAddrList[key]}</em>
+                      </Col>
+                      <Col>
+                        <Badge style={styles.tools} pill>
+                          <QrCodeAddress value={internalAddrList[key]} />
+                          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid,jsx-a11y/control-has-associated-label */}
+                          <a href="#" style={styles.copyPaste}>
+                            <FaIcons.FaCopy />
+                          </a>
+                        </Badge>
+                      </Col>
+                    </Row>
+                  </ListGroupItem>
                 ))}
               </ListGroup>
             </Col>

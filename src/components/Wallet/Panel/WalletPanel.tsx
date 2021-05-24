@@ -69,14 +69,6 @@ const WalletPanel: React.FC<WalletPanelProps> = ({
             <p>
               <strong>PublicKey:</strong> {wallet2.publicKeyHex}
             </p>
-            <p>
-              <strong>Internal PublicAddress:</strong>{' '}
-              {wallet2.internalPubAddress}
-            </p>
-            <p>
-              <strong>External PublicAddress:</strong>{' '}
-              {wallet2.externalPubAddress}
-            </p>
           </Jumbotron>
         </Card>
       </div>
@@ -143,10 +135,8 @@ const WalletPanel: React.FC<WalletPanelProps> = ({
           <Row>
             <Receive
               publicKeyHex={wallet2.publicKeyHex}
-              externalAddrList2={wallet2.externalPubAddress}
-              internalAddrList2={wallet2.internalPubAddress}
-              externalAddrList={[]}
-              internalAddrList={[]}
+              externalAddrList={wallet2.externalPubAddress}
+              internalAddrList={wallet2.internalPubAddress}
             />
           </Row>
         </TabPane>
