@@ -16,19 +16,31 @@ import Receive from './Receive/Receive';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface WalletPanelProps {
-  // eslint-disable-next-line react/require-default-props
-  wallet: {
+  // eslint-disable-next-line react/require-default-props,react/no-unused-prop-types
+  wallet?: {
     name: string;
     encryptedMasterKey: string;
     publicKeyHex: string;
     internalPubAddress: string[];
     externalPubAddress: string[];
   };
+  // eslint-disable-next-line react/no-unused-prop-types,react/require-default-props
+  wallet2: {
+    name: string;
+    encryptedMasterKey: string;
+    publicKeyHex: string;
+    internalPubAddress: {
+      [key: string]: string;
+    };
+    externalPubAddress: {
+      [key: string]: string;
+    };
+  };
 }
 
 // eslint-disable-next-line react/prop-types,no-empty-pattern
 const WalletPanel: React.FC<WalletPanelProps> = ({
-  wallet,
+  wallet2,
 }: WalletPanelProps) => {
   const [activeTab, setActiveTab] = useState('receive');
 
@@ -40,26 +52,30 @@ const WalletPanel: React.FC<WalletPanelProps> = ({
       <div>
         <Card style={{ marginTop: '40px' }}>
           <Jumbotron style={{ padding: '15px' }}>
-            <h1 className="display-3">{wallet.name}</h1>
+            <h1 className="display-3">{wallet2.name}</h1>
             <h3>
               <strong>3301 ₳</strong>
             </h3>
             <hr className="my-2" />
             <p>
               <strong>Encrypted MasterKey:</strong>{' '}
-              {wallet.encryptedMasterKey[0]}...
-              {wallet.encryptedMasterKey[wallet.encryptedMasterKey.length - 1]}
+              {wallet2.encryptedMasterKey[0]}...
+              {
+                wallet2.encryptedMasterKey[
+                  wallet2.encryptedMasterKey.length - 1
+                ]
+              }
             </p>
             <p>
-              <strong>PublicKey:</strong> {wallet.publicKeyHex}
+              <strong>PublicKey:</strong> {wallet2.publicKeyHex}
             </p>
             <p>
               <strong>Internal PublicAddress:</strong>{' '}
-              {wallet.internalPubAddress}
+              {wallet2.internalPubAddress}
             </p>
             <p>
               <strong>External PublicAddress:</strong>{' '}
-              {wallet.externalPubAddress}
+              {wallet2.externalPubAddress}
             </p>
           </Jumbotron>
         </Card>
@@ -126,9 +142,11 @@ const WalletPanel: React.FC<WalletPanelProps> = ({
         <TabPane tabId="receive">
           <Row>
             <Receive
-              publicKeyHex={wallet.publicKeyHex}
-              externalAddrList={wallet.externalPubAddress}
-              internalAddrList={wallet.internalPubAddress}
+              publicKeyHex={wallet2.publicKeyHex}
+              externalAddrList2={wallet2.externalPubAddress}
+              internalAddrList2={wallet2.internalPubAddress}
+              externalAddrList={[]}
+              internalAddrList={[]}
             />
           </Row>
         </TabPane>

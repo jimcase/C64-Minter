@@ -81,13 +81,21 @@ const HandleWallet: React.FC<HandleWalletProps> = ({
             0,
             1
           );
+          const internalPubAddressDict: {
+            [key: string]: string;
+          } = {};
+          const externalPubAddressDict: {
+            [key: string]: string;
+          } = {};
+          internalPubAddressDict.default = internalPubAddress;
+          externalPubAddressDict.default = externalPubAddress;
           saveWalletInStorageByKey(
             JSON.stringify({
               name,
               encryptedMasterKey,
               publicKeyHex,
-              internalPubAddress: [internalPubAddress],
-              externalPubAddress: [externalPubAddress],
+              internalPubAddress: internalPubAddressDict, // TODO: add dict nameId-address
+              externalPubAddress: externalPubAddressDict, // TODO: add dict nameId-address
             })
           );
           // Close modal

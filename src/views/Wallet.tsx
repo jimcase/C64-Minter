@@ -19,8 +19,8 @@ const Wallet: React.FC<WalletProps> = () => {
       name: '',
       encryptedMasterKey: '',
       publicKeyHex: '',
-      internalPubAddress: [''],
-      externalPubAddress: [''],
+      internalPubAddress: {},
+      externalPubAddress: {},
     },
   ]); // localStorage
   const [selectedWallet, setWallet] = useState(
@@ -28,8 +28,8 @@ const Wallet: React.FC<WalletProps> = () => {
       name: '',
       encryptedMasterKey: '',
       publicKeyHex: '',
-      internalPubAddress: [''],
-      externalPubAddress: [''],
+      internalPubAddress: {},
+      externalPubAddress: {},
     }
   );
 
@@ -39,8 +39,12 @@ const Wallet: React.FC<WalletProps> = () => {
     name: string;
     encryptedMasterKey: string;
     publicKeyHex: string;
-    internalPubAddress: string[];
-    externalPubAddress: string[];
+    internalPubAddress: {
+      [key: string]: string;
+    };
+    externalPubAddress: {
+      [key: string]: string;
+    };
   } => {
     console.log(`selected wallet ${name}`);
     for (let i = 0; i < wallets.length; i += 1) {
@@ -102,7 +106,7 @@ const Wallet: React.FC<WalletProps> = () => {
             </span>
           ))}
         </div>
-        <WalletPanel wallet={selectedWallet} />
+        <WalletPanel wallet2={selectedWallet} />
       </div>
     </div>
   );

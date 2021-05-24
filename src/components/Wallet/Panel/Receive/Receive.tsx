@@ -55,6 +55,14 @@ interface ReceiveProps {
   externalAddrList: string[];
   // eslint-disable-next-line react/require-default-props
   internalAddrList: string[];
+  // eslint-disable-next-line react/require-default-props,react/no-unused-prop-types
+  externalAddrList2: {
+    [key: string]: string;
+  };
+  // eslint-disable-next-line react/require-default-props,react/no-unused-prop-types
+  internalAddrList2?: {
+    [key: string]: string;
+  };
 }
 
 // eslint-disable-next-line react/prop-types,no-empty-pattern
@@ -62,6 +70,7 @@ const Receive: React.FC<ReceiveProps> = ({
   publicKeyHex,
   externalAddrList,
   internalAddrList,
+  externalAddrList2,
 }: ReceiveProps) => {
   const [activeTab, setActiveTab] = useState('external');
   const toggle = (tab) => {
@@ -135,76 +144,14 @@ const Receive: React.FC<ReceiveProps> = ({
           <Row>
             <Col sm="12">
               <ListGroup>
-                {externalAddrList.map((addr) => (
-                  <ListGroupItem
-                    key={addr}
-                    className="justify-content-between"
-                    style={styles.listGroupItem}
-                  >
-                    <Row>
-                      <Col sm="2">
-                        <Input style={styles.input} />
-                      </Col>
-                      <Col>
-                        <em style={styles.address}>{addr}</em>
-                      </Col>
-                      <Col>
-                        <Badge style={styles.tools} pill>
-                          <QrCodeAddress value={addr} />
-                          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid,jsx-a11y/control-has-associated-label */}
-                          <a href="#" style={styles.copyPaste}>
-                            <FaIcons.FaCopy />
-                          </a>
-                        </Badge>
-                      </Col>
-                    </Row>
-                  </ListGroupItem>
+                {Object.keys(externalAddrList2).map((key, index) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <p key={index}>
+                    {' '}
+                    this is my key {key} and this is my value{' '}
+                    {externalAddrList2[key]}
+                  </p>
                 ))}
-                <ListGroupItem
-                  className="justify-content-between"
-                  style={styles.newAddress}
-                >
-                  <FaIcons.FaPlusCircle />
-                </ListGroupItem>
-              </ListGroup>
-            </Col>
-          </Row>
-        </TabPane>
-        <TabPane tabId="internal">
-          <Row>
-            <Col sm="12">
-              <ListGroup>
-                {internalAddrList.map((addr) => (
-                  <ListGroupItem
-                    key={addr}
-                    className="justify-content-between"
-                    style={styles.listGroupItem}
-                  >
-                    <Row>
-                      <Col sm="2">
-                        <Input style={styles.input} />
-                      </Col>
-                      <Col>
-                        <em style={styles.address}>{addr}</em>
-                      </Col>
-                      <Col>
-                        <Badge style={styles.tools} pill>
-                          <QrCodeAddress value={addr} />
-                          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid,jsx-a11y/control-has-associated-label */}
-                          <a href="#" style={styles.copyPaste}>
-                            <FaIcons.FaCopy />
-                          </a>
-                        </Badge>
-                      </Col>
-                    </Row>
-                  </ListGroupItem>
-                ))}
-                <ListGroupItem
-                  className="justify-content-between"
-                  style={styles.newAddress}
-                >
-                  <FaIcons.FaPlusCircle />
-                </ListGroupItem>
               </ListGroup>
             </Col>
           </Row>
