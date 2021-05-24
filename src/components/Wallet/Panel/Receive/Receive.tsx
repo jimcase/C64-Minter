@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, CSSProperties } from 'react';
 import {
   Col,
   Row,
@@ -21,7 +21,11 @@ import {
 import CardanoModule from '../../../../lib/CardanoModule';
 import QrCodeAddress from './QrCodeAddress';
 
-const styles = {
+interface StylesDictionary {
+  [Key: string]: CSSProperties;
+}
+
+const styles: StylesDictionary = {
   listGroupItem: {
     textAlign: 'center',
   },
@@ -165,6 +169,12 @@ const Receive: React.FC<ReceiveProps> = ({
                     </Row>
                   </ListGroupItem>
                 ))}
+                <ListGroupItem
+                  className="justify-content-between"
+                  style={styles.newAddress}
+                >
+                  <FaIcons.FaPlusCircle />
+                </ListGroupItem>
               </ListGroup>
             </Col>
           </Row>

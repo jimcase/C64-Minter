@@ -98,3 +98,13 @@ export function decryptWithPassword(
   }
   return decryptedBytes;
 }
+
+export const buildTransaction = () => {
+  const outputs = CardanoModule.wasmV4.TransactionOutputs.new();
+
+  const value = CardanoModule.wasmV4.Value.new(
+    CardanoModule.wasmV4.BigNum.from_str((100).toString())
+  );
+
+  outputs.add(CardanoModule.wasmV4.TransactionOutput.new(address, value));
+};
