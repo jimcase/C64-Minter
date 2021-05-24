@@ -76,6 +76,7 @@ const Receive: React.FC<ReceiveProps> = ({
     if (activeTab !== tab) setActiveTab(tab);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getAddress = async (chain: number, index: number): Promise<string> => {
     return CardanoModule.load()
       .then(() => {
