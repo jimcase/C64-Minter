@@ -5,24 +5,69 @@ interface TransactionMetadata {
   data: any;
 }
 
-export const createMetadata = (metadata: Array<TransactionMetadata>) => {
-  const transactionMetadata =
-    CardanoModule.wasmV4.GeneralTransactionMetadata.new();
+export const createMetadata = async (
+  metadata: Array<TransactionMetadata>
+): Promise<CardanoModule.wasmV4.TransactionMetadata> => {
+  const transactionMetadata = await CardanoModule.load()
+    .then(() => {
+      const generalTransactionMetadata =
+        CardanoModule.wasmV4.GeneralTransactionMetadata.new();
 
-  metadata.forEach((meta: TransactionMetadata) => {
-    const metadatum = CardanoModule.wasmV4.encode_json_str_to_metadatum(
-      JSON.stringify(meta.data),
-      CardanoModule.wasmV4.MetadataJsonSchema.BasicConversions
-    );
-    transactionMetadata.insert(
-      CardanoModule.wasmV4.BigNum.from_str(meta.label),
-      metadatum
-    );
-  });
-  return CardanoModule.wasmV4.TransactionMetadata.new(transactionMetadata);
+      metadata.forEach((meta: TransactionMetadata) => {
+        const metadatum = CardanoModule.wasmV4.encode_json_str_to_metadatum(
+          JSON.stringify(meta.data),
+          CardanoModule.wasmV4.MetadataJsonSchema.BasicConversions
+        );
+        generalTransactionMetadata.insert(
+          CardanoModule.wasmV4.BigNum.from_str(meta.label),
+          metadatum
+        );
+      });
+      console.log('generalTransactionMetadata');
+      console.log(generalTransactionMetadata);
+      console.log(generalTransactionMetadata.keys());
+      console.log(generalTransactionMetadata.keys().get(0).to_str());
+      return CardanoModule.wasmV4.TransactionMetadata.new(
+        generalTransactionMetadata
+      );
+    })
+    .catch((e) => console.log(e));
+  return transactionMetadata;
 };
 
-export const parseMetadata = (hex: string) => {
+export const createMetadataFromBytes = async (
+  metadataBytes: string
+): Promise<CardanoModule.wasmV4.TransactionMetadata> => {
+  const transactionMetadata = await CardanoModule.load()
+    .then(() => {
+      console.log(metadataBytes);
+
+      const generalTransactionMetadata =
+        CardanoModule.wasmV4.GeneralTransactionMetadata.from_bytes(
+          Buffer.from(metadataBytes, 'hex')
+        );
+      /*
+      console.log('generalTransactionMetadata');
+      console.log(
+        generalTransactionMetadata.get(
+          CardanoModule.wasmV4.BigNum.from_str('0')
+        ).as_map().keys().get(0).as_text()
+      );
+      console.log(
+        generalTransactionMetadata.get(
+          CardanoModule.wasmV4.BigNum.from_str('0')
+        ).as_map().get_str('La_RepsistancE').as_text()
+      );
+      */
+      return CardanoModule.wasmV4.TransactionMetadata.new(
+        generalTransactionMetadata
+      );
+    })
+    .catch((e) => console.log(e));
+  return transactionMetadata;
+};
+
+export const parseMetadata = (hex: string): string => {
   const metadatum = CardanoModule.wasmV4.TransactionMetadatum.from_bytes(
     Buffer.from(hex, 'hex')
   );
@@ -33,7 +78,7 @@ export const parseMetadata = (hex: string) => {
   return metadataString;
 };
 
-export const parseMetadataDetailed = (hex: string) => {
+export const parseMetadataDetailed = (hex: string): string => {
   const metadatum = CardanoModule.wasmV4.TransactionMetadatum.from_bytes(
     Buffer.from(hex, 'hex')
   );
