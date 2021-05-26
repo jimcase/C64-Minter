@@ -1,5 +1,5 @@
 export const getBase64 = (file: File) => {
-  return new Promise((resolve, reject) => {
+  return new Promise<string | ArrayBuffer | null>((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result);
@@ -7,40 +7,22 @@ export const getBase64 = (file: File) => {
   });
 };
 
-export const splitBase64 = (
-  base64: string | undefined,
-  base64Size: number | undefined,
-  size: number
-) => {
-  const chunckArray = [];
-  if (base64 && base64Size) {
-    // Get num iterations, probably float
-    let nChunks = base64Size / size;
-    // Get the float part
-    const rest = nChunks % 1;
+// source: https://stackoverflow.com/questions/7033639/split-large-string-in-n-size-chunks-in-javascript
+export function splitBase64IntoChunks(
+  base64: string | ArrayBuffer | null,
+  maxBytes: number
+): string[] {
+  if (typeof base64 === 'string') {
+    const re = new RegExp(`.{1,${maxBytes}}`, 'g');
+    const chunks = base64.match(re);
 
-    // Check if there is float part
-    let auxIteration = 0;
-    if (rest && base64Size >= size) {
-      nChunks -= nChunks % 1;
-      nChunks += 1;
-      auxIteration = 1;
-    }
-    const base64Length = base64.length;
-
-    let i;
-    let o;
-    for (i = 0, o = 0; i < nChunks + auxIteration; i += 1, o += size) {
-      chunckArray.push(base64.substr(o, size));
-    }
-    // One more iteration
-    if (base64.substr(o, base64Length - o).length > 0) {
-      chunckArray.push(base64.substr(o, base64Length - o));
+    if (chunks) {
+      return chunks;
     }
   }
 
-  return chunckArray;
-};
+  return [];
+}
 
 export const arrayBufferToString = (buffer: ArrayBuffer): string => {
   return String.fromCharCode.apply(null, Array.from(new Uint8Array(buffer)));

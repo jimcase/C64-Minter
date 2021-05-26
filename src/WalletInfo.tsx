@@ -11,7 +11,7 @@ const {
   HANDLE_FETCH_DATA,
   HANDLE_SAVE_DATA,
   HANDLE_REMOVE_DATA,
-} = require('./utils/constants');
+} = require('./utils/storageConstants');
 
 const recoveryPhrase = [
   'pelican void shop left ice',

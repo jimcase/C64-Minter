@@ -1,6 +1,60 @@
 // import * as openpgp from 'openpgp';
 import validWords from './valid-words';
+import { createMetadata } from '../lib/MetadataUtils';
+import { splitBase64IntoChunks } from './utils';
 
+const { MAX_VARIABLE_SIZE } = require('./cardanoConstants');
+
+interface TransactionMetadata {
+  label: string; // max. 64 bytes
+  data: any; // max. 64 bytes
+}
+
+export async function buildMetadatasFromFile(
+  type: string,
+  chunks: string[],
+  metadatum: number
+) {
+  const headers = {};
+
+  if (!headers['Content-Type']) {
+    headers['Content-Type'] = type;
+  }
+
+  headers['Content-Transfer-Encoding'] = 'base64';
+
+  // split data in diff txs
+  const policy = '';
+  const nextTx = '_PLACEHOLDER_';
+  const sig = 'R8UK...eGb/A==';
+
+  const metadataTxs: TransactionMetadata[] = [];
+
+  await chunks.forEach((chunk: string, index: number) => {
+    const chunks64 = splitBase64IntoChunks(chunk, MAX_VARIABLE_SIZE);
+    console.log(index + 1);
+    console.log(chunks64);
+
+    const metaSource = {
+      policy,
+      sig,
+      chunks64,
+      nextTx,
+    };
+    const data: Array<TransactionMetadata> = [
+      { label: metadatum.toString(), data: metaSource },
+    ];
+    // eslint-disable-next-line promise/always-return
+    createMetadata(data)
+      // eslint-disable-next-line promise/always-return
+      .then((metadata) => {
+        metadataTxs.push(metadata);
+      })
+      .catch((e) => console.log(e));
+  });
+
+  return metadataTxs;
+}
 export function buildHTTPMetadatasFromFile(
   type: string,
   chunks: string[],
@@ -25,7 +79,15 @@ export function buildHTTPMetadatasFromFile(
   // console.log("bas64Chunks");
   // console.log(bas64Chunks);
 
-  const metadataTxs = [];
+  const metadataTxs: {
+    [key: string]: {
+      policy: string;
+      sig: string;
+      headers: string;
+      response: { data: string };
+      nextTx: string;
+    };
+  }[] = [];
   for (let i = 0; i < bas64Chunks.length; i += 1) {
     metadataObj = {};
     metadataObj[metadatum] = {
@@ -35,7 +97,7 @@ export function buildHTTPMetadatasFromFile(
       response: {
         data: bas64Chunks[i],
       },
-      nextTx, // TODO get next tx hash, bas64Chunks.length-1 times
+      nextTx, // TODO get next tx hash, bas64Chunks.length-1 times, start
     };
     // console.log(i);
     // console.log(bas64Chunks[i]);

@@ -7,7 +7,7 @@ const {
   REMOVE_WALLET_FROM_STORAGE,
   FETCH_WALLET_FROM_STORAGE_BY_KEY,
   FETCH_WALLETS_FROM_STORAGE,
-} = require('./utils/constants');
+} = require('./utils/storageConstants');
 
 // Ask main to load data from its persistent storage
 export function loadSavedData() {

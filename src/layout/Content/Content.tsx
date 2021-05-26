@@ -7,7 +7,6 @@ import Wallet from '../../views/Wallet';
 import Gallery from '../../views/Gallery';
 import Settings from '../../views/Settings';
 import Menu from '../../views/Menu';
-import Minter2 from '../../views/Minter2';
 
 const Content: React.FC = () => {
   const ctx = useContext(AppContext);
@@ -17,7 +16,7 @@ const Content: React.FC = () => {
   let component;
   switch (contentSelected) {
     case 'Minter':
-      component = <Minter2 />;
+      component = <Minter />;
       break;
     case 'Wallet':
       component = <Wallet />;

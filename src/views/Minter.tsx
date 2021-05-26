@@ -1,20 +1,38 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 
 import Magnifier from 'react-magnifier';
 import { Row, Col, Form, FormGroup, Label, Input } from 'reactstrap';
 import {
   buildBase64FromOnChainMetadata,
   buildHTTPMetadatasFromFile,
+  buildMetadatasFromFile,
 } from '../utils/crypto-utils';
-import { getBase64, splitBase64 } from '../utils/utils';
+import { getBase64, splitBase64IntoChunks } from '../utils/utils';
+
+const { MAX_METADATA_SIZE } = require('../utils/cardanoConstants');
+
+interface TransactionMetadata {
+  label: string; // max. 64 bytes
+  data: any; // max. 64 bytes
+}
+
+interface StylesDictionary {
+  [Key: string]: CSSProperties;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const styles: StylesDictionary = {
+  listGroupItem: {
+    textAlign: 'center',
+  },
+};
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps {}
 
 interface IState {
   fileSource: File;
-  base64: string;
-  base64Size: number;
+  base64: string | ArrayBuffer | null;
   fileChunks: string[];
   joinedBase64: string;
   metadataTxsPreview: any; // TODO: specify exact type
@@ -27,16 +45,15 @@ class Minter extends React.Component<IProps, IState> {
     this.state = {
       fileSource: new File([], ''),
       base64: '',
-      base64Size: 0,
       fileChunks: [],
       joinedBase64: '',
       metadataTxsPreview: [],
     };
 
-    this.handleChange = this.handleChange.bind(this);
+    this.handleInputFile = this.handleInputFile.bind(this);
   }
 
-  handleChange = (selectorFiles: FileList | null) => {
+  handleInputFile = (selectorFiles: FileList | null) => {
     if (selectorFiles) {
       const file = selectorFiles[0];
 
@@ -50,22 +67,31 @@ class Minter extends React.Component<IProps, IState> {
               this.setState(
                 {
                   base64: base64Str,
-                  base64Size: base64Str.length * (3 / 4) - 2,
                 },
                 () => {
-                  const { base64, base64Size } = this.state;
+                  const { base64 } = this.state;
                   this.setState(
                     {
-                      fileChunks: splitBase64(base64, base64Size, 14336),
+                      fileChunks: splitBase64IntoChunks(
+                        base64,
+                        MAX_METADATA_SIZE
+                      ),
                     },
-                    () => {
+                    async () => {
                       const { fileChunks, fileSource } = this.state;
+                      let txs: TransactionMetadata[] = [];
+                      txs = await buildMetadatasFromFile(
+                        fileSource.type,
+                        fileChunks,
+                        64
+                      );
+                      console.log(txs);
                       this.setState(
                         {
                           metadataTxsPreview: buildHTTPMetadatasFromFile(
                             fileSource.type,
                             fileChunks,
-                            104116116112
+                            64
                           ),
                         },
                         () => {
@@ -75,7 +101,7 @@ class Minter extends React.Component<IProps, IState> {
                             {
                               joinedBase64: buildBase64FromOnChainMetadata(
                                 metadataTxsPreview,
-                                104116116112
+                                64
                               ),
                             },
                             () => {}
@@ -94,13 +120,7 @@ class Minter extends React.Component<IProps, IState> {
   };
 
   render() {
-    const {
-      fileChunks,
-      joinedBase64,
-      base64,
-      base64Size,
-      metadataTxsPreview,
-    } = this.state; // destructing visible form state
+    const { fileChunks, joinedBase64, base64, metadataTxsPreview } = this.state; // destructing visible form state
 
     return (
       <div>
@@ -108,7 +128,7 @@ class Minter extends React.Component<IProps, IState> {
         <input
           type="file"
           accept=".jpg,.jpeg,.png,.gif,.svg"
-          onChange={(e) => this.handleChange(e.target.files)}
+          onChange={(e) => this.handleInputFile(e.target.files)}
         />
         {joinedBase64 ? (
           <div id="imgPreviewContainer">
@@ -116,10 +136,6 @@ class Minter extends React.Component<IProps, IState> {
               <Col sm={6}>
                 <h5>Base64</h5>
                 <pre id="base64ContentMeta"> {JSON.stringify(base64)}</pre>
-                <p id="base64SizeSpan">
-                  Size:
-                  <span>{base64Size} bytes</span>
-                </p>
                 <p>Total: {fileChunks.length} Txs</p>
                 {metadataTxsPreview && metadataTxsPreview.length > 0 ? (
                   <div id="metadataTxsPreview">
@@ -159,7 +175,7 @@ class Minter extends React.Component<IProps, IState> {
                 </div>
               </Col>
               <Col sm={6}>
-                <Magnifier id="imgToMint" src={joinedBase64} />
+                <Magnifier src={joinedBase64} />
               </Col>
             </Row>
             <Row>

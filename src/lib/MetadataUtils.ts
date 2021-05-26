@@ -23,6 +23,35 @@ export const createMetadata = async (
           metadatum
         );
       });
+      /*
+      console.log('generalTransactionMetadata');
+      console.log(generalTransactionMetadata);
+      console.log(generalTransactionMetadata.keys());
+      console.log(generalTransactionMetadata.keys().get(0).to_str()); */
+      return CardanoModule.wasmV4.TransactionMetadata.new(
+        generalTransactionMetadata
+      );
+    })
+    .catch((e) => console.log(e));
+  return transactionMetadata;
+};
+
+export const createOneMetadata = async (
+  metadata: TransactionMetadata
+): Promise<CardanoModule.wasmV4.TransactionMetadata> => {
+  const transactionMetadata = await CardanoModule.load()
+    .then(() => {
+      const generalTransactionMetadata =
+        CardanoModule.wasmV4.GeneralTransactionMetadata.new();
+
+      const metadatum = CardanoModule.wasmV4.encode_json_str_to_metadatum(
+        JSON.stringify(metadata.data),
+        CardanoModule.wasmV4.MetadataJsonSchema.BasicConversions
+      );
+      generalTransactionMetadata.insert(
+        CardanoModule.wasmV4.BigNum.from_str(metadata.label),
+        metadatum
+      );
       console.log('generalTransactionMetadata');
       console.log(generalTransactionMetadata);
       console.log(generalTransactionMetadata.keys());
