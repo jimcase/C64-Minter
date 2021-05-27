@@ -29,6 +29,7 @@ import {
   buildMetadatasFromFile,
 } from '../utils/crypto-utils';
 import { getBase64, splitBase64IntoChunks } from '../utils/utils';
+import { getProtocolParams } from '../utils/adrestia/cardano-graphql';
 
 const { MAX_METADATA_SIZE } = require('../utils/constants/cardanoConstants');
 
@@ -110,6 +111,14 @@ class Minter extends React.Component<IProps, IState> {
                         64
                       );
                       console.log(txs);
+                      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                      const protocolParams = getProtocolParams().then(
+                        // eslint-disable-next-line promise/always-return
+                        (result) => {
+                          console.log(result);
+                          console.log(result.minFeeA);
+                        }
+                      );
                       this.setState(
                         {
                           metadataTxsPreview: buildHTTPMetadatasFromFile(

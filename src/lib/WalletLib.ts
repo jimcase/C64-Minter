@@ -23,6 +23,7 @@ import { mnemonicToEntropy, generateMnemonic } from 'bip39';
 import cryptoRandomString from 'crypto-random-string';
 import { numbers, networks } from '../config/config';
 import CardanoModule from './CardanoModule';
+import { getProtocolParams } from '../utils/adrestia/cardano-graphql';
 
 export const generateMnemonicSeed = (size: number) => {
   return generateMnemonic(size).split(' ');
@@ -120,28 +121,31 @@ export function decryptWithPassword(
   return decryptedBytes;
 }
 
-export const buildTransaction = (
+export const buildTransaction = async (
   currentSlot: number,
   shelleyOutputAddr: string,
   shelleyChangeAddr: string,
   valueToSend: string,
   rootKey: string
 ) => {
+  // Get current protocol parame
+  const protocolParams = await getProtocolParams();
+
   // instantiate the tx builder with the Cardano protocol parameters - these may change later on
   const txBuilder = CardanoModule.wasmV4.TransactionBuilder.new(
     // all of these are taken from the mainnet genesis settings
     // linear fee parameters (a*size + b)
     CardanoModule.wasmV4.LinearFee.new(
-      CardanoModule.wasmV4.BigNum.from_str('44'),
-      CardanoModule.wasmV4.BigNum.from_str('155381')
+      CardanoModule.wasmV4.BigNum.from_str(protocolParams.minFeeA),
+      CardanoModule.wasmV4.BigNum.from_str(protocolParams.minFeeB)
     ),
     // minimum utxo value
-    CardanoModule.wasmV4.BigNum.from_str('1000000'),
+    CardanoModule.wasmV4.BigNum.from_str(protocolParams.minUTxOValue), // min. send 1 Ada
     // pool deposit
-    CardanoModule.wasmV4.BigNum.from_str('500000000'),
+    CardanoModule.wasmV4.BigNum.from_str(protocolParams.poolDeposit),
     // key deposit
-    CardanoModule.wasmV4.BigNum.from_str('2000000')
-  ); // TODO add constants
+    CardanoModule.wasmV4.BigNum.from_str(protocolParams.keyDeposit)
+  );
 
   // set ttl
   txBuilder.set_ttl(currentSlot + 1500);

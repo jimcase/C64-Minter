@@ -20,4 +20,25 @@
 */
 
 // eslint-disable-next-line import/prefer-default-export
+import axios from 'axios';
+
 export function cardanoWalletSendTxThruGraphql() {}
+
+export async function getProtocolParams() {
+  const protocolParamsQuery =
+    '{ genesis { shelley { protocolParams { a0 decentralisationParam eMax extraEntropy keyDeposit maxBlockBodySize maxBlockHeaderSize maxTxSize minFeeA minFeeB minPoolCost minUTxOValue nOpt poolDeposit protocolVersion rho tau } } } }';
+  const protocolParamsResult = await axios.post(
+    'https://graphql-api.testnet.dandelion.link/',
+    { query: protocolParamsQuery }
+  );
+  return protocolParamsResult.data.data.genesis.shelley.protocolParams;
+}
+export async function getCurrentSlot() {
+  const protocolParamsQuery =
+    '{ genesis { shelley { protocolParams { a0 decentralisationParam eMax extraEntropy keyDeposit maxBlockBodySize maxBlockHeaderSize maxTxSize minFeeA minFeeB minPoolCost minUTxOValue nOpt poolDeposit protocolVersion rho tau } } } }';
+  const protocolParamsResult = await axios.post(
+    'https://graphql-api.testnet.dandelion.link/',
+    { query: protocolParamsQuery }
+  );
+  return protocolParamsResult.data.data.genesis.shelley.protocolParams;
+}
