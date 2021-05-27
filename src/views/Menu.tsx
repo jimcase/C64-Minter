@@ -19,11 +19,14 @@
   under the License.
 */
 
-import React, { useContext } from 'react';
+import React, { CSSProperties, useContext } from 'react';
 import { Row, Col } from 'reactstrap';
 import { AppContext } from '../layout/Root/Root';
 
-const styles = {
+interface StylesDictionary {
+  [Key: string]: CSSProperties;
+}
+const styles: StylesDictionary = {
   optionsContainer: {
     padding: '15px',
     marginTop: '100px',

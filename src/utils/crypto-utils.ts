@@ -24,7 +24,7 @@ import validWords from './valid-words';
 import { createMetadata } from '../lib/MetadataUtils';
 import { splitBase64IntoChunks } from './utils';
 
-const { MAX_VARIABLE_SIZE } = require('./cardanoConstants');
+const { MAX_VARIABLE_SIZE } = require('./constants/cardanoConstants');
 
 interface TransactionMetadata {
   label: string; // max. 64 bytes

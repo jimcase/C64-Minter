@@ -120,30 +120,86 @@ export function decryptWithPassword(
   return decryptedBytes;
 }
 
-export const buildTransaction = (inputHex: string, outputHex: string) => {
-  const inputs = CardanoModule.wasmV4.TransactionInputs.new();
-  inputs.add(
+export const buildTransaction = (
+  currentSlot: number,
+  shelleyOutputAddr: string,
+  shelleyChangeAddr: string,
+  valueToSend: string,
+  rootKey: string
+) => {
+  // instantiate the tx builder with the Cardano protocol parameters - these may change later on
+  const txBuilder = CardanoModule.wasmV4.TransactionBuilder.new(
+    // all of these are taken from the mainnet genesis settings
+    // linear fee parameters (a*size + b)
+    CardanoModule.wasmV4.LinearFee.new(
+      CardanoModule.wasmV4.BigNum.from_str('44'),
+      CardanoModule.wasmV4.BigNum.from_str('155381')
+    ),
+    // minimum utxo value
+    CardanoModule.wasmV4.BigNum.from_str('1000000'),
+    // pool deposit
+    CardanoModule.wasmV4.BigNum.from_str('500000000'),
+    // key deposit
+    CardanoModule.wasmV4.BigNum.from_str('2000000')
+  ); // TODO add constants
+
+  // set ttl
+  txBuilder.set_ttl(currentSlot + 1500);
+
+  // add a keyhash input - for ADA held in a Shelley-era normal address (Base, Enterprise, Pointer)
+  const prvKey = CardanoModule.wasmV4.PrivateKey.from_bech32(rootKey);
+  txBuilder.add_key_input(
+    prvKey.to_public().hash(),
     CardanoModule.wasmV4.TransactionInput.new(
       CardanoModule.wasmV4.TransactionHash.from_bytes(
-        Buffer.from(inputHex, 'hex'),
-        1
-      )
+        Buffer.from(
+          '8561258e210352fba2ac0488afed67b3427a27ccf1d41ec030c98a8199bc22ec',
+          'hex'
+        )
+      ), // tx hash
+      0 // index
+    ),
+    CardanoModule.wasmV4.Value.new(
+      CardanoModule.wasmV4.BigNum.from_str(valueToSend)
     )
   );
 
-  const outputs = CardanoModule.wasmV4.TransactionOutputs.new();
-  outputs.add(
+  // example: addr_test1qpu5vlrf4xkxv2qpwngf6cjhtw542ayty80v8dyr49rf5ewvxwdrt70qlcpeeagscasafhffqsxy36t90ldv06wqrk2qum8x5w
+  const shelleyOutputAddress =
+    CardanoModule.wasmV4.Address.from_bech32(shelleyOutputAddr);
+
+  // add output to the tx
+  txBuilder.add_output(
     CardanoModule.wasmV4.TransactionOutput.new(
-      CardanoModule.wasmV4.TransactionHash.from_bytes(
-        Buffer.from(inputHex, 'hex'), // TODO: derive from root key, get it from localStorage
-        1
+      shelleyOutputAddress,
+      CardanoModule.wasmV4.Value.new(
+        CardanoModule.wasmV4.BigNum.from_str(valueToSend)
       )
     )
   );
 
-  const value = CardanoModule.wasmV4.Value.new(
-    CardanoModule.wasmV4.BigNum.from_str((100).toString())
-  );
+  // addr_test1gz2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzerspqgpsqe70et
+  const shelleyChangeAddress =
+    CardanoModule.wasmV4.Address.from_bech32(shelleyChangeAddr);
+  // calculate the min fee required and send any change to an address
+  txBuilder.add_change_if_needed(shelleyChangeAddress);
 
-  outputs.add(CardanoModule.wasmV4.TransactionOutput.new(address, value));
+  // once the transaction is ready, we build it to get the tx body without witnesses
+  const txBody = txBuilder.build();
+  const txHash = CardanoModule.wasmV4.hash_transaction(txBody);
+  const witnesses = CardanoModule.wasmV4.TransactionWitnessSet.new();
+
+  // add keyhash witnesses
+  const vkeyWitnesses = CardanoModule.wasmV4.VkeyWitnesses.new();
+  const vkeyWitness = CardanoModule.wasmV4.make_vkey_witness(txHash, prvKey);
+  vkeyWitnesses.add(vkeyWitness);
+  witnesses.set_vkeys(vkeyWitnesses);
+
+  // create the finalized transaction with witnesses
+  const transaction = CardanoModule.wasmV4.Transaction.new(
+    txBody,
+    witnesses,
+    undefined // transaction metadata, TransactionMetadata obj
+  );
+  return transaction;
 };

@@ -26,7 +26,7 @@ import { loadSavedData2 } from '../renderer';
 import WalletPanel from '../components/Wallet/Panel/WalletPanel';
 
 const { ipcRenderer } = require('electron');
-const { HANDLE_FETCH_WALLETS } = require('../utils/storageConstants');
+const { HANDLE_FETCH_WALLETS } = require('../utils/constants/storageConstants');
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface WalletProps {}

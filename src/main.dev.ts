@@ -51,7 +51,7 @@ const {
   FETCH_WALLETS_FROM_STORAGE,
   REMOVE_WALLET_FROM_STORAGE,
   HANDLE_FETCH_WALLETS,
-} = require('./utils/storageConstants');
+} = require('./utils/constants/storageConstants');
 
 // A reference to the itemsToTrack array, full of JS/JSON objects. All mutations to the array are performed in the main.js app, but each mutation will trigger a rewrite to the user's storage for data persistence
 let itemsToTrack = [];

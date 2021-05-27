@@ -19,7 +19,7 @@
   under the License.
 */
 
-import React, { CSSProperties } from 'react';
+import React from 'react';
 
 import Magnifier from 'react-magnifier';
 import { Row, Col, Form, FormGroup, Label, Input } from 'reactstrap';
@@ -30,23 +30,26 @@ import {
 } from '../utils/crypto-utils';
 import { getBase64, splitBase64IntoChunks } from '../utils/utils';
 
-const { MAX_METADATA_SIZE } = require('../utils/cardanoConstants');
+const { MAX_METADATA_SIZE } = require('../utils/constants/cardanoConstants');
 
 interface TransactionMetadata {
   label: string; // max. 64 bytes
   data: any; // max. 64 bytes
 }
 
+/*
 interface StylesDictionary {
   [Key: string]: CSSProperties;
 }
-
+*/
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+/*
 const styles: StylesDictionary = {
   listGroupItem: {
     textAlign: 'center',
   },
 };
+*/
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps {}
@@ -148,7 +151,7 @@ class Minter extends React.Component<IProps, IState> {
         <h2>Upload asset</h2>
         <input
           type="file"
-          accept=".jpg,.jpeg,.png,.gif,.svg"
+          accept=".jpg,.jpeg,.png,.gif,.svg,.pdf"
           onChange={(e) => this.handleInputFile(e.target.files)}
         />
         {joinedBase64 ? (

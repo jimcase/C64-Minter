@@ -6,7 +6,7 @@ import { getBase64, splitBase64IntoChunks } from '../utils/utils';
 const {
   MAX_VARIABLE_SIZE,
   MAX_METADATA_SIZE,
-} = require('../utils/cardanoConstants');
+} = require('../utils/constants/cardanoConstants');
 
 interface StylesDictionary {
   [Key: string]: CSSProperties;
